@@ -12,6 +12,7 @@ import me.aurora.service.UserService;
 import me.aurora.service.mapper.UserMapper;
 import me.aurora.util.HttpContextUtils;
 import me.aurora.config.exception.AuroraException;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,7 +153,8 @@ public class UserController {
     @PutMapping(value = "/updateEnabled")
     public ResponseEntity updateEnabled(@RequestParam Long id){
         log.warn("REST request to updateEnabled");
-        userService.updateEnabled(id);
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        userService.updateEnabled(id,user);
         return ResponseEntity.ok();
     }
 

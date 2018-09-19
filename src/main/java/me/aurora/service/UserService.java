@@ -88,5 +88,5 @@ public interface UserService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void updateEnabled(Long id);
+    void updateEnabled(Long id, User user);
 }

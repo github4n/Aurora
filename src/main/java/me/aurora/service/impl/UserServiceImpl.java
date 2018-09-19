@@ -144,8 +144,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateEnabled(Long id) {
-        User user = userRepo.findById(id).get();
-        user.setEnabled(user.getEnabled()==1?0:1);
+    public void updateEnabled(Long id, User user) {
+        if(id.equals(user.getId())){
+            throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"不能禁用自己");
+        }
+        User user1 = userRepo.findById(id).get();
+        user1.setEnabled(user1.getEnabled()==1?0:1);
+        userRepo.save(user1);
     }
 }

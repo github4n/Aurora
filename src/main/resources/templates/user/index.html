@@ -50,6 +50,7 @@
             <label class="layui-form-label">状态</label>
             <div class=layui-input-lump>
                 <select name="enabled" lay-verify="">
+                    <option value="">请选择...</option>
                     <option value="1">允许登录</option>
                     <option value="0">禁止登录</option>
                 </select>
@@ -153,9 +154,12 @@
                 type: "PUT",
                 success: function(data){
                     if (data.code == 200) {
-                        layer.msg(data.msg, {icon: 1, time: 1000});
+                        layer.msg(data.msg, {icon: 6, time: 1500});
                     } else {
-                        layer.msg(data.msg, {icon: 1, time: 1000});
+                        layer.msg(data.msg, {icon: 5, time: 1500});
+                        setTimeout(function () {
+                            location.reload(true)
+                        },1500);
                     }
                 }
             });
