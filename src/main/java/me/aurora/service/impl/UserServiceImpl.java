@@ -13,7 +13,7 @@ import me.aurora.service.dto.UserDTO;
 import me.aurora.service.mapper.UserMapper;
 import me.aurora.util.MD5Utils;
 import me.aurora.util.PageUtil;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void inster(User user, String roles) throws AuroraException {
+    public void inster(User user, String roles) {
         if(StrUtil.hasEmpty(user.getUsername())||StrUtil.hasEmpty(user.getEmail())){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请检查是否提交了空的内容");
         }
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user, String roles) throws AuroraException {
+    public void update(User user, String roles) {
         if(StrUtil.hasEmpty(user.getUsername())||StrUtil.hasEmpty(user.getEmail())){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请检查是否提交了空的内容");
         }
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Long id) throws AuroraException {
+    public void delete(Long id) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         if(user.getId().equals(id)){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"这么狠，自己都删！！");

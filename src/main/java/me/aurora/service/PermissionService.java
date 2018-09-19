@@ -3,7 +3,7 @@ package me.aurora.service;
 import me.aurora.domain.Permission;
 import me.aurora.domain.Role;
 import me.aurora.repository.spec.PermissionSpec;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,7 +34,7 @@ public interface PermissionService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void inster(Permission permission) throws AuroraException;
+    void inster(Permission permission);
 
     /**
      * 根据id查询权限
@@ -50,7 +50,7 @@ public interface PermissionService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void update(Permission permission) throws AuroraException;
+    void update(Permission permission);
 
     /**
      * 删除权限
@@ -58,7 +58,7 @@ public interface PermissionService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void delete(Long id) throws AuroraException;
+    void delete(Long id);
 
     /**
      * 查询所有的权限

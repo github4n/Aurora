@@ -8,7 +8,6 @@ import me.aurora.repository.spec.PermissionSpec;
 import me.aurora.service.PermissionService;
 import me.aurora.service.mapper.PerMissionMapper;
 import me.aurora.util.HttpContextUtils;
-import me.aurora.util.exception.AuroraException;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +96,7 @@ public class PermissionController {
     @Log("新增权限")
     @RequiresPermissions (value={"admin", "permission:all","permission:add"}, logical= Logical.OR)
     @PostMapping(value = "/inster")
-    public ResponseEntity inster(@RequestBody Permission permission) throws AuroraException {
+    public ResponseEntity inster(@RequestBody Permission permission) {
         log.warn("REST request to insterPermission");
         permissionService.inster(permission);
         return ResponseEntity.ok();
@@ -131,7 +130,7 @@ public class PermissionController {
     @Log("更新权限")
     @RequiresPermissions (value={"admin", "permission:all","permission:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@RequestBody Permission permission) throws AuroraException {
+    public ResponseEntity update(@RequestBody Permission permission) {
         log.warn("REST request to insterUser");
         permissionService.update(permission);
         return ResponseEntity.ok();
@@ -145,7 +144,7 @@ public class PermissionController {
     @Log("删除权限")
     @RequiresPermissions (value={"admin", "permission:all","permission:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
-    public ResponseEntity delete(@RequestParam Long id) throws AuroraException {
+    public ResponseEntity delete(@RequestParam Long id) {
         log.warn("REST request to deletePermission");
         permissionService.delete(id);
         return ResponseEntity.ok();

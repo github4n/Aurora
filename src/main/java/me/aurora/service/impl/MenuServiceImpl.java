@@ -12,7 +12,7 @@ import me.aurora.service.dto.MenuDTO;
 import me.aurora.service.mapper.MenuMapper;
 import me.aurora.util.ListSortUtil;
 import me.aurora.util.PageUtil;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,7 +76,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void inster(Menu menu, Menu topMenu, String roles) throws AuroraException {
+    public void inster(Menu menu, Menu topMenu, String roles) {
         validation(menu);
         if(topMenu == null){
             menu.setLevel(1);
@@ -111,7 +111,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void update(Menu menu, Menu oldMenu, String roles) throws AuroraException {
+    public void update(Menu menu, Menu oldMenu, String roles) {
         validation(menu);
         Menu oldTopMenu = null;
         if(menu.getPid() != 0){
@@ -167,7 +167,7 @@ public class MenuServiceImpl implements MenuService {
      * 验证
      * @param menu
      */
-    public void validation(Menu menu) throws AuroraException {
+    public void validation(Menu menu) {
         if(StrUtil.isEmpty(menu.getName())){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"菜单名称不能为空");
         }

@@ -1,7 +1,8 @@
 package me.aurora.aspect;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
 import me.aurora.config.AuroraProperties;
+import me.aurora.config.exception.AuroraException;
 import me.aurora.service.SysLogService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
  * @author 郑杰
  * @date 2018/08/22 16:41:33
  */
+@Slf4j
 @Aspect
 @Component
 public class LogAspect{
@@ -34,14 +36,16 @@ public class LogAspect{
 	}
 
     @Around("pointcut()")
-    public Object around(ProceedingJoinPoint point) throws JsonProcessingException {
+    public Object around(ProceedingJoinPoint point){
         Object result = null;
         long beginTime = System.currentTimeMillis();
         try {
             // 执行方法
             result = point.proceed();
         } catch (Throwable e) {
-            e.printStackTrace();
+            if(e instanceof AuroraException){
+                throw new AuroraException(((AuroraException) e).getId(),e.getMessage());
+            }
         }
         // 执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;

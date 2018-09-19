@@ -8,11 +8,8 @@ import me.aurora.repository.spec.RoleSpec;
 import me.aurora.service.RoleService;
 import me.aurora.service.mapper.RoleMapper;
 import me.aurora.util.HttpContextUtils;
-import me.aurora.util.exception.AuroraException;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -96,7 +93,7 @@ public class RoleController {
     @Log("新增角色")
     @RequiresPermissions (value={"admin", "role:all","role:add"}, logical= Logical.OR)
     @PostMapping(value = "/inster")
-    public ResponseEntity inster(@RequestBody Role role,@RequestParam String permissions) throws AuroraException {
+    public ResponseEntity inster(@RequestBody Role role,@RequestParam String permissions) {
         log.warn("REST request to insterRoles");
         roleService.inster(role,permissions);
         return ResponseEntity.ok();
@@ -131,7 +128,7 @@ public class RoleController {
     @Log("更新角色")
     @RequiresPermissions (value={"admin", "role:all","role:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@RequestBody Role role,@RequestParam String permissions) throws AuroraException {
+    public ResponseEntity update(@RequestBody Role role,@RequestParam String permissions) {
         log.warn("REST request to insterUser");
         roleService.update(role,permissions);
         return ResponseEntity.ok();
@@ -145,7 +142,7 @@ public class RoleController {
     @Log("删除角色")
     @RequiresPermissions (value={"admin", "role:all","role:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
-    public ResponseEntity delete(@RequestParam Long id) throws AuroraException {
+    public ResponseEntity delete(@RequestParam Long id) {
         log.warn("REST request to deleteRole");
         roleService.delete(id);
         return ResponseEntity.ok();

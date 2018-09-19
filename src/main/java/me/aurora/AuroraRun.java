@@ -7,8 +7,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
-import org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableConfigurationProperties({AuroraProperties.class})
-
 /**
  * @author 郑杰
  * @date 2018/08/21 11:54:10

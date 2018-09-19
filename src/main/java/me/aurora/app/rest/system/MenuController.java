@@ -13,7 +13,6 @@ import me.aurora.service.UserService;
 import me.aurora.service.dto.MenuDTO;
 import me.aurora.service.mapper.MenuMapper;
 import me.aurora.util.HttpContextUtils;
-import me.aurora.util.exception.AuroraException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -115,7 +114,7 @@ public class MenuController {
     @Log("新增菜单")
     @RequiresPermissions (value={"admin", "menu:all","menu:add"}, logical= Logical.OR)
     @PostMapping(value = "/inster")
-    public ResponseEntity inster(@RequestBody Menu menu,@RequestParam String roles) throws AuroraException {
+    public ResponseEntity inster(@RequestBody Menu menu,@RequestParam String roles){
         log.warn("REST request to inster menu");
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         Menu topMenu = null;
@@ -155,7 +154,7 @@ public class MenuController {
     @Log("更新菜单")
     @RequiresPermissions (value={"admin", "menu:all","menu:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@RequestBody Menu menu,@RequestParam String roles) throws AuroraException {
+    public ResponseEntity update(@RequestBody Menu menu,@RequestParam String roles) {
         log.warn("REST request to update");
         menuService.update(menu,menuService.findById(menu.getId()),roles);
         return ResponseEntity.ok();

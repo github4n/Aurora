@@ -5,7 +5,7 @@ import me.aurora.domain.Role;
 import me.aurora.domain.vo.MenuVo;
 import me.aurora.repository.spec.MenuSpec;
 import me.aurora.service.dto.MenuDTO;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -58,7 +58,7 @@ public interface MenuService {
      * @param roles
      */
     @CacheEvict(allEntries = true)
-    void inster(Menu menu, Menu topMenu, String roles) throws AuroraException;
+    void inster(Menu menu, Menu topMenu, String roles);
 
     /**
      * 根据PID查询菜单
@@ -89,5 +89,5 @@ public interface MenuService {
      * @param roles
      */
     @CacheEvict(allEntries = true)
-    void update(Menu menu, Menu oldMenu, String roles) throws AuroraException;
+    void update(Menu menu, Menu oldMenu, String roles);
 }

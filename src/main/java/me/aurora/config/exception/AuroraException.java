@@ -1,4 +1,4 @@
-package me.aurora.util.exception;
+package me.aurora.config.exception;
 
 import lombok.Getter;
 
@@ -8,11 +8,11 @@ import lombok.Getter;
  * 通用异常处理类
  */
 @Getter
-public class AuroraException extends Exception{
+public class AuroraException extends RuntimeException{
 
     private int id;
 
-    public AuroraException(int id,String msg){
+    public AuroraException(int id, String msg){
         super(msg);
         this.id = id;
     }

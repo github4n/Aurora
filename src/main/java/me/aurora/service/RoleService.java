@@ -1,11 +1,9 @@
 package me.aurora.service;
 
-import me.aurora.domain.Menu;
 import me.aurora.domain.Permission;
 import me.aurora.domain.Role;
-import me.aurora.domain.User;
 import me.aurora.repository.spec.RoleSpec;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -69,7 +67,7 @@ public interface RoleService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void update(Role role, String permissions) throws AuroraException;
+    void update(Role role, String permissions);
 
     /**
      * 删除角色
@@ -77,7 +75,7 @@ public interface RoleService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void delete(Long id) throws AuroraException;
+    void delete(Long id);
 
     /**
      * 组装树形结构数据

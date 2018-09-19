@@ -1,15 +1,13 @@
 package me.aurora.service;
 
-import me.aurora.domain.Role;
 import me.aurora.domain.User;
 import me.aurora.repository.spec.UserSpec;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author 郑杰
@@ -58,7 +56,7 @@ public interface UserService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void inster(User user, String roles) throws AuroraException;
+    void inster(User user, String roles);
 
     /**
      * 更新用户
@@ -67,7 +65,7 @@ public interface UserService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void update(User user, String roles) throws AuroraException;
+    void update(User user, String roles);
 
     /**
      * 更新最近登录时间
@@ -82,7 +80,7 @@ public interface UserService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void delete(Long id) throws AuroraException;
+    void delete(Long id);
 
     /**
      * 是否允许登录

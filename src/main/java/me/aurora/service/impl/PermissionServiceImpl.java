@@ -10,7 +10,7 @@ import me.aurora.service.PermissionService;
 import me.aurora.service.dto.PermissionDTO;
 import me.aurora.service.mapper.PerMissionMapper;
 import me.aurora.util.PageUtil;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,7 +70,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void delete(Long id) throws AuroraException {
+    public void delete(Long id) {
         Permission permission = permissionRepo.findById(id).get();
         if(permission == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"ID为"+id+"的权限没有找到");

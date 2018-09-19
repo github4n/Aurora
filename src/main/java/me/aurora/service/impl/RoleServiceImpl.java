@@ -2,17 +2,15 @@ package me.aurora.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
-import me.aurora.domain.Menu;
 import me.aurora.domain.Permission;
 import me.aurora.domain.Role;
-import me.aurora.domain.User;
 import me.aurora.repository.RoleRepo;
 import me.aurora.repository.spec.RoleSpec;
 import me.aurora.service.RoleService;
 import me.aurora.service.dto.RoleDTO;
 import me.aurora.service.mapper.RoleMapper;
 import me.aurora.util.PageUtil;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void inster(Role role, String permissions) throws AuroraException {
+    public void inster(Role role, String permissions) {
         if(StrUtil.hasEmpty(role.getName())){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"角色名称不能为空");
         }
@@ -76,7 +74,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void update(Role role, String permissions) throws AuroraException {
+    public void update(Role role, String permissions) {
         if(role.getId() == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"角色ID不能为空");
         }
@@ -94,7 +92,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete(Long id) throws AuroraException {
+    public void delete(Long id) {
         Role role = roleRepo.findById(id).get();
         if(role == null){
             throw new AuroraException(404,"ID为"+id+"的角色未找到");

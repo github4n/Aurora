@@ -11,7 +11,7 @@ import me.aurora.service.RoleService;
 import me.aurora.service.UserService;
 import me.aurora.service.mapper.UserMapper;
 import me.aurora.util.HttpContextUtils;
-import me.aurora.util.exception.AuroraException;
+import me.aurora.config.exception.AuroraException;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +96,7 @@ public class UserController {
     @Log("新增用户")
     @RequiresPermissions (value={"admin", "user:all","user:add"}, logical= Logical.OR)
     @PostMapping(value = "/inster")
-    public ResponseEntity inster(@RequestBody User user, @RequestParam String roles) throws AuroraException {
+    public ResponseEntity inster(@RequestBody User user, @RequestParam String roles) {
         log.warn("REST request to insterUser");
         if(StrUtil.hasEmpty(roles)){
             return ResponseEntity.error(HttpStatus.HTTP_NOT_FOUND,"角色为空，请至少为其分配一个角色");
@@ -133,7 +133,7 @@ public class UserController {
     @Log("更新用户")
     @RequiresPermissions (value={"admin", "user:all","user:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@RequestBody User user, @RequestParam String roles) throws AuroraException {
+    public ResponseEntity update(@RequestBody User user, @RequestParam String roles) {
         log.warn("REST request to insterUser");
         if(StrUtil.hasEmpty(roles)){
             return ResponseEntity.error(HttpStatus.HTTP_NOT_FOUND,"角色为空，请至少为其分配一个角色");
@@ -164,7 +164,7 @@ public class UserController {
     @Log("删除用户")
     @RequiresPermissions (value={"admin", "user:all","user:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
-    public ResponseEntity delete(@RequestParam Long id) throws AuroraException {
+    public ResponseEntity delete(@RequestParam Long id) {
         log.warn("REST request to deleteUser");
         userService.delete(id);
         return ResponseEntity.ok();
