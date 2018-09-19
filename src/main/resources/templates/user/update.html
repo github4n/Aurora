@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Aurora- 更新用户</title>
+    <link rel="shortcut icon" th:href="@{'/my/favicon.ico'}" />
+    <!-- build:css -->
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/ztree/metro/ztree.css'}" media="all"/>
+    <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/treeselect.css'}" media="all"/>
+    <!-- endbuild -->
+</head>
+<body>
+<div style="padding: 10px; line-height: 15px; font-weight: 300;">
+    <form class="layui-form layui-form-pane" action="">
+        <input name="id" th:value="${editUser.id}" hidden="hidden" type="text">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input name="username" th:value="${editUser.username}" lay-verify="required" placeholder="请输入用户名，用户名不可重复" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input name="email" th:value="${editUser.email}" lay-verify="required" placeholder="请输入用户，邮箱不可重复" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户密码</label>
+            <div class="layui-input-block">
+                <input name="password" lay-verify="required" placeholder="请输入密码,为空则不修改" autocomplete="off" class="layui-input" type="password">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择角色</label>
+            <div class="layui-input-block layui-input-treeselect" >
+                <input type="text" name="role" th:value="${editUser.rolesSelect}" id="treeselect1" required lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
+<!-- build:js -->
+<script th:src="@{'/js/jquery.min.js'}"></script>
+<script th:src="@{'/plugins/layui.js'}"></script>
+<!-- build:use -->
+<script>
+    layui.config({
+        base: '/plugins/lay/layui-treeselect/src/js/' //自定义组件的目录--相对路径
+    }).use(['form', 'treeselect'], function () {
+        var form = layui.form, treeselect = layui.treeselect;
+        var data = [];
+        $.ajax({
+            async:false,
+            type:"GET",
+            url:"/role/getAllRole",
+            dataType:"json",
+            success:function (resule) {
+                data = resule;
+            }
+        });
+        //通过调用render方法进行渲染 [render支持链式调用]
+        treeselect.render({ //渲染第一个
+            elem: '#treeselect1', //这个设置必要为id属性且必须加上#号
+            data: data
+        });
+    });
+</script>
+</body>
+</html>

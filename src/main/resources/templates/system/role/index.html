@@ -1,0 +1,272 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">角色管理</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a id="add" class="layui-btn layui-btn-xs">
+                            <i class="layui-icon"></i>
+                            <span shiro:hasAnyPermissions="admin,role:all,role:add">新增</span>
+                        </a>
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                    <script type="text/html" id="operation">
+                        <button shiro:hasAnyPermissions="admin,role:all,role:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,role:all,role:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色编号</label>
+            <div class=layui-input-lump>
+                <input type="text" name="id" placeholder="请输入角色编号.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名称</label>
+            <div class=layui-input-lump>
+                <input type="text" name="name" placeholder="请输入角色名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色说明</label>
+            <div class=layui-input-lump>
+                <input type="text" name="remark" placeholder="请输入角色说明.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script>
+    layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+        //监听新增事件
+        $('#add').on('click', function(){
+            var index = layer.open({
+                type: 2
+                ,content: '/role/toAddPage'
+                ,area: ['500px', '450px']
+                ,btnAlign: 'c'
+                ,shade: 0.8
+                ,title: '新增角色'
+                ,maxmin: true
+                ,btn: ['确认', '取消']
+                ,yes: function(){
+                    var body = layer.getChildFrame('body', index);
+                    add(layer,body);
+                }
+            });
+            parent.layer.iframeAuto(index);
+        });
+
+        //表格渲染
+        table.render({
+            elem: '#myTable'
+            ,url:'/role/getRolesInfo'
+            ,page: true
+            ,id:"ID"
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                        [
+                          {field:'id',align:'center', width:70, unresize: true, title: '序号'}
+                         ,{field:'name',  title: '角色名称'}
+                         ,{field:'remark',  title: '角色说明'}
+                         ,{field:'createDateTime',  title: '创建日期'}
+                         ,{field:'updateDateTime', title: '更新日期'}
+                         ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作'}
+                         ]
+                    ]
+        });
+
+        //监听搜索事件
+        $('#search_hash').on('click', function () {
+            var that = this;
+            sidebar.render({
+                elem: that,
+                content: $('#search_tpl_hash').html(),
+                title: '搜索',
+                shade: true,
+                width: '450px', //可以设置百分比和px
+                done: function () {
+                    form.render();
+                    //监听提交
+                    form.on('submit(formDemo_hash)', function (data) {
+                        table.reload('ID', {
+                            where: {
+                                id: $('input[name="id"]').val(),
+                                name: $('input[name="name"]').val(),
+                                remark: $('input[name="remark"]').val()
+                            }
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                        return false;
+                    });
+                }
+            });
+        });
+
+        //监听修改按钮
+        table.on('tool(tools)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'edit'){
+                // 编辑
+                var index = layer.open({
+                     type: 2
+                    ,content: '/role/toUpdatePage?id='+data.id
+                    ,area: ['500px', '450px']
+                    ,btnAlign: 'c'
+                    ,shade: 0.8
+                    ,title: '新增角色'
+                    ,maxmin: true
+                    ,btn: ['确认', '取消']
+                    ,yes: function(){
+                        var body = layer.getChildFrame('body', index);
+                        update(layer,body);
+                    }
+                });
+                parent.layer.iframeAuto(index);
+            //监听删除事件
+            } else if(obj.event === 'del'){
+                layer.confirm("你确定删除数据吗?", {icon: 3 ,btnAlign: 'c', title:'提示'},
+                    function(index){//确定回调
+                    // 写删除方法
+                    $.ajax({
+                        url: "/role/delete?id="+data.id,
+                        type: "DELETE",
+                        success: function(data){
+                            if (data.code == 200) {
+                                layer.close(index);
+                                layui.layer.msg("删除成功", {icon: 6});
+                                setTimeout(function () {
+                                    table.reload('ID', {
+                                        where: {}
+                                        ,page: {
+                                            curr: 1
+                                        }
+                                    });
+                                },1000);
+                            } else {
+                                layer.close(index);
+                                layer.msg(data.msg, {icon: 5});
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    /**
+     * 新增角色
+     * @param layer
+     * @param body
+     */
+    function add(layer,body) {
+        var name = body.contents().find("input[name=\"name\"]").val()
+        var remark = body.contents().find("textarea[name=\"remark\"]").val()
+        var permissions = body.contents().find("input[name=\"permissions\"]").val();
+        if(name == ''||null == name){
+            layui.layer.msg("角色名称不能为空",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/role/inster?permissions="+permissions,
+            contentType: "application/json",
+            type: "POST",
+            data:JSON.stringify({
+                name:name,
+                remark:remark
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("添加成功", {icon: 6});
+                        setTimeout(function () {
+                            layui.table.reload('ID', {
+                                 where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 更新角色
+     * @param layer
+     * @param body
+     */
+    function update(layer,body) {
+        var id = body.contents().find("input[name=\"id\"]").val()
+        var name = body.contents().find("input[name=\"name\"]").val()
+        var remark = body.contents().find("textarea[name=\"remark\"]").val()
+        var permissions = body.contents().find("input[name=\"permissions\"]").val();
+        if(name == ''||null == name){
+            layui.layer.msg("角色名称不能为空",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/role/update?permissions="+permissions,
+            contentType: "application/json",
+            type: "PUT",
+            data:JSON.stringify({
+                id:id,
+                name:name,
+                remark:remark
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("修改成功", {icon: 6});
+                        setTimeout(function () {
+                            layui.table.reload('ID', {
+                                where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+</script>

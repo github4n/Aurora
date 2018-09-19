@@ -1,0 +1,290 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">权限管理</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a id="add" class="layui-btn layui-btn-xs">
+                            <i class="layui-icon"></i>
+                            <span shiro:hasAnyPermissions="admin,permission:all,permission:add">新增</span>
+                        </a>
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                    <script type="text/html" id="operation">
+                        <button shiro:hasAnyPermissions="admin,permission:all,permission:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,permission:all,permission:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限编号</label>
+            <div class=layui-input-lump>
+                <input type="text" name="id" placeholder="请输入权限编号.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class=layui-input-lump>
+                <input type="text" name="perms" placeholder="请输入权限名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限说明</label>
+            <div class=layui-input-lump>
+                <input type="text" name="remark" placeholder="请输入权限说明.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script>
+    var treeGrid = null;
+    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+            treeGrid = layui.treeGrid;
+
+        //监听新增事件
+        $('#add').on('click', function(){
+            var index = layer.open({
+                type: 2
+                ,content: '/permission/toAddPage'
+                ,area: ['500px', '450px']
+                ,btnAlign: 'c'
+                ,shade: 0.8
+                ,title: '新增权限'
+                ,maxmin: true
+                ,btn: ['确认', '取消']
+                ,yes: function(){
+                    var body = layer.getChildFrame('body', index);
+                    add(layer,body);
+                }
+            });
+            parent.layer.iframeAuto(index);
+        });
+
+        //表格渲染
+        treeGrid.render({
+             id:"ID"
+            ,elem: '#myTable'
+            ,idField:'id'
+            ,url:'/permission/getPermissionsInfo'
+            ,cellMinWidth: 100
+            ,treeId:'id'//树形id字段名称
+            ,treeUpId:'pid'//树形父id字段名称
+            ,treeShowName:'perms'//以树形式显示的字段
+            ,height:'full-140'
+            ,isFilter:false
+            ,iconOpen:false//是否显示图标【默认显示】
+            ,isOpenDefault:false//节点默认是展开还是折叠【默认展开】
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                [
+                    {field:'id',align:'center', width:70,  title: '序号'}
+                    ,{field:'perms',  title: '权限名称'}
+                    ,{field:'remark',  title: '权限说明'}
+                    ,{field:'createTime',  title: '创建日期'}
+                    ,{field:'updateTime', title: '更新日期'}
+                    ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作'}
+                ]
+            ]
+            ,page: false
+        });
+
+        //监听搜索事件
+        $('#search_hash').on('click', function () {
+            var that = this;
+            sidebar.render({
+                elem: that,
+                content: $('#search_tpl_hash').html(),
+                title: '搜索',
+                shade: true,
+                width: '450px', //可以设置百分比和px
+                done: function () {
+                    form.render();
+                    //监听提交
+                    form.on('submit(formDemo_hash)', function (data) {
+                        treeGrid.query('ID', {
+                            where: {
+                                id: $('input[name="id"]').val(),
+                                perms: $('input[name="perms"]').val(),
+                                remark: $('input[name="remark"]').val()
+                            }
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                        return false;
+                    });
+                }
+            });
+        });
+
+        //监听修改按钮
+        treeGrid.on('tool(tools)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'edit'){
+                // 编辑
+                var index = layer.open({
+                    type: 2
+                    ,content: '/permission/toUpdatePage?id='+data.id
+                    ,area: ['500px', '450px']
+                    ,btnAlign: 'c'
+                    ,shade: 0.8
+                    ,title: '新增权限'
+                    ,maxmin: true
+                    ,btn: ['确认', '取消']
+                    ,yes: function(){
+                        var body = layer.getChildFrame('body', index);
+                        update(layer,body);
+                    }
+                });
+                parent.layer.iframeAuto(index);
+                //监听删除事件
+            } else if(obj.event === 'del'){
+                layer.confirm("你确定删除数据吗？如果存在下级节点<br/>则一并删除，此操作不能撤销！", {icon: 3 ,btnAlign: 'c', title:'提示'},
+                    function(index){//确定回调
+                        // 写删除方法
+                        $.ajax({
+                            url: "/permission/delete?id="+data.id,
+                            type: "DELETE",
+                            success: function(data){
+                                if (data.code == 200) {
+                                    layer.close(index);
+                                    layui.layer.msg("删除成功", {icon: 6});
+                                    setTimeout(function () {
+                                        treeGrid.reload('ID', {
+                                            where: {}
+                                            ,page: {
+                                                curr: 1
+                                            }
+                                        });
+                                    },1000);
+                                } else {
+                                    layer.close(index);
+                                    layer.msg(data.msg, {icon: 5});
+                                }
+                            }
+                        });
+                        layer.close(index);
+                    },function (index) {//取消回调
+                        layer.close(index);
+                    }
+                );
+            }
+        });
+    });
+
+    /**
+     * 新增权限
+     * @param layer
+     * @param body
+     */
+    function add(layer,body) {
+        var perms = body.contents().find("input[name=\"perms\"]").val()
+        var pid = body.contents().find("select[name=\"pid\"]").val();
+        var remark = body.contents().find("textarea[name=\"remark\"]").val()
+        if(perms == ''||null == perms){
+            layui.layer.msg("权限名称不能为空",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/permission/inster",
+            contentType: "application/json",
+            type: "POST",
+            data:JSON.stringify({
+                perms:perms,
+                remark:remark,
+                pid:pid
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("添加成功", {icon: 6});
+                        setTimeout(function () {
+                            treeGrid.reload('ID', {
+                                where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 更新用户
+     * @param layer
+     * @param body
+     */
+    function update(layer,body) {
+        var id = body.contents().find("input[name=\"id\"]").val()
+        var perms = body.contents().find("input[name=\"perms\"]").val()
+        var pid = body.contents().find("select[name=\"pid\"]").val();
+        var remark = body.contents().find("textarea[name=\"remark\"]").val()
+        if(perms == ''||null == perms){
+            layui.layer.msg("权限名称不能为空",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/permission/update",
+            contentType: "application/json",
+            type: "PUT",
+            data:JSON.stringify({
+                id:id,
+                perms:perms,
+                remark:remark,
+                pid:pid
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("修改成功", {icon: 6});
+                        setTimeout(function () {
+                            treeGrid.reload('ID', {
+                                where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+</script>

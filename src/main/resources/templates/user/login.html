@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ZH-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Aurora -Login</title>
+  <link rel="shortcut icon" th:href="@{'/my/favicon.ico'}" />
+  <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}" th:id="layui">
+  <link rel="stylesheet" th:href="@{'/plugins/css/login.css'}">
+</head>
+
+<body>
+  <div class="kit-login">
+    <div class="kit-login-bg"></div>
+    <div class="kit-login-wapper">
+      <h2 class="kit-login-slogan">欢迎使用 <br> Aurora 1.0 后台管理</h2>
+      <div class="kit-login-form">
+        <h4 class="kit-login-title">登录</h4>
+        <form class="layui-form">
+          <div class="kit-login-row">
+            <div class="kit-login-col">
+              <i class="layui-icon">&#xe612;</i>
+              <span class="kit-login-input">
+                <input type="text" name="username" id="username" value="anyone" lay-verify="required" placeholder="请输入用户名/邮箱 ->anyone" />
+              </span>
+            </div>
+            <div class="kit-login-col"></div>
+          </div>
+          <div class="kit-login-row">
+            <div class="kit-login-col">
+              <i class="layui-icon">&#xe64c;</i>
+              <span class="kit-login-input">
+                <input type="password" name="password" id="password" value="anyone123" lay-verify="required" placeholder="请输入密码->anyone123" />
+              </span>
+            </div>
+            <div class="kit-login-col"></div>
+          </div>
+          <div class="kit-login-row">
+            <div class="kit-login-col">
+              <input type="checkbox" name="rememberMe" id="rememberMe" checked title="记住帐号" lay-skin="primary">
+            </div>
+          </div>
+          <div class="kit-login-row">
+            <button class="layui-btn kit-login-btn" lay-submit="submit" lay-filter="login_hash">登录</button>
+          </div>
+          <div class="kit-login-row" style="margin-bottom:0;">
+            <a href="javascript:;" style="color: rgb(153, 153, 153); text-decoration: none; font-size: 13px;" id="forgot">忘记密码</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script th:src="@{'/js/jquery.min.js'}"></script>
+  <script th:src="@{'/js/MD5.js'}"></script>
+  <script th:src="@{'/plugins/layui.js'}"></script>
+  <script>
+      layui.use(['jquery', 'layer','form'], function () {
+          var layer = layui.layer, form = layui.form;
+          //回车事件绑定
+          document.onkeydown = function (event) {
+              var e = event || window.event || arguments.callee.caller.arguments[0];
+              if (e && e.keyCode == 13) {
+                  login();
+              }
+          };
+
+          form.on('submit(login_hash)', function(data) {
+              login();
+              return false;
+          });
+      });
+
+      function login() {
+          var username = $("#username").val();
+          var password = MD5($("#password").val());
+          var load = layer.load();
+          $.ajax({
+              url:"/login",
+              data:{username:username,password:password,rememberMe:$("#rememberMe").is(':checked')},
+              type:"POST",
+              beforeSend:function(){
+                  layer.msg('开始登录');
+              },
+              success:function(result){
+                  layer.close(load);
+                  if(result && result.code != 200){
+                      layer.msg(result.msg);
+                      $('#password').val('');
+                      return;
+                  }else{
+                      layer.msg('登录成功');
+                      setTimeout(function(){
+                          //登录返回
+                          window.location.href = "/index";
+                      },1000)
+                  }
+              },
+              error:function(e){
+                  var msg = e.msg;
+                  layer.msg(msg,new Function());
+              }
+          });
+      }
+  </script>
+</body>
+</html>

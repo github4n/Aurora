@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Aurora- 更新角色</title>
+    <link rel="shortcut icon" th:href="@{'/my/favicon.ico'}" />
+    <!-- build:css -->
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/ztree/metro/ztree.css'}" media="all"/>
+    <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/treeselect.css'}" media="all"/>
+    <!-- endbuild -->
+</head>
+<body>
+<div style="padding: 10px; line-height: 15px; font-weight: 300;">
+    <form class="layui-form layui-form-pane" action="">
+        <input th:value="${role.id}" name="id" type="text" hidden="hidden">
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色名</label>
+            <div class="layui-input-block">
+                <input name="name" th:value="${role.name}" lay-verify="required" placeholder="请输入角色名，角色名不可重复" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择权限</label>
+            <div class="layui-input-block layui-input-treeselect" >
+                <input type="text" name="permissions" th:value="${permissionSelect}" id="treeselect1" required lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">角色说明</label>
+            <div class="layui-input-block">
+                <textarea name="remark" placeholder="请输入内容" class="layui-textarea">[[${role.remark}]]</textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- build:js -->
+<script th:src="@{'/js/jquery.min.js'}"></script>
+<script th:src="@{'/plugins/layui.js'}"></script>
+<!-- build:use -->
+<script>
+    layui.config({
+        base: '/plugins/lay/layui-treeselect/src/js/' //自定义组件的目录--相对路径
+    }).use(['form', 'treeselect'], function () {
+        var form = layui.form, treeselect = layui.treeselect;
+        var data = [];
+        $.ajax({
+            async:false,
+            type:"GET",
+            url:"/permission/getAllPermissions",
+            dataType:"json",
+            success:function (resule) {
+                data = resule;
+            }
+        });
+        //通过调用render方法进行渲染 [render支持链式调用]
+        treeselect.render({ //渲染第一个
+            elem: '#treeselect1', //这个设置必要为id属性且必须加上#号
+            data: data
+        });
+    });
+</script>
+</body>
+</html>

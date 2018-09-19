@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Aurora- 新增权限</title>
+    <link rel="shortcut icon" th:href="@{'/my/favicon.ico'}" />
+    <!-- build:css -->
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <!-- endbuild -->
+</head>
+<body>
+<div style="padding: 10px; line-height: 15px; font-weight: 300;">
+    <form class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class="layui-input-block">
+                <input name="perms" lay-verify="required" placeholder="请输入权限名，权限名不可重复" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级类目</label>
+            <div class="layui-input-block">
+                <select name="pid" lay-verify="" lay-search>
+                    <option value="0">无</option>
+                    <option th:each="p:${topPermissions}" th:value="${p.id}">[[${p.remark}]]</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">权限说明</label>
+            <div class="layui-input-block">
+                <textarea name="remark" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- build:js -->
+<script th:src="@{'/js/jquery.min.js'}"></script>
+<script th:src="@{'/plugins/layui.js'}"></script>
+<!-- build:use -->
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+</body>
+</html>

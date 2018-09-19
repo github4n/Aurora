@@ -1,0 +1,119 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">系统日志管理</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">操作用户</label>
+            <div class=layui-input-lump>
+                <input type="text" name="username" placeholder="请输入用户名.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">操作方法</label>
+            <div class=layui-input-lump>
+                <input type="text" name="method" placeholder="请输入操作方法.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">操作描述</label>
+            <div class=layui-input-lump>
+                <input type="text" name="operation" placeholder="请输入描述.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">IP来源</label>
+            <div class=layui-input-lump>
+                <input type="text" name="location" placeholder="请输入IP来源.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script>
+
+    layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+
+        //表格渲染
+        table.render({
+             elem: '#myTable'
+            ,url:'/sysLog/getLogInfo'
+            ,page: true
+            ,id:"ID"
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                        [
+                            {field:'id',align:'center', width:70,  title: '序号'}
+                            ,{field:'username',  title: '用户昵称'}
+                            ,{field:'ip',  title: '用户IP'}
+                            ,{field:'location',  title: 'IP来源'}
+                            ,{field:'operation',  title: '描述'}
+                            ,{field:'method',  title: '请求方法'}
+                            ,{field:'params', title: '请求参数'}
+                            ,{field:'time', align:'center', title: '请求耗时', width:90}
+                            ,{field:'createTime',width:175, title: '创建时间'}
+                         ]
+                    ]
+            ,done:function(res, curr, count) {    //res 接口返回的信息
+                $("td[data-field$='time']").children().each(function () {
+                    $(this).html("<span class=\"layui-badge\">"+$(this).text()+"</span>");
+                });
+            }
+        });
+        //监听搜索事件
+        $('#search_hash').on('click', function () {
+            var that = this;
+            sidebar.render({
+                elem: that,
+                content: $('#search_tpl_hash').html(),
+                title: '搜索',
+                shade: true,
+                // shadeClose:false,
+                // direction: 'left'
+                // dynamicRender: false,
+                width: '450px', //可以设置百分比和px
+                done: function () {
+                    form.render();
+                    //监听提交
+                    form.on('submit(formDemo_hash)', function (data) {
+                        table.reload('ID', {
+                            where: {
+                                username: $('input[name="username"]').val(),
+                                operation: $('input[name="operation"]').val(),
+                                method: $('input[name="method"]').val(),
+                                location: $('input[name="location"]').val()}
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                        return false;
+                    });
+                }
+            });
+        });
+    });
+</script>

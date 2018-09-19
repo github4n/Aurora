@@ -1,0 +1,298 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">菜单管理</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a id="add" class="layui-btn layui-btn-xs">
+                            <i class="layui-icon"></i>
+                            <span shiro:hasAnyPermissions="admin,menu:all,menu:add">新增</span>
+                        </a>
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                    <script type="text/html" id="operation">
+                        <button shiro:hasAnyPermissions="admin,menu:all,menu:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,menu:all,menu:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单编号</label>
+            <div class=layui-input-lump>
+                <input type="text" name="id" placeholder="请输入菜单编号.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称</label>
+            <div class=layui-input-lump>
+                <input type="text" name="name" placeholder="请输入菜单名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script>
+    var treeGrid = null;
+    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            sidebar = layui.sidebar,
+            form = layui.form;
+            treeGrid = layui.treeGrid;
+
+        //监听新增事件
+        $('#add').on('click', function(){
+            var index = layer.open({
+                type: 2
+                ,content: '/menu/toAddPage'
+                ,area: ['550px', '480px']
+                ,btnAlign: 'c'
+                ,shade: 0.8
+                ,title: '新增菜单'
+                ,maxmin: true
+                ,btn: ['确认', '取消']
+                ,yes: function(){
+                    var body = layer.getChildFrame('body', index);
+                    add(layer,body);
+                }
+            });
+            parent.layer.iframeAuto(index);
+        });
+
+        //表格渲染
+        treeGrid.render({
+             id:"ID"
+            ,elem: '#myTable'
+            ,idField:'id'
+            ,url:'/menu/getMenusInfo'
+            ,cellMinWidth: 100
+            ,treeId:'id'//树形id字段名称
+            ,treeUpId:'pid'//树形父id字段名称
+            ,treeShowName:'name'//以树形式显示的字段
+            ,height:'full-140'
+            ,isFilter:false
+            ,iconOpen:false//是否显示图标【默认显示】
+            ,isOpenDefault:false//节点默认是展开还是折叠【默认展开】
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                        [
+                         {field:'id',align:'center', width:70,  title: '序号'}
+                        ,{field:'name',  title: '菜单名称'}
+                        ,{field:'ico',  title: '菜单图标',align:'center', width:100}
+                        ,{field:'url',  title: '链接地址'}
+                        ,{field:'levelNum',  title: '子菜单数目',align:'center', width:125}
+                        ,{field:'soft',  title: '排序',align:'center', width:90}
+                        ,{field:'createTime',  title: '创建时间', width:150}
+                        ,{field:'updateTime',  title: '修改时间',width:150}
+                        ,{field:'operation',align:'center', width:140, toolbar: '#operation', title: '操作'}
+                         ]
+                    ]
+            ,done:function(res, curr, count) {    //res 接口返回的信息
+
+                $("td[data-field$='ico']").children().each(function () {
+                    $(this).html("<i class=\"layui-icon "+$(this).text()+"\"></i>");
+                });
+                $("td[data-field$='soft']").children().each(function () {
+                    $(this).html("<span class=\"layui-badge layui-bg-orange\">"+$(this).text()+"</span>");
+                });
+            }
+        });
+
+        //监听搜索事件
+        $('#search_hash').on('click', function () {
+            var that = this;
+            sidebar.render({
+                elem: that,
+                content: $('#search_tpl_hash').html(),
+                title: '搜索',
+                shade: true,
+                width: '450px', //可以设置百分比和px
+                done: function () {
+                    form.render();
+                    //监听提交
+                    form.on('submit(formDemo_hash)', function (data) {
+                        table.reload('ID', {
+                            where: {
+                                id: $('input[name="id"]').val(),
+                                name: $('input[name="name"]').val(),
+                            }
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                        return false;
+                    });
+                }
+            });
+        });
+
+        //监听修改按钮
+        treeGrid.on('tool(tools)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'edit'){
+                // 编辑
+                var index = layer.open({
+                     type: 2
+                    ,content: '/menu/toUpdatePage?id='+data.id
+                    ,area: ['500px', '450px']
+                    ,btnAlign: 'c'
+                    ,shade: 0.8
+                    ,title: '更新菜单'
+                    ,maxmin: true
+                    ,btn: ['确认', '取消']
+                    ,yes: function(){
+                        var body = layer.getChildFrame('body', index);
+                        update(layer,body);
+                    }
+                });
+                parent.layer.iframeAuto(index);
+            //监听删除事件
+            } else if(obj.event === 'del'){
+                layer.confirm("你确定删除数据吗？如果存在下级节点则一并删除，此操作不能撤销！", {icon: 3 ,btnAlign: 'c', title:'提示'},
+                    function(index){//确定回调
+                    // 写删除方法
+                    $.ajax({
+                        url: "/menu/delete?id="+data.id,
+                        type: "DELETE",
+                        success: function(data){
+                            if (data.code == 200) {
+                                layer.close(index);
+                                layui.layer.msg("删除成功", {icon: 6});
+                                setTimeout(function () {
+                                    location.reload(true)
+                                },1000);
+                            } else {
+                                layer.close(index);
+                                layer.msg(data.msg, {icon: 5});
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    /**
+     * 新增菜单
+     * @param layer
+     * @param body
+     */
+    function add(layer,body) {
+        var roles = body.contents().find("input[name=\"role\"]").val();
+        var ico = body.contents().find("input[name=\"ico\"]").val();
+        var name = body.contents().find("input[name=\"name\"]").val();
+        var pid = body.contents().find("select[name=\"pid\"]").val();
+        var url = body.contents().find("input[name=\"url\"]").val();
+        if(pid == 0){
+            url = "";
+        }
+        var soft = body.contents().find("input[name=\"soft\"]").val();
+        if(name == ''||null == name){
+            layui.layer.msg("菜单名称不能为空",{icon: 5});
+            return
+        }
+        if(soft == ''||null == soft){
+            layui.layer.msg("排序序号不能为空",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/menu/inster?roles="+roles,
+            contentType: "application/json",
+            type: "POST",
+            data:JSON.stringify({
+                name:name,
+                ico:ico,
+                pid:pid,
+                url:url,
+                soft:soft
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("添加成功", {icon: 6});
+                        setTimeout(function () {
+                            location.reload(true)
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 更新用户
+     * @param layer
+     * @param body
+     */
+    function update(layer,body) {
+        var id = body.contents().find("input[name=\"id\"]").val();
+        var roles = body.contents().find("input[name=\"role\"]").val();
+        var ico = body.contents().find("input[name=\"ico\"]").val();
+        var name = body.contents().find("input[name=\"name\"]").val();
+        var pid = body.contents().find("select[name=\"pid\"]").val();
+        var url = body.contents().find("input[name=\"url\"]").val();
+        if(pid == 0){
+            url = "";
+        }
+        var soft = body.contents().find("input[name=\"soft\"]").val();
+        if(name == ''||null == name){
+            layui.layer.msg("菜单名称不能为空",{icon: 5});
+            return
+        }
+        if(soft == ''||null == soft){
+            layui.layer.msg("排序序号不能为空",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/menu/update?roles="+roles,
+            contentType: "application/json",
+            type: "PUT",
+            data:JSON.stringify({
+                id:id,
+                name:name,
+                ico:ico,
+                pid:pid,
+                url:url,
+                soft:soft
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("修改成功", {icon: 6});
+                        setTimeout(function () {
+                            location.reload(true)
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+</script>

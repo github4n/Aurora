@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Aurora- 新增菜单</title>
+        <link rel="shortcut icon" th:href="@{'/my/favicon.ico'}" />
+        <!-- build:css -->
+        <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+        <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/ztree/metro/ztree.css'}" media="all"/>
+        <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/treeselect.css'}" media="all"/>
+        <!-- endbuild -->
+    </head>
+    <body>
+        <div style="padding: 10px; line-height: 15px; font-weight: 300;">
+            <form class="layui-form layui-form-pane" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单图标</label>
+                    <div class="layui-input-block">
+                        <input type="text" value="layui-icon-tree" name="ico" id="iconPicker" lay-filter="iconPicker" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单名称</label>
+                    <div class="layui-input-block">
+                        <input name="name" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">上级类目</label>
+                    <div class="layui-input-block">
+                        <select name="pid" lay-filter="top" lay-verify="" lay-search>
+                            <option value="0">无</option>
+                            <option th:each="m:${topMenus}" th:value="${m.id}">[[${m.name}]]</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="action" class="layui-form-item" style="display: none">
+                    <label class="layui-form-label">链接地址</label>
+                    <div class="layui-input-block">
+                        <input name="url" lay-verify="required" placeholder="请输入链接地址" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单排序</label>
+                    <div class="layui-input-block">
+                        <input name="soft" lay-verify="required" placeholder="请输入序号，序号不可重复，越小越靠前" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择角色</label>
+                    <div class="layui-input-block layui-input-treeselect" >
+                        <input type="text" name="role" id="treeselect1" required lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+    <!-- build:js -->
+    <script th:src="@{'/js/jquery.min.js'}"></script>
+    <script th:src="@{'/plugins/layui.js'}"></script>
+    <!-- build:use -->
+    <script>
+        layui.config({
+            base: '../plugins/lay/modules/'
+        }).extend({
+            iconPicker:'iconPicker'
+        }).use(['iconPicker'], function () {
+            var iconPicker = layui.iconPicker;
+            iconPicker.render({
+                // 选择器，推荐使用input
+                elem: '#iconPicker',
+                // 数据类型：fontClass/unicode，推荐使用fontClass
+                type: 'fontClass',
+                // 是否开启搜索：true/false
+                search: false,
+                // 是否开启分页
+                page: true,
+                // 每页显示数量，默认36
+                limit: 36,
+                // 点击回调
+                click: function (data) {
+                    console.log(data);
+                }
+            });
+
+            /**
+             * 选中图标 （常用于更新时默认选中图标）
+             * @param filter lay-filter
+             * @param iconName 图标名称，自动识别fontClass/unicode
+             */
+            iconPicker.checkIcon('iconPicker', $("#iconPicker").val());
+
+        });
+
+        //Demo
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render();
+
+            form.on('select(top)', function(data){
+                if(data.value == 0){
+                    $("#action").hide();
+                    $("#action").val("");
+                }else {
+                    $("#action").show();
+                }
+            });
+        });
+
+        layui.config({
+            base: '/plugins/lay/layui-treeselect/src/js/' //自定义组件的目录--相对路径
+        }).use(['form', 'treeselect'], function () {
+            var form = layui.form, treeselect = layui.treeselect;
+            var data = [];
+            $.ajax({
+                async:false,
+                type:"GET",
+                url:"/role/getAllRole",
+                dataType:"json",
+                success:function (resule) {
+                    data = resule;
+                }
+            });
+            //通过调用render方法进行渲染 [render支持链式调用]
+            treeselect.render({ //渲染第一个
+                elem: '#treeselect1', //这个设置必要为id属性且必须加上#号
+                data: data
+            });
+
+        });
+    </script>
+</html>

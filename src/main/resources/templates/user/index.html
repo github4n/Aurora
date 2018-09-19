@@ -1,0 +1,320 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">用户信息管理</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a id="add" class="layui-btn layui-btn-xs">
+                            <i class="layui-icon"></i>
+                            <span shiro:hasAnyPermissions="admin,user:all,user:add">新增</span>
+                        </a>
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                    <script type="text/html" id="checkLock">
+                        <input shiro:hasAnyPermissions="admin,user:all,user:lock" type="checkbox" name="enabled" value="{{d.id}}" lay-skin="switch" lay-text="Yes|No" lay-event="lock" lay-filter="lockDemo" {{ d.enabled == 1 ? 'checked' : '' }}>
+                    </script>
+                    <script type="text/html" id="operation">
+                        <button shiro:hasAnyPermissions="admin,user:all,user:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,user:all,user:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户编号</label>
+            <div class=layui-input-lump>
+                <input type="text" name="id" placeholder="请输入用户编号.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class=layui-input-lump>
+                <input type="text" name="username" placeholder="请输入用户名.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class=layui-input-lump>
+                <input type="text" name="email" placeholder="请输入用户邮箱.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class=layui-input-lump>
+                <select name="enabled" lay-verify="">
+                    <option value="1">允许登录</option>
+                    <option value="0">禁止登录</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script th:src="@{'/js/MD5.js'}"></script>
+<script>
+    layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+
+        //监听新增事件
+        $('#add').on('click', function(){
+            var index = layer.open({
+                type: 2
+                ,content: '/user/toAddPage'
+                ,area: ['500px', '500px']
+                ,btnAlign: 'c'
+                ,shade: 0.8
+                ,maxmin: true
+                ,title: '新增用户'
+                ,btn: ['确认', '取消']
+                ,yes: function(){
+                    var body = layer.getChildFrame('body', index);
+                    add(layer,body);
+                }
+            });
+            parent.layer.iframeAuto(index);
+        });
+
+        //表格渲染
+        table.render({
+            elem: '#myTable'
+            ,url:'/user/getUsersInfo'
+            ,page: true
+            ,id:"ID"
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                        [
+                          {field:'id',align:'center', width:70,  title: '序号'}
+                         ,{field:'username',  title: '用户昵称'}
+                         ,{field:'email',  title: '邮箱'}
+                         ,{field:'createDateTime',  title: '创建时间'}
+                         ,{field:'lastLoginTime',  title: '最近登录'}
+                         ,{field:'lock', align: 'center', width: 120, toolbar: '#checkLock', title: '是否允许登录'}
+                         ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作'}
+                        ]
+                    ]
+        });
+
+        //监听搜索事件
+        $('#search_hash').on('click', function () {
+            var that = this;
+            sidebar.render({
+                elem: that,
+                content: $('#search_tpl_hash').html(),
+                title: '搜索',
+                shade: true,
+                // shadeClose:false,
+                // direction: 'left'
+                // dynamicRender: false,
+                // url: 'views/member/all/search.html',
+                width: '450px', //可以设置百分比和px
+                done: function () {
+                    form.render();
+                    //监听提交
+                    form.on('submit(formDemo_hash)', function (data) {
+                        table.reload('ID', {
+                            where: {
+                                id: $('input[name="id"]').val(),
+                                username: $('input[name="username"]').val(),
+                                email: $('input[name="email"]').val(),
+                                enabled: $('select[name="enabled"]').val()
+                            }
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                        return false;
+                    });
+                }
+            });
+        });
+
+        // 监听开关事件
+        form.on('switch(lockDemo)', function (data) {
+            // 开关方法
+            $.ajax({
+                url: "/user/updateEnabled?id="+this.value,
+                type: "PUT",
+                success: function(data){
+                    if (data.code == 200) {
+                        layer.msg(data.msg, {icon: 1, time: 1000});
+                    } else {
+                        layer.msg(data.msg, {icon: 1, time: 1000});
+                    }
+                }
+            });
+        });
+
+        //监听修改按钮
+        table.on('tool(tools)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'edit'){
+                // 编辑
+                var index = layer.open({
+                     type: 2
+                    ,content: '/user/toUpdatePage?id='+data.id
+                    ,area: ['500px', '500px']
+                    ,btnAlign: 'c'
+                    ,shade: 0.8
+                    ,title: '编辑用户'
+                    ,maxmin: true
+                    ,btn: ['确认', '取消']
+                    ,yes: function(){
+                        var body = layer.getChildFrame('body', index);
+                        update(layer,body);
+                    }
+                });
+                parent.layer.iframeAuto(index);
+            //监听删除事件
+            } else if(obj.event === 'del'){
+                layer.confirm("你确定删除数据吗?", {icon: 3 ,btnAlign: 'c', title:'提示'},
+                    function(index){//确定回调
+                    // 写删除方法
+                    $.ajax({
+                        url: "/user/delete?id="+data.id,
+                        type: "DELETE",
+                        success: function(data){
+                            if (data.code == 200) {
+                                layer.close(index);
+                                layui.layer.msg("删除成功", {icon: 6});
+                                setTimeout(function () {
+                                    table.reload('ID', {
+                                        where: {}
+                                        ,page: {
+                                            curr: 1
+                                        }
+                                    });
+                                },1000);
+                            } else {
+                                layer.close(index);
+                                layer.msg(data.msg, {icon: 5});
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    /**
+     * 新增用户
+     * @param layer
+     * @param body
+     */
+    function add(layer,body) {
+        var roles = body.contents().find("input[name=\"role\"]").val();
+        var pwd = MD5(body.contents().find("input[name=\"password\"]").val())
+        var rpwd = MD5(body.contents().find("input[name=\"rPassword\"]").val())
+        var username = body.contents().find("input[name=\"username\"]").val()
+        var email = body.contents().find("input[name=\"email\"]").val()
+        if(username == ''||null == username){
+            layui.layer.msg("用户名不能为空",{icon: 5});
+            return
+        }
+        if(email == ''||null == email){
+            layui.layer.msg("邮箱不能为空",{icon: 5});
+            return
+        }
+        if(pwd != rpwd){
+            layui.layer.msg("密码输入不一致",{icon: 5});
+            return
+        }
+        $.ajax({
+            url: "/user/inster?roles="+roles,
+            contentType: "application/json",
+            type: "POST",
+            data:JSON.stringify({
+                username:username,
+                password:pwd,
+                email:email
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("添加成功", {icon: 6});
+                        setTimeout(function () {
+                            layui.table.reload('ID', {
+                                 where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 更新用户
+     * @param layer
+     * @param body
+     */
+    function update(layer,body) {
+        var roles = body.contents().find("input[name=\"role\"]").val();
+        var pwd = body.contents().find("input[name=\"password\"]").val()
+        var id = body.contents().find("input[name=\"id\"]").val()
+        var username = body.contents().find("input[name=\"username\"]").val()
+        var email = body.contents().find("input[name=\"email\"]").val()
+        if(!(pwd == ''||pwd == null)){
+            pwd = MD5(pwd)
+        }
+        $.ajax({
+            url: "/user/update?roles="+roles,
+            contentType: "application/json",
+            type: "PUT",
+            data:JSON.stringify({
+                id:id,
+                username:username,
+                password:pwd,
+                email:email
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("修改成功", {icon: 6});
+                        setTimeout(function () {
+                            layui.table.reload('ID', {
+                                where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+</script>
