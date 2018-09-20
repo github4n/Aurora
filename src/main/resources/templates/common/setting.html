@@ -159,12 +159,17 @@
        */
       var themeKey = 'KITADMIN_SETTING_THEME';
       var theme = localStorage.getItem(themeKey);
-      var themeName = $.parseJSON(theme).theme;
-      $("input[name='setting-theme']").each(function () {
-          if($(this).parent().attr("data-theme") == themeName){
-              $(this).attr("checked","checked");
-          }
-      })
+
+      if(theme == null){
+          $("input[name='setting-theme']")[0].attr("checked","checked");
+      } else {
+          var themeName = $.parseJSON(theme).theme;
+          $("input[name='setting-theme']").each(function () {
+              if($(this).parent().attr("data-theme") == themeName){
+                  $(this).attr("checked","checked");
+              }
+          })
+      }
       layui.use(['form', 'utils'], function () {
           var form = layui.form,
               $ = layui.jquery,
