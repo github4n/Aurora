@@ -153,23 +153,19 @@
   </div>
   <script th:src="@{'/js/jquery.min.js'}"></script>
   <script>
-      /**
-       * 默认选中状态
-       * @type {string}
-       */
-      var themeKey = 'KITADMIN_SETTING_THEME';
-      var theme = localStorage.getItem(themeKey);
-
-      if(theme == null){
-          $("input[name='setting-theme']")[0].attr("checked","checked");
-      } else {
-          var themeName = $.parseJSON(theme).theme;
+      $(function () {
+          var themeKey = 'KITADMIN_SETTING_THEME';
+          var theme = localStorage.getItem(themeKey);
+          var themeName = "default"
+          if(theme != null){
+              themeName = $.parseJSON(theme).theme;
+          }
           $("input[name='setting-theme']").each(function () {
               if($(this).parent().attr("data-theme") == themeName){
                   $(this).attr("checked","checked");
               }
           })
-      }
+      })
       layui.use(['form', 'utils'], function () {
           var form = layui.form,
               $ = layui.jquery,

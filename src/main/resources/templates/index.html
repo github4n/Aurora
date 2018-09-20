@@ -129,9 +129,8 @@
        */
       var themeKey = 'KITADMIN_SETTING_THEME';
       var theme = localStorage.getItem(themeKey);
-      var themeName = ""
       if(theme != null){
-          themeName = $.parseJSON(theme).theme;
+          var themeName = $.parseJSON(theme).theme;
           var str = $('#theme').attr('href');
           var _themeUrl = str.substr(0, str.lastIndexOf('/') + 1);
           $('#theme').attr('href', _themeUrl + themeName + '.css');
