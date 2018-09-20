@@ -2,7 +2,6 @@ package me.aurora.service;
 
 import me.aurora.domain.User;
 import me.aurora.repository.spec.UserSpec;
-import me.aurora.config.exception.AuroraException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -80,13 +79,13 @@ public interface UserService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void delete(Long id);
+    void delete(User id);
 
     /**
      * 是否允许登录
-     * @param id
+     * @param user
      * @return
      */
     @CacheEvict(allEntries = true)
-    void updateEnabled(Long id, User user);
+    void updateEnabled(User user);
 }

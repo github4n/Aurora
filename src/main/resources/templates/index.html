@@ -80,8 +80,8 @@
           <ul class="kit-menu">
             <li class="kit-menu-item">
               <a href="#/">
-                <i class="layui-icon"></i>
-                <span>首页</span>
+                  <i class="layui-icon layui-icon-util"></i>
+                  <span>首页</span>
               </a>
             </li>
             <li th:each="menu,stat: ${menus}" class="kit-menu-item">
@@ -123,9 +123,24 @@
   <script th:src="@{'/plugins/mockjs-config.js'}"></script>
   <!-- build:use -->
   <script>
+      /**
+       * 读取缓存中的主题配置
+       * @type {string}
+       */
+      var themeKey = 'KITADMIN_SETTING_THEME';
+      var theme = localStorage.getItem(themeKey);
+      var themeName = $.parseJSON(theme).theme;
+      var str = $('#theme').attr('href');
+      var _themeUrl = str.substr(0, str.lastIndexOf('/') + 1);
+      $('#theme').attr('href', _themeUrl + themeName + '.css');
+      var _body = $('body');
+      if (!_body.hasClass('kit-theme-' + themeName)) {
+          _body.addClass('kit-theme-' + themeName);
+      }
       layui.config({
           base: 'js/'
       }).use('index');
+
   </script>
   <!-- endbuild -->
 

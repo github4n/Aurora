@@ -153,8 +153,7 @@ public class UserController {
     @PutMapping(value = "/updateEnabled")
     public ResponseEntity updateEnabled(@RequestParam Long id){
         log.warn("REST request to updateEnabled");
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        userService.updateEnabled(id,user);
+        userService.updateEnabled(userService.findById(id));
         return ResponseEntity.ok();
     }
 
@@ -168,7 +167,7 @@ public class UserController {
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) {
         log.warn("REST request to deleteUser");
-        userService.delete(id);
+        userService.delete(userService.findById(id));
         return ResponseEntity.ok();
     }
 }

@@ -28,7 +28,7 @@
         <div class="layui-col-xs3">
           <div class="setting-color">
             <label data-theme="default">
-              <input type="radio" name="setting-theme" checked="checked">
+              <input type="radio" name="setting-theme">
               <i class="layui-icon layui-icon-ok-circle"></i>
               <span class="split">
                                 <span class="color bg-default"></span>
@@ -117,7 +117,7 @@
               <span class="split">
             <span class="color bg-green"></span>
             <span class="color bg-green-light"></span>
-          </span>
+            </span>
               <span class="color bg-gray-dark"></span>
             </label>
           </div>
@@ -151,7 +151,20 @@
       </div>
     </div>
   </div>
+  <script th:src="@{'/js/jquery.min.js'}"></script>
   <script>
+      /**
+       * 默认选中状态
+       * @type {string}
+       */
+      var themeKey = 'KITADMIN_SETTING_THEME';
+      var theme = localStorage.getItem(themeKey);
+      var themeName = $.parseJSON(theme).theme;
+      $("input[name='setting-theme']").each(function () {
+          if($(this).parent().attr("data-theme") == themeName){
+              $(this).attr("checked","checked");
+          }
+      })
       layui.use(['form', 'utils'], function () {
           var form = layui.form,
               $ = layui.jquery,

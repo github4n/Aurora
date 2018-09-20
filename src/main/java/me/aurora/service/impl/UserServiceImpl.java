@@ -135,21 +135,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Long id) {
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if(user.getId().equals(id)){
+    public void delete(User user) {
+        if(user == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"用户不存在，请检查缓存！！");
+        }
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        if(u.getId().equals(user.getId())){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"这么狠，自己都删！！");
         }
-        userRepo.deleteById(id);
+        userRepo.delete(user);
     }
 
     @Override
-    public void updateEnabled(Long id, User user) {
-        if(id.equals(user.getId())){
+    public void updateEnabled(User user) {
+        if(user == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"用户不存在，请检查缓存！！");
+        }
+        User u = (User) SecurityUtils.getSubject().getPrincipal();
+        if(user.getId().equals(u.getId())){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"不能禁用自己");
         }
-        User user1 = userRepo.findById(id).get();
-        user1.setEnabled(user1.getEnabled()==1?0:1);
-        userRepo.save(user1);
+        user.setEnabled(user.getEnabled()==1?0:1);
+        userRepo.save(user);
     }
 }
