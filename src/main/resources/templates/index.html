@@ -129,13 +129,16 @@
        */
       var themeKey = 'KITADMIN_SETTING_THEME';
       var theme = localStorage.getItem(themeKey);
-      var themeName = $.parseJSON(theme).theme;
-      var str = $('#theme').attr('href');
-      var _themeUrl = str.substr(0, str.lastIndexOf('/') + 1);
-      $('#theme').attr('href', _themeUrl + themeName + '.css');
-      var _body = $('body');
-      if (!_body.hasClass('kit-theme-' + themeName)) {
-          _body.addClass('kit-theme-' + themeName);
+      var themeName = ""
+      if(theme != null){
+          themeName = $.parseJSON(theme).theme;
+          var str = $('#theme').attr('href');
+          var _themeUrl = str.substr(0, str.lastIndexOf('/') + 1);
+          $('#theme').attr('href', _themeUrl + themeName + '.css');
+          var _body = $('body');
+          if (!_body.hasClass('kit-theme-' + themeName)) {
+              _body.addClass('kit-theme-' + themeName);
+          }
       }
       layui.config({
           base: 'js/'

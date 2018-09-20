@@ -97,7 +97,7 @@ layui.define(mods, function(exports) {
         });
       }
       if (target === 'help') {
-        layer.alert('帮助');
+        layer.alert('作者QQ：201507802');
       }
     });
 
