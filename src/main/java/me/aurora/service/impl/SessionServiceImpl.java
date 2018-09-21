@@ -60,9 +60,9 @@ public class SessionServiceImpl implements SessionService {
             userOnline.setLastAccessTime(session.getLastAccessTime());
             Long timeout = session.getTimeout();
             if (timeout == 0L) {
-                userOnline.setStatus("0");
+                userOnline.setStatus("离线");
             } else {
-                userOnline.setStatus("1");
+                userOnline.setStatus("在线");
             }
             String address = AddressUtils.getCityInfo(userOnline.getHost());
             userOnline.setLocation(address);
