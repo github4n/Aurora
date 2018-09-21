@@ -70,7 +70,7 @@ public class PictureController {
      * 去上传页面
      * @return
      */
-    @RequiresPermissions (value={"admin", "picture:all","picture:add"}, logical= Logical.OR)
+    @RequiresPermissions (value={"admin", "picture:all","picture:upload"}, logical= Logical.OR)
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
         log.warn("REST request to addPicturePage");

@@ -43,7 +43,7 @@ public class SysLogController {
     }
 
     /**
-     * 查询所有日志
+     * 查询所有日志s
      * @param username
      * @param method
      * @param operation
@@ -52,7 +52,7 @@ public class SysLogController {
      * @param limit
      * @return
      */
-    @RequiresPermissions(value={"admin", "log:all","log:select"}, logical= Logical.OR)
+    @RequiresPermissions(value={"admin", "log:all"}, logical= Logical.OR)
     @GetMapping(value = "/getLogInfo")
     public Map getLogInfo(@RequestParam(value = "username",required = false) String username,
                           @RequestParam(value = "method",required = false) String method,
