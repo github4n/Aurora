@@ -96,10 +96,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void delete(Role role) {
-        if(role.getUsers() != null && role.getUsers().size() != 0){
-            throw new AuroraException(400,"角色使用中，请先解绑用户");
+        try {
+            roleRepo.delete(role);
+        }catch (Exception e){
+            throw new AuroraException(HttpStatus.HTTP_INTERNAL_ERROR,"删除失败，请检查角色是否被使用");
         }
-        roleRepo.delete(role);
     }
 
     @Override

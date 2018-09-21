@@ -73,10 +73,12 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public void delete(Permission permission) {
-        if(permission.getRoles() != null && permission.getRoles().size()!=0){
-            throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"暂不支持删除使用中的权限，请先与角色解绑");
+        try {
+            permissionRepo.delete(permission);
+        }catch (Exception e){
+            throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"删除失败，请检查权限是否被使用");
         }
-        permissionRepo.delete(permission);
+
     }
 
     @Override
