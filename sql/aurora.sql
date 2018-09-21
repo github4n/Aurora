@@ -219,23 +219,6 @@ INSERT INTO `zj_role` VALUES (2, '2018-08-27 19:31:03', '普通用户', '', '201
 INSERT INTO `zj_role` VALUES (3, '2018-09-03 15:17:31', '测试', '1', '2018-09-20 17:28:03');
 
 -- ----------------------------
--- Table structure for zj_syslog
--- ----------------------------
-DROP TABLE IF EXISTS `zj_syslog`;
-CREATE TABLE `zj_syslog`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createTime` datetime NULL DEFAULT NULL,
-  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `operation` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `params` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `time` int(11) NULL DEFAULT NULL,
-  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
 -- Table structure for zj_user
 -- ----------------------------
 DROP TABLE IF EXISTS `zj_user`;
