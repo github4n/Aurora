@@ -1,0 +1,81 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">在线用户管理</div>
+                <div class="layui-card-body">
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                    <script type="text/html" id="operation">
+                        <button shiro:hasAnyPermissions="admin,user:all,user:logout"  class="layui-btn layui-btn-xs layui-btn-primary" lay-event="logout">下线</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+
+        //表格渲染
+        table.render({
+             elem: '#myTable'
+            , url: '/online/getOnlineInfo'
+            , page: false
+            , id: "ID"
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , cols: [
+                [
+                      {field: 'id', align: 'center', width: 130, title: 'sessionID'}
+                    , {field: 'username', title: '用户昵称'}
+                    , {field: 'systemHost', title: 'IP'}
+                    , {field: 'host', title: '主机地址'}
+                    , {field: 'location', title: '所在地'}
+                    , {field: 'status',width: 80, align: 'center',title: '状态'}
+                    , {field: 'startTimestamp',width: 170, title: '登录时间'}
+                    , {field: 'lastAccessTime',width: 170, title: '最近登录'}
+                    , {field: 'operation', align: 'center', width: 80, toolbar: '#operation', title: '操作'}
+                ]
+            ]
+        });
+
+        //监听修改按钮
+        table.on('tool(tools)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'logout') {
+                // 强制下线
+                layer.confirm("你确定踢出该用户吗？", {icon: 3, btnAlign: 'c', title: '提示'},
+                    function (index) {//确定回调
+                        $.ajax({
+                            url: "/online/forceLogout?id=" + data.id,
+                            type: "DELETE",
+                            success: function (data) {
+                                if (data.code == 200) {
+                                    layer.close(index);
+                                    layui.layer.msg("踢出成功！", {icon: 6});
+                                    setTimeout(function () {
+                                        table.reload('ID', {
+                                            where: {}
+                                            , page: {
+                                                curr: 1
+                                            }
+                                        });
+                                    }, 1000);
+                                } else {
+                                    layer.close(index);
+                                    layer.msg(data.msg, {icon: 5});
+                                }
+                            }
+                        });
+                        layer.close(index);
+                    }, function (index) {//取消回调
+                        layer.close(index);
+                    })
+            }
+        });
+    })
+</script>

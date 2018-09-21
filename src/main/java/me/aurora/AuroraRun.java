@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @EnableScheduling
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableConfigurationProperties({AuroraProperties.class})
 /**
  * @author 郑杰
  * @date 2018/08/21 11:54:10

@@ -5,7 +5,7 @@ import org.apache.shiro.session.SessionListener;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
+/**会话管理
  * @author 郑杰
  * @date 2018/08/22 14:42:27
  */

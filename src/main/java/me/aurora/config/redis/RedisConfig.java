@@ -40,7 +40,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     private int port;
 
     @Value("${spring.redis.password}")
-    private String password = "";
+    private String password;
 
     @Value("${spring.redis.timeout}")
     private String timeout;

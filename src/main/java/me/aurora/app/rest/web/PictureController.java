@@ -16,8 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Map;
 
@@ -52,6 +50,7 @@ public class PictureController {
      * @param limit
      * @return
      */
+    @Log("查询全部图片")
     @RequiresPermissions(value={"admin", "picture:all","picture:select"}, logical= Logical.OR)
     @GetMapping(value = "/getPictureInfo")
     public Map getLogInfo(@RequestParam(value = "username",required = false) String username,
@@ -83,6 +82,7 @@ public class PictureController {
      * @return
      * @throws Exception
      */
+    @Log("上传图片")
     @RequiresPermissions (value={"admin", "picture:all","picture:upload"}, logical= Logical.OR)
     @PostMapping(value = "/upload")
     public ResponseEntity uploadAccessory(@RequestParam MultipartFile file) throws Exception {

@@ -22,9 +22,9 @@ public class GlobalExceptionHandler {
      * @return
      */
 	@ExceptionHandler(value = AuthorizationException.class)
-	public String handleAuthorizationException() {
+	public ModelAndView handleAuthorizationException() {
 	    log.error("没有权限访问");
-		return "/exception/403";
+		return new ModelAndView("/exception/403");
 	}
 
     /**

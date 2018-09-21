@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.annotation.Nonnull;
 import javax.validation.constraints.NotBlank;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,7 +26,7 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @NotBlank(groups = {New.class,Update.class})
     @Column(nullable = false)
     private String name;

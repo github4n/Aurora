@@ -45,7 +45,7 @@ public class ShiroConfig {
     private int port;
 
     @Value("${spring.redis.password}")
-    private String password = "";
+    private String password;
 
     @Value("${spring.redis.timeout}")
     private String timeout;
@@ -77,6 +77,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
+
 
     @Bean(name = "lifecycleBeanPostProcessor")
     public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
@@ -136,10 +137,15 @@ public class ShiroConfig {
         securityManager.setRememberMeManager(rememberMeManager());
         // 配置 缓存管理类 cacheManager
         securityManager.setCacheManager(cacheManager());
+        // session管理
         securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
 
+    /**
+     * 会话管理
+     * @return
+     */
     @Bean
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
