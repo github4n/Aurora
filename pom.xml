@@ -157,6 +157,12 @@
             <artifactId>hutool-all</artifactId>
             <version>4.1.8</version>
         </dependency>
+        <!--httpcomponents-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.3</version>
+        </dependency>
         <!-- fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>

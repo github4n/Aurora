@@ -170,7 +170,7 @@ public class MenuController {
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id){
         log.warn("REST request to delete menu");
-        menuService.delete(id);
+        menuService.delete(menuService.findById(id));
         return ResponseEntity.ok();
     }
 }

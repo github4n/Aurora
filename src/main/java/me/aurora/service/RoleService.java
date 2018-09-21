@@ -71,11 +71,11 @@ public interface RoleService {
 
     /**
      * 删除角色
-     * @param id
+     * @param role
      * @return
      */
     @CacheEvict(allEntries = true)
-    void delete(Long id);
+    void delete(Role role);
 
     /**
      * 组装树形结构数据

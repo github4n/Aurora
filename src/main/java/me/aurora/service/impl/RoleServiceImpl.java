@@ -11,6 +11,7 @@ import me.aurora.service.dto.RoleDTO;
 import me.aurora.service.mapper.RoleMapper;
 import me.aurora.util.PageUtil;
 import me.aurora.config.exception.AuroraException;
+import me.aurora.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,7 +71,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findById(Long id) {
-        return roleRepo.findById(id).get();
+        Role role = roleRepo.findById(id).get();
+        ValidationUtil.isNull(role,"id:"+id+"is not find");
+        return role;
     }
 
     @Override
@@ -92,15 +95,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete(Long id) {
-        Role role = roleRepo.findById(id).get();
-        if(role == null){
-            throw new AuroraException(404,"ID为"+id+"的角色未找到");
-        }
+    public void delete(Role role) {
         if(role.getUsers() != null && role.getUsers().size() != 0){
             throw new AuroraException(400,"角色使用中，请先解绑用户");
         }
-        roleRepo.deleteById(id);
+        roleRepo.delete(role);
     }
 
     @Override

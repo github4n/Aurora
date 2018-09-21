@@ -146,7 +146,7 @@ public class PermissionController {
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) {
         log.warn("REST request to deletePermission");
-        permissionService.delete(id);
+        permissionService.delete(permissionService.findById(id));
         return ResponseEntity.ok();
     }
 }

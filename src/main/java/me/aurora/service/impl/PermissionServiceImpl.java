@@ -11,6 +11,7 @@ import me.aurora.service.dto.PermissionDTO;
 import me.aurora.service.mapper.PerMissionMapper;
 import me.aurora.util.PageUtil;
 import me.aurora.config.exception.AuroraException;
+import me.aurora.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,8 +51,9 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission findById(Long id) {
-        Optional<Permission> permission = permissionRepo.findById(id);
-        return permission.get();
+        Permission permission = permissionRepo.findById(id).get();
+        ValidationUtil.isNull(permission,"id:"+id+"is not find");
+        return permission;
     }
 
     @Override
@@ -70,11 +72,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void delete(Long id) {
-        Permission permission = permissionRepo.findById(id).get();
-        if(permission == null){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"ID为"+id+"的权限没有找到");
-        }
+    public void delete(Permission permission) {
         if(permission.getRoles() != null && permission.getRoles().size()!=0){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"暂不支持删除使用中的权限，请先与角色解绑");
         }

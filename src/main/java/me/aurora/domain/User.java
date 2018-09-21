@@ -1,5 +1,6 @@
 package me.aurora.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,6 +53,10 @@ public class User implements Serializable {
     @ManyToMany
     @JoinTable(name = "zj_users_roles", joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
     private Set<Role> roles;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Picture> pictures;
 
     public interface New{};
     public interface Update{};

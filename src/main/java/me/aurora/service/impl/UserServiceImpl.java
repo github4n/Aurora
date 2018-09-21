@@ -14,6 +14,7 @@ import me.aurora.service.mapper.UserMapper;
 import me.aurora.util.MD5Utils;
 import me.aurora.util.PageUtil;
 import me.aurora.config.exception.AuroraException;
+import me.aurora.util.ValidationUtil;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,8 +45,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        Optional<User> user = userRepo.findById(id);
-        return user.get();
+        User user = userRepo.findById(id).get();
+        ValidationUtil.isNull(user,"id:"+id+"is not find");
+        return user;
     }
 
     @Override

@@ -144,7 +144,7 @@ public class RoleController {
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) {
         log.warn("REST request to deleteRole");
-        roleService.delete(id);
+        roleService.delete(roleService.findById(id));
         return ResponseEntity.ok();
     }
 }

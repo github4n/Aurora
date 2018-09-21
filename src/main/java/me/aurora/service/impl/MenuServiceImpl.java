@@ -13,6 +13,7 @@ import me.aurora.service.mapper.MenuMapper;
 import me.aurora.util.ListSortUtil;
 import me.aurora.util.PageUtil;
 import me.aurora.config.exception.AuroraException;
+import me.aurora.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,7 +73,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Menu findByPId(Integer pid) {
-        return menuRepo.findById(pid.longValue()).get();
+        Menu menu = menuRepo.findById(pid.longValue()).get();
+        ValidationUtil.isNull(menu,"pid:"+pid+"is not find");
+        return menu;
     }
 
     @Override
@@ -96,18 +99,20 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void delete(Long id) {
-        List<Menu> menus = menuRepo.findByPid(Integer.parseInt(id.toString()));
+    public void delete(Menu menu) {
+        List<Menu> menus = menuRepo.findByPid(menu.getPid());
         if(menus !=null && menus.size()!=0){
             menuRepo.deleteAll(menus);
         }
-        menuRepo.deleteById(id);
+        menuRepo.delete(menu);
 
     }
 
     @Override
     public Menu findById(Long id) {
-        return menuRepo.findById(id).get();
+        Menu menu = menuRepo.findById(id).get();
+        ValidationUtil.isNull(menu,"id:"+id+"is not find");
+        return menu;
     }
 
     @Override

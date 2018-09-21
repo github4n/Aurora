@@ -11,8 +11,6 @@ import me.aurora.service.RoleService;
 import me.aurora.service.UserService;
 import me.aurora.service.mapper.UserMapper;
 import me.aurora.util.HttpContextUtils;
-import me.aurora.config.exception.AuroraException;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

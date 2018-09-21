@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ShiroRealm extends AuthorizingRealm {
 
-	private final String enabled = "0";
+	private final Integer enabled = 0;
 
 	@Autowired
 	private UserService userService;

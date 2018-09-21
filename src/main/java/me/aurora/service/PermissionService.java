@@ -54,11 +54,11 @@ public interface PermissionService {
 
     /**
      * 删除权限
-     * @param id
+     * @param permission
      * @return
      */
     @CacheEvict(allEntries = true)
-    void delete(Long id);
+    void delete(Permission permission);
 
     /**
      * 查询所有的权限

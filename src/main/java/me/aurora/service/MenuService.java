@@ -5,7 +5,6 @@ import me.aurora.domain.Role;
 import me.aurora.domain.vo.MenuVo;
 import me.aurora.repository.spec.MenuSpec;
 import me.aurora.service.dto.MenuDTO;
-import me.aurora.config.exception.AuroraException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -70,10 +69,10 @@ public interface MenuService {
 
     /**
      * 删除菜单
-     * @param id
+     * @param menu
      */
     @CacheEvict(allEntries = true)
-    void delete(Long id);
+    void delete(Menu menu);
 
     /**
      * 根据ID查询

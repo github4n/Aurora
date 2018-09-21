@@ -174,6 +174,7 @@ public class ShiroConfig {
         cookie.setMaxAge(auroraProperties.getShiro().getCookieTimeout());
         return cookie;
     }
+
     /**
      * cookie管理对象
      * @return
