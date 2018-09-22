@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author 郑杰
@@ -100,12 +101,14 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public void delete(Menu menu) {
-        List<Menu> menus = menuRepo.findByPid(menu.getPid());
-        if(menus !=null && menus.size()!=0){
-            menuRepo.deleteAll(menus);
+        if(menu.getLevelNum() == 0){
+            menuRepo.delete(menu);
+        } else {
+            Set<Menu> menus = menuRepo.findByPid(menu.getPid()).stream().collect(Collectors.toSet());
+            if(menus !=null && menus.size()!=0){
+                menuRepo.deleteAll(menus);
+            }
         }
-        menuRepo.delete(menu);
-
     }
 
     @Override

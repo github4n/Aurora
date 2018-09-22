@@ -29,6 +29,13 @@ public class ResponseEntity extends HashMap<String, Object>{
 		return responseEntity;
 	}
 
+	public static ResponseEntity ok(Object msg) {
+		ResponseEntity responseBo = new ResponseEntity();
+		responseBo.put("code", 0);
+		responseBo.put("msg", msg);
+		return responseBo;
+	}
+
 	public static ResponseEntity ok(String msg) {
 		ResponseEntity responseEntity = new ResponseEntity();
 		responseEntity.put("msg", msg);

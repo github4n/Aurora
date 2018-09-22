@@ -3,6 +3,7 @@ package me.aurora.config.redis;
 import afu.org.checkerframework.checker.oigj.qual.O;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
@@ -21,6 +22,9 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
@@ -65,6 +69,18 @@ public class RedisConfig extends CachingConfigurerSupport {
         jedisClientConfiguration.connectTimeout(Duration.ofMillis(Integer.parseInt(timeout.replace("ms",""))));
         jedisClientConfiguration.usePooling();
         return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration.build());
+    }
+
+    @Bean
+    public JedisPool redisPoolFactory() {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxIdle(maxIdle);
+        jedisPoolConfig.setMaxWaitMillis(Long.parseLong(maxWaitMillis.replace("ms","")));
+        if (StringUtils.isNotBlank(password)) {
+            return new JedisPool(jedisPoolConfig, host, port, Integer.parseInt(timeout.replace("ms","")), password);
+        } else {
+            return new JedisPool(jedisPoolConfig, host, port, Integer.parseInt(timeout.replace("ms","")));
+        }
     }
 
     /**

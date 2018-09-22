@@ -1,8 +1,6 @@
 package me.aurora.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,8 +10,7 @@ import java.util.Date;
  * @author 郑杰
  * @date 2018/09/21 15:38:06
  */
-@Getter
-@Setter
+@Data
 public class UserOnline implements Serializable{
 
 	/**
