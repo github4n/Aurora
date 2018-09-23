@@ -8,6 +8,8 @@
   <!-- build:css -->
   <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
   <link rel="stylesheet" th:href="@{'/plugins/css/theme/default.css'}" th:id="theme">
+    <link th:href="@{'/css/bootstrap.min.css'}" rel="stylesheet" />
+  <!--<link th:href="@{'/css/bootstrap.min.css'}" rel="stylesheet" />-->
   <!-- endbuild -->
 </head>
 <body class="layui-layout-body kit-theme-default">
@@ -33,14 +35,9 @@
               <span>帮助</span>
             </a>
           </li>
-          <li class="kit-item" id="ccleft">
-            <a href="javascript:;">
-              <i class="layui-icon">&#xe60e;</i>
-            </a>
-          </li>
           <li class="kit-item" id="cc">
-            <a href="javascript:;">
-              <i class="layui-icon">&#xe64c;</i>
+            <a href="/druid" target="_blank" title="SQL监控">
+              <i class="layui-icon">&#xe62c;</i>
             </a>
           </li>
           <li class="kit-item">
@@ -122,6 +119,7 @@
   <script th:src="@{'/plugins/layui.js'}"></script>
   <script th:src="@{'/plugins/kitadmin.js'}"></script>
   <script th:src="@{'/plugins/mockjs-config.js'}"></script>
+  <script th:src="@{'/js/aurora.js'}"></script>
   <!-- build:use -->
   <script>
       /**

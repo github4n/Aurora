@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -80,6 +81,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void inster(Menu menu, Menu topMenu, String roles) {
         validation(menu);
         if(topMenu == null){
@@ -100,6 +102,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void delete(Menu menu) {
         if(menu.getLevelNum() == 0){
             menuRepo.delete(menu);
@@ -119,6 +122,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void update(Menu menu, Menu oldMenu, String roles) {
         validation(menu);
         Menu oldTopMenu = null;

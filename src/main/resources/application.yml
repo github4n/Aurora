@@ -33,7 +33,7 @@ spring:
       # 配置监控统计拦截的filters, 去掉后监控界面sql无法统计, 'wall'用于防火墙
       filters: stat
       # Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
-      aop-patterns: cc.mrbird.servie.*
+      aop-patterns: me.aurora.servie.*
 
       # WebStatFilter配置
       web-stat-filter:
@@ -51,8 +51,8 @@ spring:
         # 是否能够重置数据
         reset-enable: false
         # 需要账号密码才能访问控制台
-        login-username: zhengjie@tom.com
-        login-password: dqjdda1996.
+#        login-username: zhengjie@tom.com
+#        login-password: dqjdda1996.
         # IP白名单
         # allow: 127.0.0.1
         # IP黑名单（共同存在时，deny优先于allow）
@@ -113,8 +113,8 @@ aurora:
     sessionTimeout: 1800000
     # rememberMe cookie有效时长，默认86400秒，即一天
     cookieTimeout: 86400
-    # 免认证的路径配置，如静态资源，注册页面，验证码请求,druid,swagger等~
-    anonUrls: /css/**,/js/**,/my/**,/images/**,/druid/**,/user/regist,/plugins/**,/test/**,/signUp.html,/logout,/login
+    # 免认证的路径配置，如静态资源，注册页面，验证码请求,swagger等~
+    anonUrls: /css/**,/js/**,/my/**,/images/**,/user/regist,/plugins/**,/test/**,/signUp.html,/logout,/login
     # 登录 url
     loginUrl: /login.html
     # 登录成功后跳转的 url

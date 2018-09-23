@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -60,6 +61,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void upload(MultipartFile multipartFile, User user) {
         File file = FileUtil.toFile(multipartFile);
         //将参数合成一个请求
