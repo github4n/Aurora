@@ -32,7 +32,7 @@ public class UserSecurityController {
     private MenuService menuService;
 
     @Log("用户登录")
-    @RequestMapping(value = "/login")
+    @PostMapping(value = "/login")
     public ResponseEntity login(@RequestParam String username, @RequestParam String password, @RequestParam Boolean rememberMe){
         log.warn("REST request to login User: "+username);
         password = MD5Utils.encrypt(password);

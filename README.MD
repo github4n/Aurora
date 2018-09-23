@@ -5,7 +5,8 @@
 ![https://img.shields.io/badge/apache%20shiro-1.4.0-green.svg?longCache=true&style=flat-square](https://img.shields.io/badge/apache%20shiro-1.4.0-green.svg?longCache=true&style=flat-square)
 
 Aurora是一个简单高效的后台管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单；数据访问层采用Spring boot Jpa，可快速高效对数据进行操作，消除了大量传统XML配置SQL的代码，分页使用Pageable；安全框架采用时下流行的Apache Shiro，可实现对按钮级别的权限控制；前端页面使用KidAdmin构建，并提供多套配色以供选择。
-
+### 预览地址
+[http://www.azj.life/index#/](http://www.azj.life/index#/)
 <!--more-->
 ### 功能模块
 系统功能模块组成如下所示：
@@ -24,7 +25,8 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 │  ├─用户管理
 │  ├─菜单管理
 │  ├─角色管理
-│  └─权限管理
+│  ├─权限管理
+│  └─接口文档
 ├─系统监控
 │  ├─Redis终端
 │  ├─在线用户
@@ -59,6 +61,8 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 - sql语句内容打印: log4jdbc+logback
 
 - IP地址池 ip2region
+
+- 接口文档 swagger2
 
 - 工具包：hutool-all
 

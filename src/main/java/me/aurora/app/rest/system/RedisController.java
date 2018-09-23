@@ -35,7 +35,7 @@ public class RedisController {
     }
 
     @Log("执行Redis keys命令")
-    @RequestMapping("keys")
+    @GetMapping("keys")
     public ResponseEntity keys(String arg) {
         try {
             Set<String> set = this.redisService.getKeys(arg);
