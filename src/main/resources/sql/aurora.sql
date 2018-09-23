@@ -11,7 +11,7 @@
  Target Server Version : 50559
  File Encoding         : 65001
 
- Date: 22/09/2018 13:06:32
+ Date: 23/09/2018 10:35:18
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,7 @@ CREATE TABLE `zj_menu`  (
   `level_number` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_cbhg0bi3f1emxkhqqtvca9btx`(`soft`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_menu
@@ -43,9 +43,9 @@ INSERT INTO `zj_menu` VALUES (1, 'layui-icon-unlink', 0, 1, '异常页', 40, '',
 INSERT INTO `zj_menu` VALUES (2, 'layui-icon-tree', 1, 2, '403', 41, '/exception/403', '2018-08-29 11:40:17', '2018-09-20 11:36:24', 0);
 INSERT INTO `zj_menu` VALUES (3, 'layui-icon-tree', 1, 2, '404', 42, '/exception/404', '2018-08-29 11:40:17', '2018-09-20 11:36:32', 0);
 INSERT INTO `zj_menu` VALUES (4, 'layui-icon-tree', 1, 2, '500', 43, '/exception/500', '2018-08-29 11:40:17', '2018-09-20 11:36:40', 0);
-INSERT INTO `zj_menu` VALUES (5, 'layui-icon-chart', 0, 1, '系统监控', 10, '', '2018-08-29 11:40:17', '2018-09-22 11:18:21', 4);
+INSERT INTO `zj_menu` VALUES (5, 'layui-icon-chart', 0, 1, '系统监控', 10, '', '2018-08-29 11:40:17', '2018-09-22 19:47:45', 6);
 INSERT INTO `zj_menu` VALUES (6, 'layui-icon-tree', 7, 2, '用户管理', 2, '/user/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0);
-INSERT INTO `zj_menu` VALUES (7, 'layui-icon-util', 0, 1, '系统管理', 1, '', '2018-08-29 11:40:17', '2018-09-20 19:02:05', 4);
+INSERT INTO `zj_menu` VALUES (7, 'layui-icon-util', 0, 1, '系统管理', 1, '', '2018-08-29 11:40:17', '2018-09-23 09:16:17', 5);
 INSERT INTO `zj_menu` VALUES (8, 'layui-icon-tree', 7, 2, '菜单管理', 6, '/menu/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0);
 INSERT INTO `zj_menu` VALUES (9, 'layui-icon-tree', 5, 2, '系统日志', 11, '/sysLog/index', '2018-08-29 11:40:17', '2018-09-22 10:17:02', 0);
 INSERT INTO `zj_menu` VALUES (10, 'layui-icon-tree', 7, 2, '权限管理', 4, '/permission/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0);
@@ -54,6 +54,7 @@ INSERT INTO `zj_menu` VALUES (12, 'layui-icon-website', 0, 1, '网络资源', 30
 INSERT INTO `zj_menu` VALUES (13, 'layui-icon-tree', 12, 2, '图床管理', 31, '/picture/index', '2018-09-20 11:40:53', '2018-09-20 11:40:53', 0);
 INSERT INTO `zj_menu` VALUES (14, 'layui-icon-tree', 5, 2, '在线用户', 12, '/online/index', '2018-09-21 16:09:38', '2018-09-22 10:17:09', 0);
 INSERT INTO `zj_menu` VALUES (16, 'layui-icon-tree', 5, 2, 'Redis终端', 14, '/redis/terminal', '2018-09-22 11:18:21', '2018-09-22 11:37:28', 0);
+INSERT INTO `zj_menu` VALUES (17, 'layui-icon-tree', 7, 2, '接口文档', 7, '/swagger/index', '2018-09-23 09:16:17', '2018-09-23 10:01:06', 0);
 
 -- ----------------------------
 -- Table structure for zj_menus_roles
@@ -86,6 +87,7 @@ INSERT INTO `zj_menus_roles` VALUES (12, 1);
 INSERT INTO `zj_menus_roles` VALUES (13, 1);
 INSERT INTO `zj_menus_roles` VALUES (14, 1);
 INSERT INTO `zj_menus_roles` VALUES (16, 1);
+INSERT INTO `zj_menus_roles` VALUES (17, 1);
 INSERT INTO `zj_menus_roles` VALUES (1, 2);
 INSERT INTO `zj_menus_roles` VALUES (2, 2);
 INSERT INTO `zj_menus_roles` VALUES (3, 2);
@@ -124,7 +126,7 @@ CREATE TABLE `zj_permission`  (
 -- ----------------------------
 INSERT INTO `zj_permission` VALUES (1, 'admin', '超级管理员', '2018-08-29 15:15:12', '2018-08-31 00:00:00', 0);
 INSERT INTO `zj_permission` VALUES (2, 'user:select', '用户查询', '2018-08-29 15:15:12', '2018-08-31 00:00:00', 4);
-INSERT INTO `zj_permission` VALUES (3, 'log:all', '日志管理', NULL, '2018-09-21 11:50:10', 0);
+INSERT INTO `zj_permission` VALUES (3, 'log:all', '日志管理', '2018-08-29 15:15:12', '2018-09-21 11:50:10', 0);
 INSERT INTO `zj_permission` VALUES (4, 'user:all', '用户管理', '2018-08-29 15:15:12', '2018-09-02 23:11:31', 0);
 INSERT INTO `zj_permission` VALUES (5, 'user:add', '新增用户', '2018-08-31 15:15:12', '2018-08-31 00:00:00', 4);
 INSERT INTO `zj_permission` VALUES (6, 'user:update', '更新用户', '2018-08-31 15:15:12', '2018-08-31 00:00:00', 4);
@@ -147,7 +149,7 @@ INSERT INTO `zj_permission` VALUES (24, 'permission:delete', '删除权限', '20
 INSERT INTO `zj_permission` VALUES (25, 'user:delete', '删除用户', '2018-09-21 11:51:41', '2018-09-21 11:51:41', 4);
 INSERT INTO `zj_permission` VALUES (26, 'picture:all', '图床管理', '2018-09-21 11:52:10', '2018-09-21 11:52:10', 0);
 INSERT INTO `zj_permission` VALUES (27, 'picture:select', '图片查询', '2018-09-21 11:52:25', '2018-09-21 11:52:25', 26);
-INSERT INTO `zj_permission` VALUES (28, 'picture:upload', '图片上传', NULL, '2018-09-21 11:53:30', 26);
+INSERT INTO `zj_permission` VALUES (28, 'picture:upload', '图片上传', '2018-08-29 15:15:12', '2018-09-21 11:53:30', 26);
 INSERT INTO `zj_permission` VALUES (29, 'picture:delete', '图片删除', '2018-09-21 11:53:46', '2018-09-21 11:53:46', 26);
 INSERT INTO `zj_permission` VALUES (30, 'user:logout', '踢出用户', '2018-09-21 16:46:59', '2018-09-21 16:46:59', 4);
 
@@ -197,8 +199,7 @@ CREATE TABLE `zj_picture`  (
 -- ----------------------------
 -- Records of zj_picture
 -- ----------------------------
-INSERT INTO `zj_picture` VALUES (11, '2018-09-21 12:01:57', '1', '200', '8.49KB   ', 'https://i.loli.net/2018/09/21/5ba46d305018d.jpg', '200', 1, 'avatar');
-INSERT INTO `zj_picture` VALUES (12, '2018-09-21 15:15:21', 'https://sm.ms/delete/lLAmbyjGnr5W4zo', '200', '4.50KB   ', 'https://i.loli.net/2018/09/21/5ba49a8975588.jpg', '200', 1, '1');
+INSERT INTO `zj_picture` VALUES (1, '2018-09-21 12:01:57', '1', '200', '8.49KB   ', 'https://i.loli.net/2018/09/21/5ba46d305018d.jpg', '200', 1, 'avatar');
 
 -- ----------------------------
 -- Table structure for zj_role
@@ -216,9 +217,26 @@ CREATE TABLE `zj_role`  (
 -- ----------------------------
 -- Records of zj_role
 -- ----------------------------
-INSERT INTO `zj_role` VALUES (1, '2018-08-23 09:13:54', '超级管理员', NULL, '2018-08-23 09:14:02');
-INSERT INTO `zj_role` VALUES (2, '2018-08-27 19:31:03', '普通用户', '', '2018-09-01 08:31:08');
-INSERT INTO `zj_role` VALUES (3, '2018-09-03 15:17:31', '测试', '1', '2018-09-20 17:28:03');
+INSERT INTO `zj_role` VALUES (1, '2018-08-23 09:13:54', '超级管理员', '系统所有权', '2018-08-23 09:14:02');
+INSERT INTO `zj_role` VALUES (2, '2018-08-27 19:31:03', '普通用户', NULL, '2018-09-01 08:31:08');
+INSERT INTO `zj_role` VALUES (3, '2018-09-03 15:17:31', '测试', NULL, '2018-09-20 17:28:03');
+
+-- ----------------------------
+-- Table structure for zj_syslog
+-- ----------------------------
+DROP TABLE IF EXISTS `zj_syslog`;
+CREATE TABLE `zj_syslog`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `createTime` datetime NULL DEFAULT NULL,
+  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `operation` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `params` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `time` int(11) NULL DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for zj_user
@@ -240,7 +258,7 @@ CREATE TABLE `zj_user`  (
 -- ----------------------------
 -- Records of zj_user
 -- ----------------------------
-INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-09-22 13:00:04', '65a674ce6632479005ea7a9071234cfb', 'aurora');
+INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-09-23 10:29:25', '65a674ce6632479005ea7a9071234cfb', 'aurora');
 
 -- ----------------------------
 -- Table structure for zj_user_pictures
@@ -251,8 +269,8 @@ CREATE TABLE `zj_user_pictures`  (
   `pictures_id` bigint(20) NOT NULL,
   PRIMARY KEY (`User_id`, `pictures_id`) USING BTREE,
   UNIQUE INDEX `UK_su439svglheh4cpcy3h15de8`(`pictures_id`) USING BTREE,
-  CONSTRAINT `FK11v8vnaup1q9xvsb66xjw7qjs` FOREIGN KEY (`pictures_id`) REFERENCES `zj_picture` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FKk0qsq0yn0r0644b8p0gw9tkh9` FOREIGN KEY (`User_id`) REFERENCES `zj_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `FKk0qsq0yn0r0644b8p0gw9tkh9` FOREIGN KEY (`User_id`) REFERENCES `zj_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FKqiip97le6392cqwv77u3a71i` FOREIGN KEY (`pictures_id`) REFERENCES `zj_picture` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------

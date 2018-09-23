@@ -46,7 +46,7 @@ spring:
       # StatViewServlet配置
       stat-view-servlet:
         enabled: true
-        # 访问路径为/druid时，跳转到StatViewServlet
+        # 访问路径为/druid/时，跳转到StatViewServlet
         url-pattern: /druid/*
         # 是否能够重置数据
         reset-enable: false
@@ -113,7 +113,7 @@ aurora:
     sessionTimeout: 1800000
     # rememberMe cookie有效时长，默认86400秒，即一天
     cookieTimeout: 86400
-    # 免认证的路径配置，如静态资源，druid监控页面，注册页面，验证码请求等
+    # 免认证的路径配置，如静态资源，注册页面，验证码请求,druid,swagger等~
     anonUrls: /css/**,/js/**,/my/**,/images/**,/druid/**,/user/regist,/plugins/**,/test/**,/signUp.html,/logout,/login
     # 登录 url
     loginUrl: /login.html

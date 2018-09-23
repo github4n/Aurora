@@ -31,5 +31,6 @@ public class ConfigurerAdapter implements WebMvcConfigurer {
         //跳转登陆注册页面
         registry.addViewController("/login.html").setViewName("/user/login");
         registry.addViewController("/signUp.html").setViewName("/register");
+        registry.addViewController("/swagger/index").setViewName("/system/api/index");
     }
 }

@@ -54,7 +54,7 @@ public class User implements Serializable {
     @JoinTable(name = "zj_users_roles", joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
     private Set<Role> roles;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JsonIgnore
     private Set<Picture> pictures;
 
