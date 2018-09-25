@@ -34,9 +34,10 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 │─网络资源
 │  ├─天气查询（开发中）
 │  └─图床管理
-│─第三方工具（开发中）
-│  │-支付宝支付
-│  └─云储存
+│─第三方工具
+│  │-支付宝支付（开发中）
+│  │-百度富文本编辑器
+│  └─云储存（开发中）
 └─任务调度（开发中）
    ├─定时任务
    └─调度日志
@@ -110,10 +111,6 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 
 ![](https://i.imgur.com/WG7IxhL.png)
 
-- 权限管理，使用树形表格
-
-![](https://i.imgur.com/3YGI0R1.png)
-
 - 菜单管理，使用树形表格
 
 ![](https://i.imgur.com/GJw1PB9.png)
@@ -126,9 +123,17 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 
 ![](https://i.imgur.com/G3MmlGy.png)
 
+- swagger文档
+
+![](https://i.imgur.com/7uzRRq9.png)
+
 - Redis终端
 
 ![](https://i.imgur.com/TvKl5SH.png)
+
+- 富文本编辑器
+
+![](https://i.imgur.com/NCvS23x.png)
 
 - sql日志打印使用log4jdbc+logback，效果如下
 

@@ -104,6 +104,17 @@ spring:
     cache: false
     mode: LEGACYHTML5
 
+#baidu.editor 配置 start
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
+
+web:
+  upload-path: E:/
+
+#baidu.editor 配置 end
+
 # aurora 配置
 aurora:
   shiro:
@@ -117,7 +128,7 @@ aurora:
     anonUrls: /css/**,/js/**,/my/**,/images/**,/user/regist,/plugins/**,/test/**,/signUp.html,/logout,/login
     # 登录 url
     loginUrl: /login.html
-    # 登录成功后跳转的 url
+    # 登录成功mvc后跳转的 url
     successUrl: /index
     # 登出 url
     logoutUrl: /logout

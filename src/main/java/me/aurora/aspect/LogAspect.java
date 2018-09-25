@@ -27,10 +27,6 @@ public class LogAspect{
 	@Autowired
 	private SysLogService sysLogService;
 
-	private ProceedingJoinPoint point;
-
-	private long time;
-
 	@Pointcut("@annotation(me.aurora.annotation.Log)")
 	public void pointcut() {
 	}

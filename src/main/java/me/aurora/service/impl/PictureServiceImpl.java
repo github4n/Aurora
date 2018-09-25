@@ -36,7 +36,7 @@ import java.util.Map;
  * @date 2018/09/20 14:14:43
  */
 @Slf4j
-@Service
+@Service(value = "pictureService")
 public class PictureServiceImpl implements PictureService {
 
     private final String uploadUrl = "https://sm.ms/api/upload";
@@ -62,7 +62,7 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public void upload(MultipartFile multipartFile, User user) {
+    public Picture upload(MultipartFile multipartFile, User user) {
         File file = FileUtil.toFile(multipartFile);
         //将参数合成一个请求
         HttpEntity requestEntity = new HttpEntity<>(file);
@@ -86,6 +86,7 @@ public class PictureServiceImpl implements PictureService {
         pictureRepo.save(picture);
         //删除临时文件
         FileUtil.deleteFile(file);
+        return picture;
     }
 
     @Override

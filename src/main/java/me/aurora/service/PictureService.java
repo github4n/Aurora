@@ -34,7 +34,7 @@ public interface PictureService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void upload(MultipartFile file, User user);
+    Picture upload(MultipartFile file, User user);
 
     /**
      * 根据ID查询
