@@ -1,5 +1,6 @@
 package me.aurora.app.rest.ueditor;
 
+import me.aurora.annotation.Log;
 import me.aurora.config.baidu.ueditor.ActionEnter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +17,9 @@ import java.io.PrintWriter;
  */
 @RestController
 @RequestMapping("ueditor")
-public class UEditorController {
+public class UeditorController {
 
+    @Log("访问富文本编辑器")
     @GetMapping(value = "/index")
     private ModelAndView index(){
         return new ModelAndView("/ueditor/index");
