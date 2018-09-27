@@ -1,9 +1,11 @@
 package me.aurora.config.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import me.aurora.config.AuroraProperties;
 import me.aurora.domain.ResponseEntity;
 import me.aurora.config.exception.AuroraException;
 import org.apache.shiro.authz.AuthorizationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,6 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @Autowired
+    private AuroraProperties auroraProperties;
+
     /**
      * 处理shiro异常
      * @return
@@ -24,7 +29,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = AuthorizationException.class)
 	public ModelAndView handleAuthorizationException() {
 	    log.error("没有权限访问");
-		return new ModelAndView("/exception/403");
+		return new ModelAndView(auroraProperties.getShiro().getUnauthorizedUrl());
 	}
 
     /**

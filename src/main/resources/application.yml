@@ -111,7 +111,6 @@ spring:
 
 web:
   upload-path: E:/
-
 #baidu.editor 配置 end
 
 # aurora 配置

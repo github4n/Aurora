@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : 本地
+ Source Server         : 腾讯云
  Source Server Type    : MySQL
- Source Server Version : 50559
- Source Host           : localhost:3306
+ Source Server Version : 100208
+ Source Host           : 118.25.192.171:3306
  Source Schema         : aurora
 
  Target Server Type    : MySQL
- Target Server Version : 50559
+ Target Server Version : 100208
  File Encoding         : 65001
 
- Date: 27/09/2018 13:26:26
+ Date: 27/09/2018 19:39:44
 */
 
 SET NAMES utf8mb4;
@@ -29,22 +29,22 @@ CREATE TABLE `zj_menu`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `soft` bigint(20) NOT NULL,
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `createTime` datetime NULL DEFAULT NULL,
-  `updateTime` datetime NULL DEFAULT NULL,
+  `createTime` datetime(0) NULL DEFAULT NULL,
+  `updateTime` datetime(0) NULL DEFAULT NULL,
   `level_number` int(11) NOT NULL,
   `iframe` bit(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_cbhg0bi3f1emxkhqqtvca9btx`(`soft`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_menu
 -- ----------------------------
-INSERT INTO `zj_menu` VALUES (1, 'layui-icon-unlink', 0, 1, '异常页', 60, '', '2018-08-29 11:40:17', '2018-09-27 12:57:14', 4, b'0');
+INSERT INTO `zj_menu` VALUES (1, 'layui-icon-unlink', 0, 1, '异常页', 60, '', '2018-08-29 11:40:17', '2018-09-27 19:28:47', 3, b'0');
 INSERT INTO `zj_menu` VALUES (2, 'layui-icon-tree', 1, 2, '403', 61, '/exception/403', '2018-08-29 11:40:17', '2018-09-24 23:45:39', 0, b'0');
 INSERT INTO `zj_menu` VALUES (3, 'layui-icon-tree', 1, 2, '404', 62, '/exception/404', '2018-08-29 11:40:17', '2018-09-24 23:45:33', 0, b'0');
 INSERT INTO `zj_menu` VALUES (4, 'layui-icon-tree', 1, 2, '500', 63, '/exception/500', '2018-08-29 11:40:17', '2018-09-24 23:45:26', 0, b'0');
-INSERT INTO `zj_menu` VALUES (5, 'layui-icon-chart', 0, 1, '系统监控', 10, '', '2018-08-29 11:40:17', '2018-09-27 13:24:25', 8, b'0');
+INSERT INTO `zj_menu` VALUES (5, 'layui-icon-chart', 0, 1, '系统监控', 10, '', '2018-08-29 11:40:17', '2018-09-27 13:24:25', 4, b'0');
 INSERT INTO `zj_menu` VALUES (6, 'layui-icon-tree', 7, 2, '用户管理', 2, '/user/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0, b'0');
 INSERT INTO `zj_menu` VALUES (7, 'layui-icon-util', 0, 1, '系统管理', 1, '', '2018-08-29 11:40:17', '2018-09-23 09:16:17', 5, b'0');
 INSERT INTO `zj_menu` VALUES (8, 'layui-icon-tree', 7, 2, '菜单管理', 6, '/menu/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0, b'0');
@@ -77,41 +77,41 @@ CREATE TABLE `zj_menus_roles`  (
 -- Records of zj_menus_roles
 -- ----------------------------
 INSERT INTO `zj_menus_roles` VALUES (1, 1);
+INSERT INTO `zj_menus_roles` VALUES (1, 2);
 INSERT INTO `zj_menus_roles` VALUES (2, 1);
+INSERT INTO `zj_menus_roles` VALUES (2, 2);
 INSERT INTO `zj_menus_roles` VALUES (3, 1);
+INSERT INTO `zj_menus_roles` VALUES (3, 2);
 INSERT INTO `zj_menus_roles` VALUES (4, 1);
+INSERT INTO `zj_menus_roles` VALUES (4, 2);
 INSERT INTO `zj_menus_roles` VALUES (5, 1);
+INSERT INTO `zj_menus_roles` VALUES (5, 2);
+INSERT INTO `zj_menus_roles` VALUES (5, 3);
 INSERT INTO `zj_menus_roles` VALUES (6, 1);
+INSERT INTO `zj_menus_roles` VALUES (6, 2);
 INSERT INTO `zj_menus_roles` VALUES (7, 1);
+INSERT INTO `zj_menus_roles` VALUES (7, 2);
+INSERT INTO `zj_menus_roles` VALUES (7, 3);
 INSERT INTO `zj_menus_roles` VALUES (8, 1);
+INSERT INTO `zj_menus_roles` VALUES (8, 2);
 INSERT INTO `zj_menus_roles` VALUES (9, 1);
+INSERT INTO `zj_menus_roles` VALUES (9, 2);
+INSERT INTO `zj_menus_roles` VALUES (9, 3);
 INSERT INTO `zj_menus_roles` VALUES (10, 1);
+INSERT INTO `zj_menus_roles` VALUES (10, 2);
 INSERT INTO `zj_menus_roles` VALUES (11, 1);
+INSERT INTO `zj_menus_roles` VALUES (11, 2);
+INSERT INTO `zj_menus_roles` VALUES (11, 3);
 INSERT INTO `zj_menus_roles` VALUES (12, 1);
+INSERT INTO `zj_menus_roles` VALUES (12, 3);
 INSERT INTO `zj_menus_roles` VALUES (13, 1);
+INSERT INTO `zj_menus_roles` VALUES (13, 3);
 INSERT INTO `zj_menus_roles` VALUES (14, 1);
 INSERT INTO `zj_menus_roles` VALUES (16, 1);
 INSERT INTO `zj_menus_roles` VALUES (17, 1);
 INSERT INTO `zj_menus_roles` VALUES (18, 1);
 INSERT INTO `zj_menus_roles` VALUES (19, 1);
 INSERT INTO `zj_menus_roles` VALUES (21, 1);
-INSERT INTO `zj_menus_roles` VALUES (1, 2);
-INSERT INTO `zj_menus_roles` VALUES (2, 2);
-INSERT INTO `zj_menus_roles` VALUES (3, 2);
-INSERT INTO `zj_menus_roles` VALUES (4, 2);
-INSERT INTO `zj_menus_roles` VALUES (5, 2);
-INSERT INTO `zj_menus_roles` VALUES (6, 2);
-INSERT INTO `zj_menus_roles` VALUES (7, 2);
-INSERT INTO `zj_menus_roles` VALUES (8, 2);
-INSERT INTO `zj_menus_roles` VALUES (9, 2);
-INSERT INTO `zj_menus_roles` VALUES (10, 2);
-INSERT INTO `zj_menus_roles` VALUES (11, 2);
-INSERT INTO `zj_menus_roles` VALUES (5, 3);
-INSERT INTO `zj_menus_roles` VALUES (7, 3);
-INSERT INTO `zj_menus_roles` VALUES (9, 3);
-INSERT INTO `zj_menus_roles` VALUES (11, 3);
-INSERT INTO `zj_menus_roles` VALUES (12, 3);
-INSERT INTO `zj_menus_roles` VALUES (13, 3);
 
 -- ----------------------------
 -- Table structure for zj_permission
@@ -121,8 +121,8 @@ CREATE TABLE `zj_permission`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `perms` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `createTime` datetime NULL DEFAULT NULL,
-  `updateTime` datetime NULL DEFAULT NULL,
+  `createTime` datetime(0) NULL DEFAULT NULL,
+  `updateTime` datetime(0) NULL DEFAULT NULL,
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_djtxn2vldlgrkfk21d155b48i`(`perms`) USING BTREE
@@ -179,10 +179,10 @@ CREATE TABLE `zj_permissions_roles`  (
 INSERT INTO `zj_permissions_roles` VALUES (1, 1);
 INSERT INTO `zj_permissions_roles` VALUES (2, 2);
 INSERT INTO `zj_permissions_roles` VALUES (2, 3);
-INSERT INTO `zj_permissions_roles` VALUES (3, 4);
-INSERT INTO `zj_permissions_roles` VALUES (3, 8);
 INSERT INTO `zj_permissions_roles` VALUES (2, 9);
 INSERT INTO `zj_permissions_roles` VALUES (2, 14);
+INSERT INTO `zj_permissions_roles` VALUES (3, 4);
+INSERT INTO `zj_permissions_roles` VALUES (3, 8);
 
 -- ----------------------------
 -- Table structure for zj_picture
@@ -190,7 +190,7 @@ INSERT INTO `zj_permissions_roles` VALUES (2, 14);
 DROP TABLE IF EXISTS `zj_picture`;
 CREATE TABLE `zj_picture`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createTime` datetime NULL DEFAULT NULL,
+  `createTime` datetime(0) NULL DEFAULT NULL,
   `deleteUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `height` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `size` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -214,10 +214,10 @@ INSERT INTO `zj_picture` VALUES (1, '2018-09-21 12:01:57', '1', '200', '8.49KB  
 DROP TABLE IF EXISTS `zj_role`;
 CREATE TABLE `zj_role`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createDateTime` datetime NULL DEFAULT NULL,
+  `createDateTime` datetime(0) NULL DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `updateDateTime` datetime NULL DEFAULT NULL,
+  `updateDateTime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
@@ -235,10 +235,10 @@ DROP TABLE IF EXISTS `zj_user`;
 CREATE TABLE `zj_user`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `createDateTime` datetime NULL DEFAULT NULL,
+  `createDateTime` datetime(0) NULL DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `enabled` bigint(20) NULL DEFAULT NULL,
-  `lastLoginTime` datetime NULL DEFAULT NULL,
+  `lastLoginTime` datetime(0) NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -248,7 +248,7 @@ CREATE TABLE `zj_user`  (
 -- ----------------------------
 -- Records of zj_user
 -- ----------------------------
-INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-09-27 13:07:26', '65a674ce6632479005ea7a9071234cfb', 'aurora');
+INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-09-27 17:57:52', '65a674ce6632479005ea7a9071234cfb', 'aurora');
 
 -- ----------------------------
 -- Table structure for zj_user_pictures
