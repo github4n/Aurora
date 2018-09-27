@@ -47,6 +47,13 @@
                         <input name="soft" th:value="${menu.soft}" lay-verify="required" placeholder="请输入序号，序号不可重复，越小越靠前" autocomplete="off" class="layui-input" type="text">
                     </div>
                 </div>
+                <div class="layui-form-item" style="display: none" id="out_link">
+                    <label class="layui-form-label">是否外链</label>
+                    <div class="layui-input-block">
+                        <input type="radio" th:checked="${menu.iframe == true}" name="iframe" value="true" title="是">
+                        <input type="radio" th:checked="${menu.iframe == false}" name="iframe" value="false" title="否" checked>
+                    </div>
+                </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">选择角色</label>
                     <div class="layui-input-block layui-input-treeselect" >
@@ -108,9 +115,11 @@
             form.on('select(top)', function(data){
                 if(data.value == 0){
                     $("#action").hide();
+                    $("#out_link").hide();
                     $("#action").val("");
                 }else {
                     $("#action").show();
+                    $("#out_link").show();
                 }
             });
         });

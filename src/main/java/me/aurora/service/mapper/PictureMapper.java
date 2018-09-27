@@ -14,5 +14,6 @@ import org.mapstruct.ReportingPolicy;
 public interface PictureMapper extends EntityMapper<PictureDto, Picture>{
 
     @Mapping(target = "userName",source = "picture.user.username")
+    @Override
     PictureDto toDto(Picture picture);
 }

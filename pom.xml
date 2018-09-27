@@ -64,7 +64,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
-        <!--spring boot相关依赖 end-->
 
         <!-- redis -->
         <dependency>

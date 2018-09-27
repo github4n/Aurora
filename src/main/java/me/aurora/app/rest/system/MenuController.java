@@ -82,10 +82,10 @@ public class MenuController {
     @RequiresPermissions(value={"admin", "menu:all","menu:select"}, logical= Logical.OR)
     @GetMapping(value = "/getMenusInfo")
     public Map getMenusInfo(@RequestParam(value = "id",required = false) Long id,
-                                  @RequestParam(value = "name",required = false) String name,
-                                  @RequestParam(value = "page",defaultValue = "1")Integer page,
-                                  @RequestParam(value = "limit",defaultValue = "10")Integer limit){
-        log.warn("REST request to findAll Permission");
+                            @RequestParam(value = "name",required = false) String name,
+                            @RequestParam(value = "page",defaultValue = "1")Integer page,
+                            @RequestParam(value = "limit",defaultValue = "10")Integer limit){
+        log.warn("REST request to findAll MenusInfo");
         Sort sort = new Sort(Sort.Direction.DESC,"id");
         Pageable pageable = PageRequest.of(page-1,2000,sort);
         return menuService.getMenuInfo(new MenuSpec(id,name),pageable);

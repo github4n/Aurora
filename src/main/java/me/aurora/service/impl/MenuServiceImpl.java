@@ -37,13 +37,16 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuVo> buildMenuUrl(List<MenuDTO> menuList) {
-        List<MenuVo> menuVoList = new ArrayList<>();
+        List<MenuVo> menuVoList = new ArrayList<>(10);
         for (MenuDTO menu: menuList) {
             if(menu.getLevel()!=1){
                 MenuVo menuVo = new MenuVo();
+                menuVo.setName(menu.getName());
+                if(menu.getIframe()){
+                    menuVo.setIframe("true");
+                }
                 menuVo.setPath(menu.getUrl());
                 menuVo.setComponent(menu.getUrl());
-                menuVo.setName(menu.getName());
                 menuVoList.add(menuVo);
             }
         }

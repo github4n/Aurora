@@ -11,7 +11,7 @@
  Target Server Version : 50559
  File Encoding         : 65001
 
- Date: 25/09/2018 13:28:03
+ Date: 27/09/2018 13:26:26
 */
 
 SET NAMES utf8mb4;
@@ -32,31 +32,33 @@ CREATE TABLE `zj_menu`  (
   `createTime` datetime NULL DEFAULT NULL,
   `updateTime` datetime NULL DEFAULT NULL,
   `level_number` int(11) NOT NULL,
+  `iframe` bit(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_cbhg0bi3f1emxkhqqtvca9btx`(`soft`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_menu
 -- ----------------------------
-INSERT INTO `zj_menu` VALUES (1, 'layui-icon-unlink', 0, 1, '异常页', 60, '', '2018-08-29 11:40:17', '2018-09-24 23:45:17', 3);
-INSERT INTO `zj_menu` VALUES (2, 'layui-icon-tree', 1, 2, '403', 61, '/exception/403', '2018-08-29 11:40:17', '2018-09-24 23:45:39', 0);
-INSERT INTO `zj_menu` VALUES (3, 'layui-icon-tree', 1, 2, '404', 62, '/exception/404', '2018-08-29 11:40:17', '2018-09-24 23:45:33', 0);
-INSERT INTO `zj_menu` VALUES (4, 'layui-icon-tree', 1, 2, '500', 63, '/exception/500', '2018-08-29 11:40:17', '2018-09-24 23:45:26', 0);
-INSERT INTO `zj_menu` VALUES (5, 'layui-icon-chart', 0, 1, '系统监控', 10, '', '2018-08-29 11:40:17', '2018-09-23 17:00:57', 7);
-INSERT INTO `zj_menu` VALUES (6, 'layui-icon-tree', 7, 2, '用户管理', 2, '/user/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0);
-INSERT INTO `zj_menu` VALUES (7, 'layui-icon-util', 0, 1, '系统管理', 1, '', '2018-08-29 11:40:17', '2018-09-23 09:16:17', 5);
-INSERT INTO `zj_menu` VALUES (8, 'layui-icon-tree', 7, 2, '菜单管理', 6, '/menu/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0);
-INSERT INTO `zj_menu` VALUES (9, 'layui-icon-tree', 5, 2, '系统日志', 11, '/sysLog/index', '2018-08-29 11:40:17', '2018-09-22 10:17:02', 0);
-INSERT INTO `zj_menu` VALUES (10, 'layui-icon-tree', 7, 2, '权限管理', 4, '/permission/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0);
-INSERT INTO `zj_menu` VALUES (11, 'layui-icon-tree', 7, 2, '角色管理', 3, '/role/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0);
-INSERT INTO `zj_menu` VALUES (12, 'layui-icon-website', 0, 1, '网络资源', 30, '', '2018-09-20 11:35:56', '2018-09-20 11:40:53', 1);
-INSERT INTO `zj_menu` VALUES (13, 'layui-icon-tree', 12, 2, '图床管理', 31, '/picture/index', '2018-09-20 11:40:53', '2018-09-20 11:40:53', 0);
-INSERT INTO `zj_menu` VALUES (14, 'layui-icon-tree', 5, 2, '在线用户', 12, '/online/index', '2018-09-21 16:09:38', '2018-09-22 10:17:09', 0);
-INSERT INTO `zj_menu` VALUES (16, 'layui-icon-tree', 5, 2, 'Redis终端', 14, '/redis/terminal', '2018-09-22 11:18:21', '2018-09-22 11:37:28', 0);
-INSERT INTO `zj_menu` VALUES (17, 'layui-icon-tree', 7, 2, '接口文档', 7, '/swagger/index', '2018-09-23 09:16:17', '2018-09-23 10:01:06', 0);
-INSERT INTO `zj_menu` VALUES (18, 'layui-icon-util', 0, 1, '工具管理', 40, '', '2018-09-24 23:46:02', '2018-09-24 23:46:47', 1);
-INSERT INTO `zj_menu` VALUES (19, 'layui-icon-tree', 18, 2, '富文本编辑', 41, '/ueditor/index', '2018-09-24 23:46:47', '2018-09-24 23:46:47', 0);
+INSERT INTO `zj_menu` VALUES (1, 'layui-icon-unlink', 0, 1, '异常页', 60, '', '2018-08-29 11:40:17', '2018-09-27 12:57:14', 4, b'0');
+INSERT INTO `zj_menu` VALUES (2, 'layui-icon-tree', 1, 2, '403', 61, '/exception/403', '2018-08-29 11:40:17', '2018-09-24 23:45:39', 0, b'0');
+INSERT INTO `zj_menu` VALUES (3, 'layui-icon-tree', 1, 2, '404', 62, '/exception/404', '2018-08-29 11:40:17', '2018-09-24 23:45:33', 0, b'0');
+INSERT INTO `zj_menu` VALUES (4, 'layui-icon-tree', 1, 2, '500', 63, '/exception/500', '2018-08-29 11:40:17', '2018-09-24 23:45:26', 0, b'0');
+INSERT INTO `zj_menu` VALUES (5, 'layui-icon-chart', 0, 1, '系统监控', 10, '', '2018-08-29 11:40:17', '2018-09-27 13:24:25', 8, b'0');
+INSERT INTO `zj_menu` VALUES (6, 'layui-icon-tree', 7, 2, '用户管理', 2, '/user/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0, b'0');
+INSERT INTO `zj_menu` VALUES (7, 'layui-icon-util', 0, 1, '系统管理', 1, '', '2018-08-29 11:40:17', '2018-09-23 09:16:17', 5, b'0');
+INSERT INTO `zj_menu` VALUES (8, 'layui-icon-tree', 7, 2, '菜单管理', 6, '/menu/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0, b'0');
+INSERT INTO `zj_menu` VALUES (9, 'layui-icon-tree', 5, 2, '系统日志', 13, '/sysLog/index', '2018-08-29 11:40:17', '2018-09-27 12:56:27', 0, b'0');
+INSERT INTO `zj_menu` VALUES (10, 'layui-icon-tree', 7, 2, '权限管理', 4, '/permission/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0, b'0');
+INSERT INTO `zj_menu` VALUES (11, 'layui-icon-tree', 7, 2, '角色管理', 3, '/role/index', '2018-08-29 11:40:17', '2018-09-04 07:40:25', 0, b'0');
+INSERT INTO `zj_menu` VALUES (12, 'layui-icon-website', 0, 1, '网络资源', 30, '', '2018-09-20 11:35:56', '2018-09-20 11:40:53', 1, b'0');
+INSERT INTO `zj_menu` VALUES (13, 'layui-icon-tree', 12, 2, '图床管理', 31, '/picture/index', '2018-09-20 11:40:53', '2018-09-20 11:40:53', 0, b'0');
+INSERT INTO `zj_menu` VALUES (14, 'layui-icon-tree', 5, 2, '在线用户', 12, '/online/index', '2018-09-21 16:09:38', '2018-09-22 10:17:09', 0, b'0');
+INSERT INTO `zj_menu` VALUES (16, 'layui-icon-tree', 5, 2, 'Redis终端', 16, '/redis/terminal', '2018-09-22 11:18:21', '2018-09-27 13:25:09', 0, b'0');
+INSERT INTO `zj_menu` VALUES (17, 'layui-icon-tree', 7, 2, '接口文档', 7, '/swagger/index', '2018-09-23 09:16:17', '2018-09-23 10:01:06', 0, b'0');
+INSERT INTO `zj_menu` VALUES (18, 'layui-icon-util', 0, 1, '工具管理', 40, '', '2018-09-24 23:46:02', '2018-09-24 23:46:47', 1, b'0');
+INSERT INTO `zj_menu` VALUES (19, 'layui-icon-tree', 18, 2, '富文本编辑', 41, '/ueditor/index', '2018-09-24 23:46:47', '2018-09-24 23:46:47', 0, b'0');
+INSERT INTO `zj_menu` VALUES (21, 'layui-icon-tree', 5, 2, 'SQL监控', 15, '/druid/index.html', '2018-09-27 13:24:25', '2018-09-27 13:24:25', 0, b'1');
 
 -- ----------------------------
 -- Table structure for zj_menus_roles
@@ -92,6 +94,7 @@ INSERT INTO `zj_menus_roles` VALUES (16, 1);
 INSERT INTO `zj_menus_roles` VALUES (17, 1);
 INSERT INTO `zj_menus_roles` VALUES (18, 1);
 INSERT INTO `zj_menus_roles` VALUES (19, 1);
+INSERT INTO `zj_menus_roles` VALUES (21, 1);
 INSERT INTO `zj_menus_roles` VALUES (1, 2);
 INSERT INTO `zj_menus_roles` VALUES (2, 2);
 INSERT INTO `zj_menus_roles` VALUES (3, 2);
@@ -198,7 +201,7 @@ CREATE TABLE `zj_picture`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FK5qtt7wql9517j0e2read2pdus`(`user_id`) USING BTREE,
   CONSTRAINT `FK5qtt7wql9517j0e2read2pdus` FOREIGN KEY (`user_id`) REFERENCES `zj_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_picture
@@ -245,7 +248,7 @@ CREATE TABLE `zj_user`  (
 -- ----------------------------
 -- Records of zj_user
 -- ----------------------------
-INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-09-25 12:50:50', '65a674ce6632479005ea7a9071234cfb', 'aurora');
+INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-09-27 13:07:26', '65a674ce6632479005ea7a9071234cfb', 'aurora');
 
 -- ----------------------------
 -- Table structure for zj_user_pictures

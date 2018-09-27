@@ -37,13 +37,20 @@
                 <div id="action" class="layui-form-item" style="display: none">
                     <label class="layui-form-label">链接地址</label>
                     <div class="layui-input-block">
-                        <input name="url" lay-verify="required" placeholder="请输入链接地址" autocomplete="off" class="layui-input" type="text">
+                        <input name="url" lay-verify="required" placeholder="外链需加上协议，如：https://" autocomplete="off" class="layui-input" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">菜单排序</label>
                     <div class="layui-input-block">
                         <input name="soft" lay-verify="required" placeholder="请输入序号，序号不可重复，越小越靠前" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display: none" id="out_link">
+                    <label class="layui-form-label">是否外链</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="iframe" value="true" title="是">
+                        <input type="radio" name="iframe" value="false" title="否" checked>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -100,9 +107,11 @@
             form.on('select(top)', function(data){
                 if(data.value == 0){
                     $("#action").hide();
+                    $("#out_link").hide();
                     $("#action").val("");
                 }else {
                     $("#action").show();
+                    $("#out_link").show();
                 }
             });
         });

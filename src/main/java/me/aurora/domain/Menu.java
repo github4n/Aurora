@@ -57,6 +57,11 @@ public class Menu implements Serializable {
     @NotBlank(groups = {New.class,Update.class})
     private Integer levelNum = 0;
 
+    /**
+     * 是否为外链 true/false
+     */
+    private Boolean iframe = false;
+
     @ManyToMany
     @JoinTable(name = "zj_menus_roles", joinColumns = {@JoinColumn(name = "menu_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
     private Set<Role> roles;

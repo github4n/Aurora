@@ -15,5 +15,7 @@ public class MenuVo {
     private String path;
 
     private String component;
+
+    private String iframe;
 }
 

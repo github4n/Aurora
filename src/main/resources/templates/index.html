@@ -86,7 +86,7 @@
                 </a>
                 <ul th:if="${menu.levelNum!=0}" class="kit-menu-child layui-anim layui-anim-upbit">
                     <li th:each="menu1,stat1: ${menus}" class="kit-menu-item">
-                        <a th:if="${menu1.pid == menu.id}" th:href="@{'#'+${menu1.url}}">
+                        <a th:if="${menu1.pid == menu.id}" th:href="@{${menu1.iframe?menu1.url:'#'+menu1.url}}" th:target="${menu1.iframe?'_blank':''}">
                             <i th:class="'layui-icon '+${menu1.ico}"></i>
                             <span th:text="${menu1.name}"></span>
                         </a>

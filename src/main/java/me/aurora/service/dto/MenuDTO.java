@@ -26,6 +26,8 @@ public class MenuDTO implements Serializable {
 
     private Integer pid;
 
+    private Boolean iframe;
+
     private Integer level;
 
     private String rolesSelect;
