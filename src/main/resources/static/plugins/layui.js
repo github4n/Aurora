@@ -19,7 +19,7 @@
   }
 
   ,Layui = function(){
-    this.v = '2.3.0'; //版本号
+    this.v = '2.4.3'; //版本号
   }
 
   //获取layui所在目录
@@ -47,8 +47,8 @@
   ,isOpera = typeof opera !== 'undefined' && opera.toString() === '[object Opera]'
 
   //内置模块
-  ,modules = {
-    layer: 'modules/layer' //弹层
+   ,modules = {
+     layer: 'modules/layer' //弹层
     ,laydate: 'modules/laydate' //日期
     ,laypage: 'modules/laypage' //分页
     ,laytpl: 'modules/laytpl' //模板引擎

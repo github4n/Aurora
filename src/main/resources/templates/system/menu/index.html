@@ -59,7 +59,7 @@
             var index = layer.open({
                 type: 2
                 ,content: '/menu/toAddPage'
-                ,area: ['550px', '480px']
+                ,area: ['550px', '520px']
                 ,btnAlign: 'c'
                 ,shade: 0.8
                 ,title: '新增菜单'
@@ -125,7 +125,7 @@
                     form.render();
                     //监听提交
                     form.on('submit(formDemo_hash)', function (data) {
-                        table.reload('ID', {
+                        treeGrid.query('ID', {
                             where: {
                                 id: $('input[name="id"]').val(),
                                 name: $('input[name="name"]').val(),
@@ -148,7 +148,7 @@
                 var index = layer.open({
                      type: 2
                     ,content: '/menu/toUpdatePage?id='+data.id
-                    ,area: ['500px', '450px']
+                    ,area: ['550px', '520px']
                     ,btnAlign: 'c'
                     ,shade: 0.8
                     ,title: '更新菜单'

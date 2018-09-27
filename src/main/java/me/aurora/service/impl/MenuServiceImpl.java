@@ -108,6 +108,13 @@ public class MenuServiceImpl implements MenuService {
     @Transactional(rollbackFor = Throwable.class)
     public void delete(Menu menu) {
         if(menu.getLevelNum() == 0){
+            try {
+                Optional<Menu> optionalMenu = menuRepo.findById(menu.getPid().longValue());
+                Menu pMenu = optionalMenu.get();
+                pMenu.setLevelNum(pMenu.getLevelNum()-1);
+            }catch (Exception e){
+                throw new AuroraException(HttpStatus.HTTP_INTERNAL_ERROR,e.toString());
+            }
             menuRepo.delete(menu);
         } else {
             Set<Menu> menus = menuRepo.findByPid(menu.getPid()).stream().collect(Collectors.toSet());
