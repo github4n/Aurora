@@ -18,4 +18,6 @@ public class CommonController {
     public ModelAndView swagger(){
         return new ModelAndView("/system/api/index");
     }
+
+
 }

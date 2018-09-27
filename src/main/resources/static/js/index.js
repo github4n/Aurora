@@ -118,6 +118,7 @@ layui.define(mods, function(exports) {
     return that;
   }
 
+  //渲染菜单
  var routes = [];
       $.ajax({
           async:false,

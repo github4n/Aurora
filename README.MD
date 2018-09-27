@@ -7,6 +7,8 @@
 Aurora是一个简单高效的后台管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单；数据访问层采用Spring boot Jpa，可快速高效对数据进行操作，消除了大量传统XML配置SQL的代码，分页使用Pageable；安全框架采用时下流行的Apache Shiro，可实现对按钮级别的权限控制；前端页面使用KidAdmin构建，并提供多套配色以供选择。
 ### 预览地址
 [http://xiswl.xyz](http://xiswl.xyz)
+### SSM + shiro + redis 版移步
+[https://gitee.com/quella01/Quella](https://gitee.com/quella01/Quella)
 <!--more-->
 ### 功能模块
 系统功能模块组成如下所示：
@@ -91,13 +93,9 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 
 - 版本管理：git
 
-### 系统预览
+### 系统部分功能预览
 
 - 前端模板使用kitadmin，前端框架使用layui
-
-- 登录页面
-
-![](https://i.imgur.com/drNepaT.png)
 
 - 系统首页
 
@@ -107,10 +105,6 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 
 ![](https://i.imgur.com/ouBHhXm.jpg)
 
-- 角色管理
-
-![](https://i.imgur.com/WG7IxhL.png)
-
 - 菜单管理，使用树形表格
 
 ![](https://i.imgur.com/GJw1PB9.png)
@@ -118,10 +112,6 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 - 日志管理
 
 ![](https://i.imgur.com/rZbABhe.png)
-
-- 搜索统一使用侧边栏
-
-![](https://i.imgur.com/G3MmlGy.png)
 
 - swagger文档
 
@@ -184,7 +174,7 @@ c:\Redis-x64-3.2.100>redis-cli.exe -p 6379
 ```
 准备工作做完后，直接使用Spring Boot的入口类`me.aurora.AuroraRun`启动即可，访问地址[localhost]，账号zhengjie@tom.com，密码dqjdda1996.
 
-部署时，首先使用使用mvn package将项目打包成jar，然后使用命令`java -jar aurora-0.0.1-SNAPSHOT.war`启动即可，当然也可以使用tomcat启动。
+部署时，首先使用使用mvn package将项目打包成jar或war，然后使用命令`java -jar aurora-0.0.1-SNAPSHOT.war`启动即可，当然也可以使用tomcat启动。
 
 ### docker 中部署
 - 可参考链接[https://www.zhengjie.me/blog/271.html](https://www.zhengjie.me/blog/271.html)。
