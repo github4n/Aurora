@@ -74,14 +74,6 @@
                 </div>
               </div>
             </div>
-            <div class="layui-col-md12">
-              <div class="layui-card">
-                <div class="layui-card-header">系统日志</div>
-                <div class="layui-card-body">
-                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="layui-col-md4">
@@ -126,7 +118,7 @@
                       </tr>
                       <tr>
                         <td>前端框架</td>
-                        <td>layui v2.3.0</td>
+                        <td>layui v2.4.3</td>
                       </tr>
                       <tr>
                         <td>作者</td>
@@ -371,27 +363,6 @@
         }]
       }
     });
-  //表格渲染
-  table.render({
-      elem: '#myTable'
-      ,url:'/sysLog/getLogInfo'
-      ,page: true
-      ,id:"ID"
-      ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-      ,cols: [
-          [
-              {field:'id',align:'center', width:70,  title: '序号'}
-              ,{field:'username',  title: '用户昵称'}
-              ,{field:'ip',  title: '用户IP'}
-              ,{field:'location',  title: 'IP来源'}
-              ,{field:'operation',  title: '描述'}
-              ,{field:'method',  title: '请求方法'}
-              ,{field:'params',  title: '请求参数'}
-              ,{field:'time',  title: '请求耗时'}
-              ,{field:'createTime',width:175, title: '创建时间'}
-          ]
-      ]
-  });
   });
 </script>
 <style scoped>

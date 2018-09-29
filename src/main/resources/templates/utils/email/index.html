@@ -7,12 +7,15 @@
     <script type="text/javascript" charset="utf-8" th:src="@{'/plugins/richText/all.min.js'}"> </script>
     <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
     <script type="text/javascript" charset="utf-8" th:src="@{'/plugins/richText/lang/zh-cn/zh-cn.js'}"></script>
+    <style>
+        .layui-form-label{float:left;display:block;padding:9px 15px;width:100px;font-weight:400;line-height:20px;text-align:right}
+    </style>
 </head>
 <body>
 <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
     <ul class="layui-tab-title">
-        <li class="layui-this">邮件发送</li>
-        <li>邮件测试</li>
+        <li class="layui-this">参数配置</li>
+        <li>发送邮件</li>
         <li>使用说明</li>
     </ul>
     <div class="layui-tab-content" style="height: 100px;">
@@ -114,8 +117,7 @@
         <pre class="layui-code">
 邮件服务器必须支持并打开SMTP协议，详细请查看相关帮助说明
 配置文件的样例中提供的是我测试邮件功能注册的sina.com邮箱
-帐号密码公开，供测试使用，存入数据库的密码会加密处理，文明测试谢谢
-        </pre>
+帐号密码公开，供测试使用，存入数据库的密码会加密处理，文明测试谢谢</pre>
         <blockquote class="layui-elem-quote"> 邮件服务器配置</blockquote>
         <pre class="layui-code">
  # 邮件服务器的SMTP地址，可选，默认为smtp
@@ -129,8 +131,7 @@
  # 密码（注意，某些邮箱需要为SMTP服务单独设置密码，如QQ和163等等）
  pass = dqjdda1996.
  # 是否开启ssl，默认开启
- sslEnable = true
-        </pre>
+ sslEnable = true</pre>
         <blockquote class="layui-elem-quote">发送邮箱</blockquote>
         <pre class="layui-code">
  MailAccount account = new MailAccount();
@@ -141,8 +142,7 @@
  account.setUser("auaur");
  account.setPass("pass");
  # 倒数第二个参数：是否为http格式
- MailUtil.send(account, CollUtil.newArrayList("hutool@foxmail.com"), "测试", "邮件来自Aurora测试", true，file...);
-        </pre>
+ MailUtil.send(account, CollUtil.newArrayList("hutool@foxmail.com"), "测试", "邮件来自Aurora测试", true，file...);</pre>
         <blockquote class="layui-elem-quote">更多帮助</blockquote>
         <pre class="layui-code">更多帮助请查询文档：<a style="color:#009688" href="http://hutool.mydoc.io/#text_319499" target="_black">hutool工具包</a></pre>
     </div>
