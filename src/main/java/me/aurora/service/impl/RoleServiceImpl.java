@@ -59,9 +59,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void inster(Role role, String permissions) {
-        if(StrUtil.hasEmpty(role.getName())){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"角色名称不能为空");
-        }
         if(roleRepo.findByName(role.getName())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"角色已存在");
         }
@@ -80,9 +77,6 @@ public class RoleServiceImpl implements RoleService {
     public void update(Role role, String permissions) {
         if(role.getId() == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"角色ID不能为空");
-        }
-        if(StrUtil.hasEmpty(role.getName())){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"角色名称不能为空");
         }
         Role old = roleRepo.findByName(role.getName());
         if(old!=null && !role.getId().equals(old.getId())){

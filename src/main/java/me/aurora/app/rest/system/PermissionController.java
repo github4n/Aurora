@@ -97,7 +97,7 @@ public class PermissionController {
     @Log("新增权限")
     @RequiresPermissions (value={"admin", "permission:all","permission:add"}, logical= Logical.OR)
     @PostMapping(value = "/inster")
-    public ResponseEntity inster(@RequestBody Permission permission) {
+    public ResponseEntity inster(@Validated(Permission.New.class) @RequestBody Permission permission) {
         log.warn("REST request to insterPermission");
         permissionService.inster(permission);
         return ResponseEntity.ok();
@@ -131,7 +131,7 @@ public class PermissionController {
     @Log("更新权限")
     @RequiresPermissions (value={"admin", "permission:all","permission:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@RequestBody Permission permission) {
+    public ResponseEntity update(@Validated(Permission.New.class) @RequestBody Permission permission) {
         log.warn("REST request to insterUser");
         permissionService.update(permission);
         return ResponseEntity.ok();

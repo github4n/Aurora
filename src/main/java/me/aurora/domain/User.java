@@ -31,6 +31,8 @@ public class User implements Serializable {
     @NotBlank(groups = {New.class,Update.class})
     private String username;
 
+    @NotBlank(groups = {New.class,Update.class})
+    @Column(nullable = false)
     private String password;
 
     @NotBlank(groups = {New.class,Update.class})
@@ -39,7 +41,6 @@ public class User implements Serializable {
 
     private Integer enabled=1;
 
-    @NotBlank(groups = {New.class,Update.class})
     @Column(nullable = false)
     private String avatar;
 

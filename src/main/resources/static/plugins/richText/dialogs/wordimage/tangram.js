@@ -374,7 +374,7 @@ baidu.swf.createHTML = function (options) {
         'base'              : 1,
         'allowscriptaccess' : 1,
         'allownetworking'   : 1,
-        'allowfullscreen'   : 1,
+        'allowfullscreen'   : 0,
         'seamlesstabbing'   : 1,
         'devicefont'        : 1,
         'swliveconnect'     : 1,

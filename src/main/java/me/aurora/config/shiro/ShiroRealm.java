@@ -6,7 +6,7 @@ import me.aurora.domain.Role;
 import me.aurora.domain.User;
 import me.aurora.service.PermissionService;
 import me.aurora.service.UserService;
-import me.aurora.util.EmailUtil;
+import me.aurora.util.ValidationUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -67,7 +67,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		String password = new String((char[]) token.getCredentials());
 		log.warn("=====>>>>>用户" + username + "认证");
 		User user = null;
-		if(EmailUtil.isEmail(username)){
+		if(ValidationUtil.isEmail(username)){
 			user = userService.findByEmail(username);
 		} else {
 			user = userService.findByUsername(username);

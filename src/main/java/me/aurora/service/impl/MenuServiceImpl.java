@@ -107,6 +107,9 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public void delete(Menu menu) {
+        if(menu.getSys()){
+            throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"系统菜单，不可删除");
+        }
         if(menu.getLevelNum() == 0){
             try {
                 Optional<Menu> optionalMenu = menuRepo.findById(menu.getPid().longValue());

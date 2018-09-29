@@ -42,9 +42,6 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public void inster(Permission permission) throws AuroraException {
-        if(StrUtil.hasEmpty(permission.getPerms())){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"权限名称不能为空");
-        }
         if(permissionRepo.findByPerms(permission.getPerms())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"权限已存在");
         }
@@ -62,9 +59,6 @@ public class PermissionServiceImpl implements PermissionService {
     public void update(Permission permission) throws AuroraException {
         if(null == permission.getId()){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"权限ID不能为空");
-        }
-        if(StrUtil.isEmpty(permission.getPerms())){
-            throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"权限名称不能为空");
         }
         Permission old = permissionRepo.findByPerms(permission.getPerms());
         if(old !=null && !old.getId().equals(permission.getId())){

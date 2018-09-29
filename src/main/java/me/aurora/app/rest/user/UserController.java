@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -95,7 +96,7 @@ public class UserController {
     @Log("新增用户")
     @RequiresPermissions (value={"admin", "user:all","user:add"}, logical= Logical.OR)
     @PostMapping(value = "/inster")
-    public ResponseEntity inster(@RequestBody User user, @RequestParam String roles) {
+    public ResponseEntity inster(@Validated(User.New.class) @RequestBody User user, @RequestParam String roles) {
         log.warn("REST request to insterUser");
         if(StrUtil.hasEmpty(roles)){
             return ResponseEntity.error(HttpStatus.HTTP_NOT_FOUND,"角色为空，请至少为其分配一个角色");
@@ -132,7 +133,7 @@ public class UserController {
     @Log("更新用户")
     @RequiresPermissions (value={"admin", "user:all","user:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@RequestBody User user, @RequestParam String roles) {
+    public ResponseEntity update(@Validated(User.Update.class) @RequestBody User user, @RequestParam String roles) {
         log.warn("REST request to insterUser");
         if(StrUtil.hasEmpty(roles)){
             return ResponseEntity.error(HttpStatus.HTTP_NOT_FOUND,"角色为空，请至少为其分配一个角色");

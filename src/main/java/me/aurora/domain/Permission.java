@@ -36,9 +36,10 @@ public class Permission implements Serializable{
 	 * 上级类目
 	 */
 	@Column(name = "pid",nullable = false)
-	@NotBlank(groups = {New.class,Update.class})
 	private Integer pid;
 
+	@NotBlank(groups = {New.class,Update.class})
+	@Column(nullable = false)
 	private String remark;
 
 	@JsonIgnore

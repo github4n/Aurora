@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>邮件发送</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" charset="utf-8" th:src="@{'/plugins/richText/simpleConfig.js'}"></script>
+    <script type="text/javascript" charset="utf-8" th:src="@{'/plugins/richText/all.min.js'}"> </script>
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <script type="text/javascript" charset="utf-8" th:src="@{'/plugins/richText/lang/zh-cn/zh-cn.js'}"></script>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">邮件发送</li>
+        <li>邮件测试</li>
+        <li>使用说明</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;发件人</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="fromUser" th:value="${email.fromUser}" lay-verify="required|email" placeholder="发件人" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">发件人邮箱</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;用户名</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="user" th:value="${email.user}" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">发件者用户名，默认为发件人邮箱前缀</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;密码</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="pass" th:value="${email.pass}" lay-verify="required"  placeholder="请输入密码" autocomplete="off" class="layui-input" type="password">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">注意，某些邮箱需要为SMTP服务单独设置密码</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;SMTP地址</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="host" th:value="${email.host}" lay-verify="required" placeholder="请输入SMTP地址" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">邮件服务器SMTP地址</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;SMTP端口</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="port" th:value="${email.port}" lay-verify="required" placeholder="请输入SMTP端口" autocomplete="off" class="layui-input" type="password">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">邮件服务器SMTP端口</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;启用SSL</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" th:checked="${email.sslEnable == true}" name="sslEnable" value="true" title="是">
+                        <input type="radio" th:checked="${email.sslEnable == false}" name="sslEnable" value="false" title="否">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="margin-left:5%;">
+                    <button class="layui-btn" lay-submit="required" lay-filter="saveConfig">保存</button>
+                </div>
+            </form>
+
+    </div>
+
+    <div class="layui-tab-item">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-inline" style="width: 40%">
+                    <input name="subject" lay-verify="required" placeholder="标题必填" autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">收件人</label>
+                <div class="layui-input-inline" style="width: 40%">
+                    <input name="tos" lay-verify="required" placeholder="收件人必填" autocomplete="off" class="layui-input" type="text">
+                </div>
+                <div class="layui-form-mid layui-word-aux">收件人邮箱，支持多个收件人，使用(，或者；)分隔</div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮件格式</label>
+                <div class="layui-input-block">
+                    <input type="radio" checked name="isHtml" value="true" title="HTML">
+                    <input type="radio" name="isHtml" value="false" title="普通文本">
+                </div>
+            </div>
+
+            <div>
+                <script id="editor" type="text/plain" style="margin-left:5%;width:90%;height:260px;"></script>
+            </div>
+
+            <div class="layui-form-item" style="margin-left:5%;margin-top:5px;">
+                <button class="layui-btn" lay-submit lay-filter="sendMail">立即送达</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="layui-tab-item">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>使用说明</legend>
+        </fieldset>
+        <blockquote class="layui-elem-quote">
+        注意</blockquote>
+        <pre class="layui-code">
+邮件服务器必须支持并打开SMTP协议，详细请查看相关帮助说明
+配置文件的样例中提供的是我测试邮件功能注册的sina.com邮箱
+帐号密码公开，供测试使用，存入数据库的密码会加密处理，文明测试谢谢
+        </pre>
+        <blockquote class="layui-elem-quote"> 邮件服务器配置</blockquote>
+        <pre class="layui-code">
+ # 邮件服务器的SMTP地址，可选，默认为smtp
+ host = smtp.sina.com
+ # 邮件服务器的SMTP端口，可选，默认465或者25
+ port = 465
+ # 发件人（必须正确，否则发送失败）
+ fromUser = auaur@sina.com
+ # 用户名，默认为发件人邮箱前缀
+ user = auaur
+ # 密码（注意，某些邮箱需要为SMTP服务单独设置密码，如QQ和163等等）
+ pass = dqjdda1996.
+ # 是否开启ssl，默认开启
+ sslEnable = true
+        </pre>
+        <blockquote class="layui-elem-quote">发送邮箱</blockquote>
+        <pre class="layui-code">
+ MailAccount account = new MailAccount();
+ account.setHost("smtp.sina.com");
+ account.setPort("465");
+ account.setAuth(true);
+ account.setFrom("auaur@sina.com");
+ account.setUser("auaur");
+ account.setPass("pass");
+ # 倒数第二个参数：是否为http格式
+ MailUtil.send(account, CollUtil.newArrayList("hutool@foxmail.com"), "测试", "邮件来自Aurora测试", true，file...);
+        </pre>
+        <blockquote class="layui-elem-quote">更多帮助</blockquote>
+        <pre class="layui-code">更多帮助请查询文档：<a style="color:#009688" href="http://hutool.mydoc.io/#text_319499" target="_black">hutool工具包</a></pre>
+    </div>
+</div>
+</div>
+<script>
+    //实例化编辑器
+    var ue = UE.getEditor('editor');
+    layui.use(['form', 'layedit',  'element', 'layer'], function(){
+        var form = layui.form,
+            layer = layui.layer,
+            element = layui.element;
+        form.render();
+        //监听提交，发送请求
+        form.on('submit(saveConfig)', function(){
+            $.ajax({
+                url:"/email/config",
+                contentType: "application/json",
+                type: "POST",
+                data:JSON.stringify({
+                    fromUser:$("input[name='fromUser']").val(),
+                    user:$("input[name='user']").val(),
+                    pass:$("input[name='pass']").val(),
+                    host:$("input[name='host']").val(),
+                    port:$("input[name='port']").val(),
+                    sslEnable:$("input[name=\"sslEnable\"]:checked").val()
+                }),
+                success:function(result){
+                    if (result.code == 200) {
+                        layer.msg(result.msg, {icon: 6, time: 1500});
+                    } else {
+                        layer.alert(result.msg, {icon: 5});
+                    }
+                }
+            });
+            return false;
+        });
+
+        //监听提交，发送请求
+        form.on('submit(sendMail)', function(){
+            var isHtml = $("input[name=\"isHtml\"]:checked").val()
+            var content = UE.getEditor('editor').getContent()
+            if(isHtml == false){
+                content = UE.getEditor('editor').getContentTxt()
+            }
+            $.ajax({
+                url:"/email/send",
+                contentType: "application/json",
+                type: "POST",
+                data:JSON.stringify({
+                    subject:$("input[name='subject']").val(),
+                    tos:$("input[name='tos']").val(),
+                    content:content,
+                    isHtml:isHtml
+                }),
+                success:function(result){
+                    if (result.code == 200) {
+                        layer.msg('已成功送达', {icon: 6, time: 1500});
+                    } else {
+                        layer.alert(result.msg, {icon: 5});
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

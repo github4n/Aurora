@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleException(Exception e){
         log.error(e.getMessage());
-        return ResponseEntity.error("操作失败！");
+        return ResponseEntity.error(e.getMessage());
     }
 
     /**
@@ -62,6 +62,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
         log.error(e.getMessage());
-        return ResponseEntity.error(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        String str[] = e.getBindingResult().getAllErrors().get(0).getCodes()[1].split("\\.");
+        StringBuffer msg = new StringBuffer(str[1]+":");
+        msg.append(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        return ResponseEntity.error(msg.toString());
     }
 }

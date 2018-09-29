@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -115,7 +116,7 @@ public class MenuController {
     @Log("新增菜单")
     @RequiresPermissions (value={"admin", "menu:all","menu:add"}, logical= Logical.OR)
     @PostMapping(value = "/inster")
-    public ResponseEntity inster(@RequestBody Menu menu,@RequestParam String roles){
+    public ResponseEntity inster(@Validated(Menu.New.class) @RequestBody Menu menu, @RequestParam String roles){
         log.warn("REST request to inster menu");
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         Menu topMenu = null;
@@ -155,7 +156,7 @@ public class MenuController {
     @Log("更新菜单")
     @RequiresPermissions (value={"admin", "menu:all","menu:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@RequestBody Menu menu,@RequestParam String roles) {
+    public ResponseEntity update(@Validated(Menu.Update.class) @RequestBody Menu menu,@RequestParam String roles) {
         log.warn("REST request to update");
         menuService.update(menu,menuService.findById(menu.getId()),roles);
         return ResponseEntity.ok();

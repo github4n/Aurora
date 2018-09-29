@@ -40,27 +40,29 @@ public class Menu implements Serializable {
      * 上级菜单ID
      */
     @Column(name = "pid",nullable = false)
-    @NotBlank(groups = {New.class,Update.class})
     private Integer pid;
 
     /**
      * 菜单类目
      */
     @Column(nullable = false)
-    @NotBlank(groups = {New.class,Update.class})
     private Integer level;
 
     /**
      * 子菜单数量
      */
     @Column(name = "level_number",nullable = false)
-    @NotBlank(groups = {New.class,Update.class})
     private Integer levelNum = 0;
 
     /**
      * 是否为外链 true/false
      */
     private Boolean iframe = false;
+
+    /**
+     * 系统菜单
+     */
+    private Boolean sys = false;
 
     @ManyToMany
     @JoinTable(name = "zj_menus_roles", joinColumns = {@JoinColumn(name = "menu_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})

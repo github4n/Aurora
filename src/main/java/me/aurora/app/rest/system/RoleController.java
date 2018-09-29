@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -93,7 +94,7 @@ public class RoleController {
     @Log("新增角色")
     @RequiresPermissions (value={"admin", "role:all","role:add"}, logical= Logical.OR)
     @PostMapping(value = "/inster")
-    public ResponseEntity inster(@RequestBody Role role,@RequestParam String permissions) {
+    public ResponseEntity inster(@Validated(Role.New.class) @RequestBody Role role, @RequestParam String permissions) {
         log.warn("REST request to insterRoles");
         roleService.inster(role,permissions);
         return ResponseEntity.ok();
@@ -128,7 +129,7 @@ public class RoleController {
     @Log("更新角色")
     @RequiresPermissions (value={"admin", "role:all","role:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@RequestBody Role role,@RequestParam String permissions) {
+    public ResponseEntity update(@Validated(Role.Update.class) @RequestBody Role role,@RequestParam String permissions) {
         log.warn("REST request to insterUser");
         roleService.update(role,permissions);
         return ResponseEntity.ok();

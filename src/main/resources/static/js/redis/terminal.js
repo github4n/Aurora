@@ -252,7 +252,7 @@ var $MB_Redis_Bash = function () {
                     }
                 }
             } else {
-                printf(" Redis bash with SpringBoot by <a href='https://mrbird.cc' class='kw_b'>MrBird</a>, version v0.0.1 - Snapshot \n");
+                printf(" Redis bash with SpringBoot by <a href='https://www.zhengjie.me' class='kw_b'>Redis Terminal</a>, v0.0.1 - Snapshot \n");
                 printf(" These shell commands are defined internally.  Type `help` to see this list.\n");
                 printf(" Type `help name` to find out more about the command `name`.\n");
                 printf(" -------------------------------- \n");
@@ -265,7 +265,7 @@ var $MB_Redis_Bash = function () {
                 printf(" keys         get         set \n");
                 printf(" del          exists        pttl\n");
                 printf(" -------------------------------- \n");
-                printf(" |       redis  wipe cache         | \n");
+                printf(" |       redis  wipe cache      | \n");
                 printf(" -------------------------------- \n");
                 printf(" flushall     flushdb\n");
             }

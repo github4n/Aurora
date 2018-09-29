@@ -15,9 +15,7 @@ public class CommonController {
 
     @Log("访问swagger页面")
     @GetMapping(value = "/swagger/index")
-    public ModelAndView swagger(){
+    public ModelAndView swaggerIndex(){
         return new ModelAndView("/system/api/index");
     }
-
-
 }

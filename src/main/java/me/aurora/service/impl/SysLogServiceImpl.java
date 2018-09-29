@@ -74,6 +74,9 @@ public class SysLogServiceImpl implements SysLogService {
                 }
                 params += "  " + paramNames[i] + ": " + args[i];
             }
+            if (params.length() > 255){
+                params = params.substring(0,254);
+            }
             sysLog.setParams(params);
         }
         // 获取request

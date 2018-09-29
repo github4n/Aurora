@@ -73,20 +73,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void inster(User user, String roles) {
-        if(StrUtil.hasEmpty(user.getUsername())||StrUtil.hasEmpty(user.getEmail())){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请检查是否提交了空的内容");
-        }
         if(userRepo.findByUsername(user.getUsername())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户名已存在");
         }
         if(userRepo.findByEmail(user.getEmail())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户邮箱已存在");
         }
-        if(!StrUtil.hasEmpty(user.getPassword())){
-            user.setPassword(MD5Utils.encrypt(user.getPassword()));
-        } else {
-            throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户密码不能为空");
-        }
+        user.setPassword(MD5Utils.encrypt(user.getPassword()));
         Set<Role> roleSet = new HashSet<>();
         for(String roleId:roles.split(",")){
             Role role = new Role();
@@ -100,9 +93,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user, String roles) {
-        if(StrUtil.hasEmpty(user.getUsername())||StrUtil.hasEmpty(user.getEmail())){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请检查是否提交了空的内容");
-        }
         User old = userRepo.findByUsername(user.getUsername());
         if(old!=null&&!old.getId().equals(user.getId())){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户名已存在");
@@ -112,10 +102,7 @@ public class UserServiceImpl implements UserService {
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户邮箱已存在");
         }
         old = userRepo.findById(user.getId()).get();
-
-        if(!StrUtil.hasEmpty(user.getPassword())){
-            old.setPassword(MD5Utils.encrypt(user.getPassword()));
-        }
+        old.setPassword(MD5Utils.encrypt(user.getPassword()));
         old.setUsername(user.getUsername());
         old.setEmail(user.getEmail());
 
