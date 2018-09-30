@@ -99,14 +99,14 @@
                 done: function () {
                     form.render();
                     //监听提交
-                    form.on('submit(formDemo_hash)', function (data) {
+                    form.on('submit(formDemo_hash)', function () {
                         table.reload('ID', {
                             where: {
                                 username: $('input[name="username"]').val(),
                                 operation: $('input[name="operation"]').val(),
                                 method: $('input[name="method"]').val(),
-                                location: $('input[name="location"]').val()}
-                            ,page: {
+                                location: $('input[name="location"]').val()
+                            },page: {
                                 curr: 1 //重新从第 1 页开始
                             }
                         });

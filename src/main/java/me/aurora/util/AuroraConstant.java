@@ -1,9 +1,9 @@
 package me.aurora.util;
 
 /**
+ * 常用接口
  * @author 郑杰
  * @date 2018/09/29 12:52:06
- * 常用接口
  */
 public class AuroraConstant {
 

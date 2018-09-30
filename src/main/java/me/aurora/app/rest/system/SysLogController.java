@@ -1,23 +1,16 @@
 package me.aurora.app.rest.system;
 
 import lombok.extern.slf4j.Slf4j;
-import me.aurora.annotation.Log;
 import me.aurora.repository.spec.LogSpec;
-import org.slf4j.Logger;
 import me.aurora.service.SysLogService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.Map;
 
 /**
@@ -43,7 +36,7 @@ public class SysLogController {
     }
 
     /**
-     * 查询所有日志s
+     * 查询所有日志
      * @param username
      * @param method
      * @param operation
@@ -60,7 +53,6 @@ public class SysLogController {
                           @RequestParam(value = "location",required = false) String location,
                           @RequestParam(value = "page",defaultValue = "1")Integer page,
                           @RequestParam(value = "limit",defaultValue = "10")Integer limit){
-
         log.warn("REST request to findAll Log");
         Sort sort = new Sort(Sort.Direction.DESC,"createTime");
         Pageable pageable = PageRequest.of(page-1,limit,sort);

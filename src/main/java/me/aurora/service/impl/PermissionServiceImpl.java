@@ -49,6 +49,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Permission findById(Long id) {
         Permission permission = permissionRepo.findById(id).get();
         ValidationUtil.isNull(permission,"id:"+id+"is not find");
@@ -78,6 +79,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Permission> getAll() {
         return permissionRepo.findAll();
     }
@@ -104,11 +106,13 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Permission> findByPid(int pid) {
         return permissionRepo.findByPid(pid);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Permission> findByRoles(Set<Role> roles) {
         return permissionRepo.findByRoles(roles);
     }

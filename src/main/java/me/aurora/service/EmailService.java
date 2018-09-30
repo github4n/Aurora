@@ -5,6 +5,7 @@ import me.aurora.domain.vo.EmailVo;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * @author 郑杰
@@ -33,5 +34,6 @@ public interface EmailService {
      * @param emailVo
      * @param emailConfig
      */
+    @Async
     void send(EmailVo emailVo, EmailConfig emailConfig) throws Exception;
 }

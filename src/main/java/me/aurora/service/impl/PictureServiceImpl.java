@@ -54,6 +54,7 @@ public class PictureServiceImpl implements PictureService {
     private PictureMapper pictureMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Map getPictureInfo(PictureSpec pictureSpec, Pageable pageable) {
         Page<Picture> picturePage = pictureRepo.findAll(pictureSpec,pageable);
         Page<PictureDto> pictureDtos = picturePage.map(pictureMapper::toDto);
@@ -90,6 +91,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Picture findById(Long id) {
         Picture picture = pictureRepo.findById(id).get();
         ValidationUtil.isNull(picture,"id:"+id+"is not find");

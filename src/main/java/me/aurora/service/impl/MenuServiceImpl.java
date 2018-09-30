@@ -64,6 +64,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map getMenuInfo(MenuSpec menuSpec, Pageable pageable) {
         Page<Menu> menuPage = menuRepo.findAll(menuSpec,pageable);
         Page<MenuDTO> menuDTOS = menuPage.map(menuMapper::toDto);
@@ -71,12 +72,14 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Menu> findAllMenus() {
         Integer level = 1;
         return menuRepo.findAllByLevel(level);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Menu findByPId(Integer pid) {
         Menu menu = menuRepo.findById(pid.longValue()).get();
         ValidationUtil.isNull(menu,"pid:"+pid+"is not find");
@@ -128,6 +131,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Menu findById(Long id) {
         Menu menu = menuRepo.findById(id).get();
         ValidationUtil.isNull(menu,"id:"+id+"is not find");

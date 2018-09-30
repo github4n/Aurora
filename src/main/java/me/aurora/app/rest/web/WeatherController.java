@@ -29,7 +29,7 @@ public class WeatherController {
             String data = HttpUtils.sendPost(AuroraConstant.MEIZU_WEATHER_URL, "cityIds=" + areaId);
             return ResponseEntity.ok(data);
         } catch (Exception e) {
-            log.error("查询天气失败", e);
+            log.error("查询天气失败", e.getMessage());
             return ResponseEntity.error("查询天气失败，请联系网站管理员！");
         }
     }

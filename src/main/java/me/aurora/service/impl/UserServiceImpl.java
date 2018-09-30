@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
     private RoleService roleService;
 
     @Override
+    @Transactional(readOnly = true)
     public User findById(Long id) {
         User user = userRepo.findById(id).get();
         ValidationUtil.isNull(user,"id:"+id+"is not find");
@@ -51,16 +53,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findByUsername(String userName) {
         return userRepo.findByUsername(userName);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map getUsersInfo(UserSpec userSpec, Pageable pageable) {
         Page<User> users = userRepo.findAll(userSpec,pageable);
         List<UserDTO> userDTOS = new ArrayList<>();

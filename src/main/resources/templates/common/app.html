@@ -78,30 +78,30 @@
         </div>
         <div class="layui-col-md4">
           <div class="layui-row layui-col-space15">
-            <div class="layui-col-md12">
-              <div class="layui-card">
-                <div class="layui-card-header">快捷入口</div>
-                <div class="layui-card-body">
-                  <div class="layui-row layui-col-space5">
-                    <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
-                      <div style="height:75px;  background-color:#ccc;"></div>
-                    </div>
-                    <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
-                      <div style="height:75px;  background-color:#ccc;"></div>
-                    </div>
-                    <div class="layui-col-xs4 layui-col-sm12 layui-col-md4">
-                      <div style="height:75px;  background-color:#ccc;"></div>
-                    </div>
-                    <div class="layui-col-xs4 layui-col-sm7 layui-col-md8">
-                      <div style="height:75px;  background-color:#ccc;"></div>
-                    </div>
-                    <div class="layui-col-xs4 layui-col-sm5 layui-col-md4">
-                      <div style="height:75px;  background-color:#ccc;"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!--<div class="layui-col-md12">-->
+              <!--<div class="layui-card">-->
+                <!--<div class="layui-card-header">快捷入口</div>-->
+                <!--<div class="layui-card-body">-->
+                  <!--<div class="layui-row layui-col-space5">-->
+                    <!--<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">-->
+                      <!--<div style="height:75px;  background-color:#ccc;"></div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-xs6 layui-col-sm6 layui-col-md4">-->
+                      <!--<div style="height:75px;  background-color:#ccc;"></div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-xs4 layui-col-sm12 layui-col-md4">-->
+                      <!--<div style="height:75px;  background-color:#ccc;"></div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-xs4 layui-col-sm7 layui-col-md8">-->
+                      <!--<div style="height:75px;  background-color:#ccc;"></div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-col-xs4 layui-col-sm5 layui-col-md4">-->
+                      <!--<div style="height:75px;  background-color:#ccc;"></div>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
             <div class="layui-col-md12">
               <div class="layui-card">
                 <div class="layui-card-header">版本信息</div>
@@ -114,7 +114,7 @@
                     <tbody>
                       <tr>
                         <td>版本号</td>
-                        <td>Aurora 1.0</td>
+                        <td>v1.0</td>
                       </tr>
                       <tr>
                         <td>前端框架</td>
@@ -122,7 +122,7 @@
                       </tr>
                       <tr>
                         <td>作者</td>
-                        <td>zhengjie.me</td>
+                        <td><a href="https://www.zhengjie.me">zhengjie</a></td>
                       </tr>
                       <tr>
                         <td>邮箱</td>
@@ -137,11 +137,81 @@
               <div class="layui-card">
                 <div class="layui-card-header">关于Aurora 1.0</div>
                 <div class="layui-card-body">
-                  <p>Aurora是一个简单高效的后台管理系统</p>
-                  <p>Aurora是一个简单高效的后台管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单</p>
-                  <p>数据访问层采用Spring boot Jpa，可快速高效的对单表进行增删改查操作，消除了大量传统XML配置SQL的代码</p>
-                  <p>分页使用Pageable,安全框架采用时下流行的Apache Shiro，可实现对按钮级别的权限控制</p>
-                  <p>前端页面使用KidAdmin构建，并提供多套配色以供选择。</p>
+                  <ul class="layui-timeline">
+
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">特别感谢以下开源项目：</h3>
+                        <p>
+                          <ul>
+                          <li>前端框架：基于layui的<a href="https://gitee.com/kitteam/kit_admin/" target="_blank">kit-admin</a></li>
+                          <li>树形表格：基于layui的<a href="https://gitee.com/beijiyi/tree_table_treegrid_based_on_layui" target="_blank">treeGrid</a></li>
+                          <li>Java工具包：<a href="http://hutool.mydoc.io/" target="_blank">Hutool</a></li>
+                          <li>Redis终端：<a href="https://mrbird.cc/" target="_blank">mrbird</a></li>
+                          <li>ip地址定位库：<a href="https://gitee.com/lionsoul/ip2region" target="_blank">ip2region</a></li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">2018年9月5日 (v1.0)</h3>
+                        <p>
+                          <b>#完成了后台基本搭建,暂无成任何集成</b>
+                        <ul>
+                          <li>主要框架：spring boot+Shiro+Redis</li>
+                          <li>页面模板：Thymeleaf 3.0.9.RELEASE</li>
+                          <li>权限管理：采用的是RBAC思想</li>
+                          <li>密码加密：采用MD5加盐加密</li>
+                          <li>系统日志：使用aop保存日志</li>
+                          <li>实体映射：使用MapStruct</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">2018年9月22日 (v1.0.1)</h3>
+                        <p>
+                          <b>#新增了一些常用功能</b>
+                        <ul>
+                          <li>基于redis+shiro的在线用户管理</li>
+                          <li>redis终端管理</li>
+                          <li>网络图床管理</li>
+                          <li>统一异常处理</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">2018年9月28日 - 至今 (v1.0.1)</h3>
+                        <p>
+                          <b>#集成了第三方工具</b>
+                        <ul>
+                          <li>百度富文本编辑器</li>
+                          <li>邮件发送工具</li>
+                          <li>支付宝支付（开发中）</li>
+                          <li>微信支付（开发中）</li>
+                          <li>阿里大鱼（开发中）</li>
+                          <li>七牛云储存（开发中）</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                      <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                      <div class="layui-timeline-content layui-text">
+                        更新说明
+                      </div>
+                    </li>
+
+                  </ul>
                 </div>
               </div>
             </div>

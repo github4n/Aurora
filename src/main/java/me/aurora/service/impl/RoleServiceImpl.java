@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.*;
 
 /**
@@ -46,11 +48,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Role> getAllRole() {
         return roleRepo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map getRoleInfo(RoleSpec roleSpec, Pageable pageable) {
         Page<Role> roles = roleRepo.findAll(roleSpec,pageable);
         Page<RoleDTO> roleDTOS = roles.map(roleMapper::toDto);
@@ -67,6 +71,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role findById(Long id) {
         Role role = roleRepo.findById(id).get();
         ValidationUtil.isNull(role,"id:"+id+"is not find");

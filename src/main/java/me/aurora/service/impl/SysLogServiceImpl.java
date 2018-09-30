@@ -17,6 +17,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -37,6 +38,7 @@ public class SysLogServiceImpl implements SysLogService {
     private SysLogMapper sysLogMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Map getLogInfo(LogSpec logSpec, Pageable pageable) {
         Page<SysLog> sysLogPage = sysLogRepo.findAll(logSpec,pageable);
         Page<SysLogDTO> sysLogDTOS = sysLogPage.map(sysLogMapper::toDto);

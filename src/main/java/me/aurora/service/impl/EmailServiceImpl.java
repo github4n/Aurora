@@ -11,6 +11,7 @@ import me.aurora.service.EmailService;
 import me.aurora.util.EncryptHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author 郑杰
@@ -35,6 +36,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EmailConfig findById(Long id) {
         EmailConfig emailConfig = emailRepo.findById(id).get();
         return emailConfig;
@@ -62,6 +64,13 @@ public class EmailServiceImpl implements EmailService {
         }
         //是否ssl方式发送
         account.setStartttlsEnable(emailConfig.getSslEnable());
+
+        String content = emailVo.getContent() + "<p style=\"text-align: right;\">\n" +
+                "    <span style=\"color: rgb(0, 112, 192);\"><br/></span>\n" +
+                "</p>\n" +
+                "<h4 style=\"text-align: right;\">\n" +
+                "    <span style=\"color: rgb(0, 112, 192);\">------邮件来自</span><a href=\"http://xiswl.xyz\" target=\"_blank\" style=\"text-decoration: underline;\"><span style=\"color: rgb(0, 112, 192);\">Aurora</span></a><span style=\"color: rgb(0, 112, 192); text-decoration: none;\"></span><span style=\"color: rgb(0, 112, 192);\">的测试</span>\n" +
+                "</h4>";
         /**
          * 发送
          */
@@ -69,7 +78,7 @@ public class EmailServiceImpl implements EmailService {
             MailUtil.send(account,
                           emailVo.getTos(),
                           emailVo.getSubject(),
-                          emailVo.getContent(),
+                          content,
                           emailVo.getIsHtml());
         }catch (Exception e){
             throw new AuroraException(HttpStatus.HTTP_INTERNAL_ERROR,e.getMessage());
