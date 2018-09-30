@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 /**
  * 邮件配置类，数据存覆盖式存入数据存
+ * @author 郑杰
+ * @date 2018/09/29
  */
 @Entity
 @Data

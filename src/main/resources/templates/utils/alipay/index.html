@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>支付宝支付</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <style>
+        .layui-form-label{float:left;display:block;padding:9px 15px;width:100px;font-weight:400;line-height:20px;text-align:right}
+    </style>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">参数配置</li>
+        <li>支付测试</li>
+        <li>使用说明</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;APPID</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="appID" th:value="${alipay.appID}" lay-verify="required" placeholder="APPID" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">应用APPID,收款账号既是APPID对应支付宝账号</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;商家账号</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="sysServiceProviderId" th:value="${alipay.sysServiceProviderId}" lay-verify="required" placeholder="请输入商户账号" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">商家账号</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;商户私钥</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="privateKey" th:value="${alipay.privateKey}" lay-verify="required" placeholder="请输入商户私钥" autocomplete="off" class="layui-input" type="password">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">商户私钥，你的PKCS8格式RSA2私钥</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;支付宝公钥</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="publicKey" th:value="${alipay.publicKey}" lay-verify="required"  placeholder="请输入支付宝公钥" autocomplete="off" class="layui-input" type="password">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">支付宝公钥</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;回调地址</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="returnUrl" th:value="${alipay.returnUrl}" lay-verify="required" placeholder="请输入回调地址" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">订单完成后返回的地址</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;异步通知</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="notifyUrl" th:value="${alipay.notifyUrl}" lay-verify="required" placeholder="请输入异步通知地址" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">支付结果异步通知地址</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;网关地址</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="gatewayUrl" disabled th:value="${alipay.gatewayUrl}" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">支付宝开放安全地址，一般不会变</div>
+                </div>
+
+                <div class="layui-form-item" style="margin-left:4%;">
+                    <button class="layui-btn" lay-submit="required" lay-filter="saveConfig">保存配置</button>
+                </div>
+            </form>
+
+    </div>
+
+    <div class="layui-tab-item">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品名称</label>
+                <div class="layui-input-inline" style="width: 460px">
+                    <input name="subject" lay-verify="required" placeholder="请输入商品名称" autocomplete="off" class="layui-input" type="text">
+                </div>
+                <div class="layui-form-mid layui-word-aux">商品名称不能为空</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品价格</label>
+                <div class="layui-input-inline" style="width: 460px">
+                    <input name="totalAmount" lay-verify="required|number" placeholder="请输入商品价格" autocomplete="off" class="layui-input" type="text">
+                </div>
+                <div class="layui-form-mid layui-word-aux">商品价格不能为空,测试允许区间(0,500]</div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">商品描述</label>
+                <div class="layui-input-block">
+                    <textarea name="body" style="height: 280px;width: 460px;" lay-verify="required" placeholder="请输入商品详情" class="layui-textarea">Aurora测试商品</textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-left:5%;margin-top:5px;">
+                <button class="layui-btn" lay-submit lay-filter="pay">立即支付</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="layui-tab-item">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>使用说明</legend>
+        </fieldset>
+        <blockquote class="layui-elem-quote">
+        注意</blockquote>
+        <pre class="layui-code">
+测试所用参数都是沙箱环境，仅供测试所用，申请地址：<a style="color: #00a0e9" href="https://openhome.alipay.com/platform/appDaily.htm?tab=info" target="_blank">支付宝开发平台</a>
+如需付款测试，请使用
+账号：uuxesw9745@sandbox.com
+密码：111111
+支付密码：111111
+文明测试谢谢</pre>
+        <blockquote class="layui-elem-quote">支付设置</blockquote>
+        <pre class="layui-code">
+本系统提供两个测试地址
+PC端与手机端，并且使用如下代码识别
+if (/(Android)/i.test(navigator.userAgent)){     // 判断是否为Android手机
+    url = "/aliPay/toPayAsWeb"
+}else if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){  // 判断是否为苹果手机
+    url = "/aliPay/toPayAsWeb"
+} else {
+    url = "/aliPay/toPayAsPC"
+}</pre>
+        <blockquote class="layui-elem-quote">更多帮助</blockquote>
+        <pre class="layui-code">更多帮助请查看系统源码</pre>
+    </div>
+</div>
+</div>
+<script>
+    layui.use(['form', 'layedit',  'element', 'layer'], function(){
+        var form = layui.form,
+            layer = layui.layer,
+            element = layui.element;
+        form.render();
+        //监听提交，发送请求
+        form.on('submit(saveConfig)', function(){
+            $.ajax({
+                url:"/aliPay/config",
+                contentType: "application/json",
+                type: "POST",
+                data:JSON.stringify({
+                    appID:$("input[name='appID']").val(),
+                    privateKey:$("input[name='privateKey']").val(),
+                    publicKey:$("input[name='publicKey']").val(),
+                    notifyUrl:$("input[name='notifyUrl']").val(),
+                    returnUrl:$("input[name='returnUrl']").val(),
+                    sysServiceProviderId:$("input[name='sysServiceProviderId']").val()
+                }),
+                success:function(result){
+                    if (result.code == 200) {
+                        layer.msg(result.msg, {icon: 6, time: 1500});
+                    } else {
+                        layer.alert(result.msg, {icon: 5});
+                    }
+                }
+            });
+            return false;
+        });
+
+        //监听提交，发送请求
+        form.on('submit(pay)', function(){
+
+            if (/(Android)/i.test(navigator.userAgent)){     // 判断是否为Android手机
+                url = "/aliPay/toPayAsWeb"
+            }else if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){  // 判断是否为苹果手机
+                url = "/aliPay/toPayAsWeb"
+            } else {
+                url = "/aliPay/toPayAsPC"
+            }
+
+            $.ajax({
+                url:url,
+                contentType: "application/json",
+                type: "POST",
+                data:JSON.stringify({
+                    subject:$("input[name='subject']").val(),
+                    body:$("textarea[name='body']").val(),
+                    totalAmount:$("input[name='totalAmount']").val()
+                }),
+                success:function(result){
+                    if (result.code == 200) {
+                        openWin(result.msg);
+                    } else {
+                        layer.alert(result.msg, {icon: 5});
+                    }
+                }
+            });
+            return false;
+        });
+
+        function openWin(url) {
+            $('body').append($('<a href="'+url+'" target="_blank" id="openWin"></a>'))
+            document.getElementById("openWin").click();//点击事件
+            $('#openWin').remove();
+        }
+    });
+</script>
+</body>
+</html>
