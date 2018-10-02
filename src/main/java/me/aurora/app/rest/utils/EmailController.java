@@ -35,7 +35,8 @@ public class EmailController {
     @Log("配置邮件")
     @PostMapping(value = "/config")
     public ResponseEntity emailConfig(@RequestBody @Validated(EmailConfig.Update.class) EmailConfig emailConfig){
-        emailService.updateConfig(emailConfig);
+        emailConfig.setId(1L);
+        emailService.updateConfig(emailConfig,emailService.findById(1L));
         return ResponseEntity.ok();
     }
 

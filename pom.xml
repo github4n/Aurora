@@ -159,6 +159,13 @@
             <version>4.1.8</version>
         </dependency>
 
+        <!--七牛云存储-->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.2.0, 7.2.99]</version>
+        </dependency>
+
         <!--邮件依赖-->
         <dependency>
             <groupId>javax.mail</groupId>

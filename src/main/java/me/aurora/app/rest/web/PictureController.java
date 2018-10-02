@@ -53,7 +53,7 @@ public class PictureController {
     @Log("查询全部图片")
     @RequiresPermissions(value={"admin", "picture:all","picture:select"}, logical= Logical.OR)
     @GetMapping(value = "/getPictureInfo")
-    public Map getLogInfo(@RequestParam(value = "username",required = false) String username,
+    public Map getInfo(@RequestParam(value = "username",required = false) String username,
                           @RequestParam(value = "createTime",required = false) Timestamp createTime,
                           @RequestParam(value = "endTime",required = false) Timestamp endTime,
                           @RequestParam(value = "page",defaultValue = "1")Integer page,
@@ -85,7 +85,7 @@ public class PictureController {
     @Log("上传图片")
     @RequiresPermissions (value={"admin", "picture:all","picture:upload"}, logical= Logical.OR)
     @PostMapping(value = "/upload")
-    public ResponseEntity uploadAccessory(@RequestParam MultipartFile file) throws Exception {
+    public ResponseEntity upload(@RequestParam MultipartFile file) throws Exception {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         pictureService.upload(file,user);
         return ResponseEntity.ok();

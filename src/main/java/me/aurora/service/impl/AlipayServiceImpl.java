@@ -13,7 +13,6 @@ import me.aurora.service.AlipayService;
 import me.aurora.util.pay.AlipayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 /**
@@ -74,7 +73,7 @@ public class AlipayServiceImpl implements AlipayService {
         AlipayClient alipayClient = new DefaultAlipayClient(alipay.getGatewayUrl(), alipay.getAppID(), alipay.getPrivateKey(), alipay.getFormat(), alipay.getCharset(), alipay.getPublicKey(), alipay.getSignType());
 
         double money = Double.parseDouble(trade.getTotalAmount());
-        if(money <= 0 || money>=500){
+        if(money <= 0 || money >= 5000){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"测试金额过大");
         }
 
@@ -116,7 +115,6 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     public AlipayConfig updateConfig(AlipayConfig alipayConfig) {
-        alipayConfig.setId(1L);
         alipayRepo.saveAndFlush(alipayConfig);
         return alipayConfig;
     }

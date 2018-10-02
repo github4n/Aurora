@@ -28,7 +28,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class=layui-input-lump>
-                <input type="text" name="id" placeholder="请输入用户名.." autocomplete="off" class="layui-input">
+                <input type="text" name="username" placeholder="请输入用户名.." autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -123,7 +123,7 @@
             });
         });
 
-        //监听修改按钮
+        //监听按钮
         table.on('tool(tools)', function(obj){
             var data = obj.data;
             if(obj.event === 'look'){

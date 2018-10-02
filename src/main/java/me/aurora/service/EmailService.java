@@ -4,6 +4,7 @@ import me.aurora.domain.utils.EmailConfig;
 import me.aurora.domain.vo.EmailVo;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 
@@ -18,8 +19,8 @@ public interface EmailService {
      * 更新邮件配置
      * @param emailConfig
      */
-    @CacheEvict(allEntries = true)
-    EmailConfig updateConfig(EmailConfig emailConfig);
+    @CachePut(key = "#p0.getId()")
+    EmailConfig updateConfig(EmailConfig emailConfig,EmailConfig old);
 
     /**
      * 根据ID查询配置

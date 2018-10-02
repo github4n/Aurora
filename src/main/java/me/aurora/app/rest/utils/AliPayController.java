@@ -47,10 +47,12 @@ public class AliPayController {
     @Log("配置支付宝参数")
     @PostMapping(value = "/config")
     public ResponseEntity emailConfig(@Validated(AlipayConfig.New.class) @RequestBody AlipayConfig alipayConfig){
+        alipayConfig.setId(1L);
         alipayService.updateConfig(alipayConfig);
         return ResponseEntity.ok();
     }
 
+    @Log("支付宝PC网页支付")
     @ApiOperation(value = "PC网页支付")
     @PostMapping(value = "/toPayAsPC")
     public ResponseEntity toPayAsPC(@Validated(TradeVo.New.class) @RequestBody TradeVo trade) throws Exception{
@@ -60,6 +62,7 @@ public class AliPayController {
         return ResponseEntity.ok(payUrl);
     }
 
+    @Log("支付宝手机网页支付")
     @ApiOperation(value = "手机网页支付")
     @PostMapping(value = "/toPayAsWeb")
     public ResponseEntity toPayAsWeb(@Validated(TradeVo.New.class) @RequestBody TradeVo trade) throws Exception{
@@ -69,6 +72,7 @@ public class AliPayController {
         return ResponseEntity.ok(payUrl);
     }
 
+    @Log("支付宝回调")
     @ApiIgnore
     @GetMapping("/return")
     @ApiOperation(value = "支付之后跳转的链接")
@@ -95,6 +99,7 @@ public class AliPayController {
         }
     }
 
+    @Log("支付异步通知")
     @ApiIgnore
     @RequestMapping("/notify")
     @ApiOperation(value = "支付异步通知(要公网访问)，接收异步通知，检查通知内容app_id、out_trade_no、total_amount是否与请求中的一致，根据trade_status进行后续业务处理")

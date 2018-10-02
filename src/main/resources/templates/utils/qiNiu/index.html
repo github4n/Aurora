@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>七牛云存储</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <style>
+        .layui-form-label{float:left;display:block;padding:9px 15px;width:100px;font-weight:400;line-height:20px;text-align:right}
+    </style>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">参数配置</li>
+        <li>文件列表</li>
+        <li>使用说明</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;accessKey</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="accessKey" th:value="${qiniuConfig.accessKey}" lay-verify="required" placeholder="accessKey" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">账号唯一的accessKey，在安全中心查看</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;secretKey</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="secretKey" th:value="${qiniuConfig.secretKey}" lay-verify="required" placeholder="secretKey" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">账号唯一的secretKey，在安全中心查看</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;bucket</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="bucket" th:value="${qiniuConfig.bucket}" lay-verify="required" placeholder="bucket" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">存储空间名称作为唯一的 Bucket 识别符</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;Host</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="host" th:value="${qiniuConfig.host}" lay-verify="required"  placeholder="外链域名" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">外链域名，可自定义，需在七牛云绑定</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;存储区域</label>
+                    <div class="layui-input-inline">
+                        <select name="zone" lay-verify="required" lay-search="">
+                            <option th:selected="${qiniuConfig.zone == '华东'}" value="华东">华东</option>
+                            <option th:selected="${qiniuConfig.zone == '华北'}" value="华北">华北</option>
+                            <option th:selected="${qiniuConfig.zone == '华南'}" value="华南">华南</option>
+                            <option th:selected="${qiniuConfig.zone == '北美'}" value="北美">北美</option>
+                            <option th:selected="${qiniuConfig.zone == '东南亚'}" value="东南亚">东南亚</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;空间类型</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" th:checked="${qiniuConfig.type == '公开'}" name="type" value="公开" title="公开">
+                        <input type="radio" th:checked="${qiniuConfig.type == '私有'}" name="type" value="私有" title="私有">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="margin-left:4%;">
+                    <button class="layui-btn" lay-submit="required" lay-filter="saveConfig">保存配置</button>
+                </div>
+            </form>
+    </div>
+
+    <div class="layui-tab-item" id="QiNiuFile">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a id="add" class="layui-btn layui-btn-xs">
+                            <i class="layui-icon"></i>
+                            <span>上传</span>
+                        </a>
+                        <a id="tongBu" class="layui-btn layui-btn-xs layui-btn-primary">
+                            <i class="layui-icon">&#xe669;</i>
+                            <span>同步</span>
+                        </a>
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                    <script type="text/html" id="operation">
+                        <button class="layui-btn layui-btn-xs layui-btn-primary" lay-event="download">下载</button>
+                        <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-tab-item">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>使用说明</legend>
+        </fieldset>
+        <blockquote class="layui-elem-quote">
+        注意</blockquote>
+        <pre class="layui-code">
+1、配置时外链域名需带上协议，也就是必须http/https开头
+2、如果七牛云中存在数据，使用同步按钮即可将数据同步到数据库
+3、本次集成了七牛云的常用操作，如：上传，下载，删除，同步，支持私有空间上传下载
+4、项目中配置存入数据库，如需测试，请使用临时空间进行测试，测试完成及时修改配置，反正数据泄露</pre>
+        <blockquote class="layui-elem-quote">开始使用</blockquote>
+        <pre class="layui-code">
+#引入依赖
+&lt;dependency&gt;
+  &lt;groupId&gt;com.qiniu&lt;/groupId&gt;
+  &lt;artifactId&gt;qiniu-java-sdk&lt;/artifactId&gt;
+  &lt;version&gt;[7.2.0, 7.2.99]&lt;/version&gt;
+&lt;dependency&gt;
+#简单的上传文件
+//构造一个带指定Zone对象的配置类
+Configuration cfg = new Configuration(Zone.zone0());
+//...其他参数参考类注释
+UploadManager uploadManager = new UploadManager(cfg);
+//...生成上传凭证，然后准备上传
+String accessKey = "your access key";
+String secretKey = "your secret key";
+String bucket = "your bucket name";
+//默认不指定key的情况下，以文件内容的hash值作为文件名
+String key = null;
+try {
+    byte[] uploadBytes = "hello qiniu cloud".getBytes("utf-8");
+    Auth auth = Auth.create(accessKey, secretKey);
+    String upToken = auth.uploadToken(bucket);
+    try {
+        Response response = uploadManager.put(uploadBytes, key, upToken);
+        //解析上传成功的结果
+        DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+        System.out.println(putRet.key);
+        System.out.println(putRet.hash);
+    } catch (QiniuException ex) {
+        Response r = ex.response;
+        System.err.println(r.toString());
+        try {
+            System.err.println(r.bodyString());
+        } catch (QiniuException ex2) {
+            //ignore
+        }
+    }
+} catch (UnsupportedEncodingException ex) {
+    //ignore
+}
+</pre>
+        <blockquote class="layui-elem-quote">更多帮助</blockquote>
+        <pre class="layui-code">更多帮助请查看系统源码，或者七牛云java开发文档
+七牛云官网：<a style="color: #00a2d4" href="https://sso.qiniu.com/" target="_blank">https://sso.qiniu.com/</a>
+七牛云java开发文档：<a style="color: #00a2d4" href="https://developer.qiniu.com/kodo/sdk/1239/java#3" target="_blank">https://developer.qiniu.com/kodo/sdk/1239/java#3</a>
+</pre>
+    </div>
+</div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">文件名</label>
+            <div class=layui-input-lump>
+                <input type="text" name="name" placeholder="请输入文件名.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script>
+    layui.use(['form', 'layedit','table','sidebar','element', 'layer'], function(){
+        var form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            element = layui.element;
+        form.render();
+        //监听提交，发送请求
+        form.on('submit(saveConfig)', function(){
+            $.ajax({
+                url:"/qiNiu/config",
+                contentType: "application/json",
+                type: "POST",
+                data:JSON.stringify({
+                    accessKey:$("input[name='accessKey']").val(),
+                    secretKey:$("input[name='secretKey']").val(),
+                    bucket:$("input[name='bucket']").val(),
+                    host:$("input[name='host']").val(),
+                    zone:$("select[name=\"zone\"]").val(),
+                    type:$("input[name=\"type\"]:checked").val()
+                }),
+                success:function(result){
+                    if (result.code == 200) {
+                        layer.msg(result.msg, {icon: 6, time: 1500});
+                    } else {
+                        layer.alert(result.msg, {icon: 5});
+                    }
+                }
+            });
+            return false;
+        });
+
+        //监听搜索事件
+        $('#search_hash').on('click', function () {
+            var that = this;
+            sidebar.render({
+                elem: that,
+                content: $('#search_tpl_hash').html(),
+                title: '搜索',
+                shade: true,
+                width: '450px', //可以设置百分比和px
+                done: function () {
+                    form.render();
+                    //监听提交
+                    form.on('submit(formDemo_hash)', function (data) {
+                        table.reload('ID', {
+                            where: {
+                                name: $('input[name="name"]').val()
+                            }
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                        return false;
+                    });
+                }
+            });
+        });
+
+        //监听新增事件
+        $('#add').on('click', function(){
+            var index = layer.open({
+                type: 2
+                ,content: '/qiNiu/toAddPage'
+                ,area: ['550px', '400px']
+                ,btnAlign: 'c'
+                ,shade: 0.8
+                ,maxmin: true
+                ,title: '上传文件'
+                ,btn: ['确认', '取消']
+                ,yes: function(){
+                    layer.msg("操作成功", {icon: 6});
+                    layer.close(index);
+                    table.reload('ID', {
+                        where: {
+                            username: $('input[name="username"]').val()
+                        }
+                        ,page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                }
+            });
+            parent.layer.iframeAuto(index);
+        });
+
+        //监听同步事件
+        $('#tongBu').on('click', function(){
+            var index = layer.msg('数据同步中，请稍后', {icon: 16});
+            $.ajax({
+                url: "/qiNiu/synchronize",
+                type: "POST",
+                success: function(data){
+                    if (data.code == 200) {
+                        layer.close(index);
+                        layer.msg("同步完成", {icon: 6});
+                        table.reload('ID', {
+                            where: {}
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                    } else {
+                        layer.close(index);
+                        layer.msg(data.msg, {icon: 5});
+                    }
+                }
+            });
+        });
+
+        //监听按钮
+        table.on('tool(tools)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'download'){
+                var id = data.id;
+                $.ajax({
+                    url: "/qiNiu/download?id="+id,
+                    type: "POST",
+                    success: function(data){
+                        if (data.code == 200) {
+                            window.open(data.msg)
+                        } else {
+                            layer.close(index);
+                            layer.msg(data.msg, {icon: 5});
+                        }
+                    }
+                });
+            }else if(obj.event === 'del'){
+                layer.confirm("你确定删除数据吗?", {icon: 3 ,btnAlign: 'c', title:'提示'},
+                    function(index){//确定回调
+                        // 写删除方法
+                        $.ajax({
+                            url: "/qiNiu/delete?id="+data.id,
+                            type: "DELETE",
+                            success: function(data){
+                                if (data.code == 200) {
+                                    layer.close(index);
+                                    layui.layer.msg("删除成功", {icon: 6});
+                                    setTimeout(function () {
+                                        table.reload('ID', {
+                                            where: {}
+                                            ,page: {
+                                                curr: 1
+                                            }
+                                        });
+                                    },1000);
+                                } else {
+                                    layer.close(index);
+                                    layer.msg(data.msg, {icon: 5});
+                                }
+                            }
+                        });
+                    });
+            }
+        });
+
+        //一些事件监听
+        element.on('tab(docDemoTabBrief)', function(data){
+            if(data.index == 1){
+                //表格渲染
+                table.render({
+                    elem: '#myTable'
+                    ,url:'/qiNiu/getContentInfo'
+                    ,page: true
+                    ,id:"ID"
+                    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                    ,cols: [
+                        [
+                            {field:'id',align:'center', width:70,  title: '编号'}
+                            ,{field:'key',  title: '文件名称'}
+                            ,{field:'url',  title: '文件地址'}
+                            ,{field:'size',  title: '文件大小'}
+                            ,{field:'type',  title: '空间类型',width:120}
+                            ,{field:'bucket',  title: '所属空间'}
+                            ,{field:'updateTime',  title: '更新时间',width:170}
+                            ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作',fixed: 'right'}
+                        ]
+                    ]
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

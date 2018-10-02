@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50559
  Source Host           : localhost:3306
- Source Schema         : aurora
+ Source Schema         : my_aurora
 
  Target Server Type    : MySQL
  Target Server Version : 50559
  File Encoding         : 65001
 
- Date: 30/09/2018 16:17:12
+ Date: 02/10/2018 16:35:37
 */
 
 SET NAMES utf8mb4;
@@ -80,7 +80,7 @@ CREATE TABLE `zj_menu`  (
   `sys` bit(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_cbhg0bi3f1emxkhqqtvca9btx`(`soft`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_menu
@@ -101,11 +101,12 @@ INSERT INTO `zj_menu` VALUES (13, 'layui-icon-tree', 12, 2, '图床管理', 31, 
 INSERT INTO `zj_menu` VALUES (14, 'layui-icon-tree', 5, 2, '在线用户', 12, '/online/index', '2018-09-21 16:09:38', '2018-09-22 10:17:09', 0, b'0', b'1');
 INSERT INTO `zj_menu` VALUES (16, 'layui-icon-tree', 5, 2, 'Redis终端', 16, '/redis/terminal', '2018-09-22 11:18:21', '2018-09-27 13:25:09', 0, b'0', b'1');
 INSERT INTO `zj_menu` VALUES (17, 'layui-icon-tree', 7, 2, '接口文档', 7, '/swagger/index', '2018-09-23 09:16:17', '2018-09-23 10:01:06', 0, b'0', b'1');
-INSERT INTO `zj_menu` VALUES (18, 'layui-icon-util', 0, 1, '工具管理', 40, '', '2018-09-24 23:46:02', '2018-09-30 15:16:43', 3, b'0', b'1');
-INSERT INTO `zj_menu` VALUES (19, 'layui-icon-tree', 18, 2, '富文本编辑', 45, '/ueditor/index', '2018-09-24 23:46:47', '2018-09-24 23:46:47', 0, b'0', b'1');
+INSERT INTO `zj_menu` VALUES (18, 'layui-icon-util', 0, 1, '工具管理', 40, '', '2018-09-24 23:46:02', '2018-10-02 11:03:27', 4, b'0', b'1');
+INSERT INTO `zj_menu` VALUES (19, 'layui-icon-code-circle', 18, 2, '富文本编辑', 45, '/ueditor/index', '2018-09-24 23:46:47', '2018-10-02 16:28:18', 0, b'0', b'1');
 INSERT INTO `zj_menu` VALUES (21, 'layui-icon-tree', 5, 2, 'SQL监控', 15, '/druid/index.html', '2018-09-27 13:24:25', '2018-09-27 13:24:25', 0, b'1', b'1');
-INSERT INTO `zj_menu` VALUES (22, 'layui-icon-edit', 18, 2, '邮件工具', 41, '/email/index', '2018-09-28 07:32:57', '2018-09-28 07:32:57', 0, b'0', b'1');
-INSERT INTO `zj_menu` VALUES (24, 'layui-icon-tree', 18, 2, '支付宝工具', 42, '/aliPay/index', '2018-09-30 15:16:43', '2018-09-30 15:16:43', 0, b'0', b'0');
+INSERT INTO `zj_menu` VALUES (22, 'layui-icon-edit', 18, 2, '邮件工具', 41, '/email/index', '2018-09-28 07:32:57', '2018-10-02 16:26:01', 0, b'0', b'1');
+INSERT INTO `zj_menu` VALUES (24, 'layui-icon-dollar', 18, 2, '支付宝工具', 42, '/aliPay/index', '2018-09-30 15:16:43', '2018-10-02 16:27:09', 0, b'0', b'0');
+INSERT INTO `zj_menu` VALUES (25, 'layui-icon-upload', 18, 2, '七牛云存储', 43, '/qiNiu/index', '2018-10-02 11:03:27', '2018-10-02 16:26:42', 0, b'0', b'0');
 
 -- ----------------------------
 -- Table structure for zj_menus_roles
@@ -144,6 +145,7 @@ INSERT INTO `zj_menus_roles` VALUES (19, 1);
 INSERT INTO `zj_menus_roles` VALUES (21, 1);
 INSERT INTO `zj_menus_roles` VALUES (22, 1);
 INSERT INTO `zj_menus_roles` VALUES (24, 1);
+INSERT INTO `zj_menus_roles` VALUES (25, 1);
 INSERT INTO `zj_menus_roles` VALUES (5, 3);
 INSERT INTO `zj_menus_roles` VALUES (7, 3);
 INSERT INTO `zj_menus_roles` VALUES (9, 3);
@@ -243,6 +245,36 @@ CREATE TABLE `zj_picture`  (
 INSERT INTO `zj_picture` VALUES (1, '2018-09-21 12:01:57', '1', '200', '8.49KB   ', 'https://i.loli.net/2018/09/21/5ba46d305018d.jpg', '200', 1, 'avatar');
 
 -- ----------------------------
+-- Table structure for zj_qiniu_config
+-- ----------------------------
+DROP TABLE IF EXISTS `zj_qiniu_config`;
+CREATE TABLE `zj_qiniu_config`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `accessKey` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `bucket` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `host` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `secretKey` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `zone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for zj_qiniu_content
+-- ----------------------------
+DROP TABLE IF EXISTS `zj_qiniu_content`;
+CREATE TABLE `zj_qiniu_content`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `bucket` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `size` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `updateTime` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
 -- Table structure for zj_role
 -- ----------------------------
 DROP TABLE IF EXISTS `zj_role`;
@@ -276,7 +308,7 @@ CREATE TABLE `zj_syslog`  (
   `time` int(11) NULL DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 88 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 222 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for zj_user
@@ -298,7 +330,7 @@ CREATE TABLE `zj_user`  (
 -- ----------------------------
 -- Records of zj_user
 -- ----------------------------
-INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-09-30 15:30:16', '65a674ce6632479005ea7a9071234cfb', 'aurora');
+INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-10-02 14:03:44', '65a674ce6632479005ea7a9071234cfb', 'aurora');
 
 -- ----------------------------
 -- Table structure for zj_user_pictures

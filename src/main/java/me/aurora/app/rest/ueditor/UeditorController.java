@@ -19,8 +19,9 @@ import java.io.PrintWriter;
 @RequestMapping("ueditor")
 public class UeditorController {
 
+    @Log("访问ueditor")
     @GetMapping(value = "/index")
-    private ModelAndView index(){
+    public ModelAndView index(){
         return new ModelAndView("/ueditor/index");
     }
 

@@ -24,10 +24,11 @@ public class EmailServiceImpl implements EmailService {
     private EmailRepo emailRepo;
 
     @Override
-    public EmailConfig updateConfig(EmailConfig emailConfig) {
-        emailConfig.setId(1L);
+    public EmailConfig updateConfig(EmailConfig emailConfig,EmailConfig old) {
         try {
-            emailConfig.setPass(EncryptHelper.desEncrypt(emailConfig.getPass()));
+            if(!emailConfig.getPass().equals(old.getPass())){
+                emailConfig.setPass(EncryptHelper.desEncrypt(emailConfig.getPass()));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
