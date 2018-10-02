@@ -3,6 +3,8 @@ package me.aurora.util;
 import cn.hutool.http.HttpStatus;
 import me.aurora.config.exception.AuroraException;
 
+import java.util.Optional;
+
 /**
  * 验证工具
  * @author 郑杰
@@ -12,11 +14,11 @@ public class ValidationUtil {
 
     /**
      * 验证空
-     * @param object
+     * @param optional
      */
-    public static void isNull(Object object,String msg){
+    public static void isNull(Optional optional, String msg){
         System.out.println(msg);
-        if(object == null){
+        if(!optional.isPresent()){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,msg);
         }
     }

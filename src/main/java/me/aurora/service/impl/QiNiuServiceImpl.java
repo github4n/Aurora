@@ -10,6 +10,7 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
+import jdk.nashorn.internal.ir.Optimistic;
 import me.aurora.config.exception.AuroraException;
 import me.aurora.domain.ResponseEntity;
 import me.aurora.domain.utils.QiniuConfig;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +49,13 @@ public class QiNiuServiceImpl implements QiNiuService {
 
     @Override
     public QiniuConfig findById(long id) {
-        return qiNiuConfigRepo.findById(id).get();
+        Optional<QiniuConfig> qiniuConfig = qiNiuConfigRepo.findById(id);
+        if(qiniuConfig.isPresent()){
+            return qiniuConfig.get();
+        } else {
+            return null;
+        }
+
     }
 
     @Override
@@ -94,9 +102,9 @@ public class QiNiuServiceImpl implements QiNiuService {
 
     @Override
     public QiniuContent findByContentId(Long id) {
-        QiniuContent qiniuContent = qiniuContentRepo.findById(id).get();
+        Optional<QiniuContent> qiniuContent = qiniuContentRepo.findById(id);
         ValidationUtil.isNull(qiniuContent,"文件不存在");
-        return qiniuContent;
+        return qiniuContent.get();
     }
 
     @Override

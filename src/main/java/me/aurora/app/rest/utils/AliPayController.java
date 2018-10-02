@@ -41,6 +41,9 @@ public class AliPayController {
         AlipayConfig alipay = alipayService.findById(1L);
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         request.setAttribute("alipay",alipay);
+        if(alipay == null){
+            request.setAttribute("alipay",new AlipayConfig());
+        }
         return new ModelAndView("/utils/alipay/index");
     }
 

@@ -7,6 +7,7 @@ import me.aurora.domain.utils.QiniuConfig;
 import me.aurora.repository.spec.QiNiuContentSpec;
 import me.aurora.service.QiNiuService;
 import me.aurora.util.HttpContextUtils;
+import me.aurora.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,9 @@ public class QiniuController {
         QiniuConfig qiniuConfig = qiNiuService.findById(1L);
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         request.setAttribute("qiniuConfig",qiniuConfig);
+        if(qiniuConfig == null){
+            request.setAttribute("qiniuConfig",new QiniuConfig());
+        }
         return new ModelAndView("/utils/qiNiu/index");
     }
 
@@ -51,6 +55,9 @@ public class QiniuController {
         Sort sort = new Sort(Sort.Direction.DESC,"updateTime");
         Pageable pageable = PageRequest.of(page-1,limit,sort);
         QiniuConfig qiniuConfig = qiNiuService.findById(1L);
+        if(qiniuConfig == null){
+            return PageUtil.buildPage(null,0L);
+        }
         return qiNiuService.getContentInfo(new QiNiuContentSpec(name,qiniuConfig.getBucket()),pageable);
     }
 

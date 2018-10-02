@@ -81,9 +81,9 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional(readOnly = true)
     public Menu findByPId(Integer pid) {
-        Menu menu = menuRepo.findById(pid.longValue()).get();
+        Optional<Menu> menu = menuRepo.findById(pid.longValue());
         ValidationUtil.isNull(menu,"pid:"+pid+"is not find");
-        return menu;
+        return menu.get();
     }
 
     @Override
@@ -116,6 +116,7 @@ public class MenuServiceImpl implements MenuService {
         if(menu.getLevelNum() == 0){
             try {
                 Optional<Menu> optionalMenu = menuRepo.findById(menu.getPid().longValue());
+                ValidationUtil.isNull(optionalMenu,"pid:"+menu.getPid().longValue()+"is not find");
                 Menu pMenu = optionalMenu.get();
                 pMenu.setLevelNum(pMenu.getLevelNum()-1);
             }catch (Exception e){
@@ -133,9 +134,9 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional(readOnly = true)
     public Menu findById(Long id) {
-        Menu menu = menuRepo.findById(id).get();
+        Optional<Menu> menu = menuRepo.findById(id);
         ValidationUtil.isNull(menu,"id:"+id+"is not find");
-        return menu;
+        return menu.get();
     }
 
     @Override

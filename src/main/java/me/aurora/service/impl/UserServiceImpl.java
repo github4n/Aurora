@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User findById(Long id) {
-        User user = userRepo.findById(id).get();
+        Optional<User> user = userRepo.findById(id);
         ValidationUtil.isNull(user,"id:"+id+"is not find");
-        return user;
+        return user.get();
     }
 
     @Override

@@ -29,6 +29,9 @@ public class EmailController {
         EmailConfig emailConfig = emailService.findById(1L);
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         request.setAttribute("email",emailConfig);
+        if(emailConfig == null){
+            request.setAttribute("email",new EmailConfig());
+        }
         return new ModelAndView("/utils/email/index");
     }
 

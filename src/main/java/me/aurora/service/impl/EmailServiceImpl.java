@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * @author 郑杰
  * @date 2018/09/28 7:11:56
@@ -39,8 +41,13 @@ public class EmailServiceImpl implements EmailService {
     @Override
     @Transactional(readOnly = true)
     public EmailConfig findById(Long id) {
-        EmailConfig emailConfig = emailRepo.findById(id).get();
-        return emailConfig;
+        Optional<EmailConfig> emailConfig = emailRepo.findById(id);
+        if(emailConfig.isPresent()){
+            return emailConfig.get();
+        } else {
+            return null;
+        }
+
     }
 
     @Override

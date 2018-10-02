@@ -73,9 +73,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(readOnly = true)
     public Role findById(Long id) {
-        Role role = roleRepo.findById(id).get();
+        Optional<Role> role = roleRepo.findById(id);
         ValidationUtil.isNull(role,"id:"+id+"is not find");
-        return role;
+        return role.get();
     }
 
     @Override

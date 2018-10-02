@@ -51,9 +51,9 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional(readOnly = true)
     public Permission findById(Long id) {
-        Permission permission = permissionRepo.findById(id).get();
+        Optional<Permission> permission = permissionRepo.findById(id);
         ValidationUtil.isNull(permission,"id:"+id+"is not find");
-        return permission;
+        return permission.get();
     }
 
     @Override

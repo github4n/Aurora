@@ -110,7 +110,11 @@ public class AlipayServiceImpl implements AlipayService {
     @Override
     public AlipayConfig findById(long id) {
         Optional<AlipayConfig> alipayConfig = alipayRepo.findById(1L);
-        return alipayConfig.get();
+        if (alipayConfig.isPresent()){
+            return alipayConfig.get();
+        } else {
+            return null;
+        }
     }
 
     @Override
