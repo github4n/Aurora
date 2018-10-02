@@ -53,6 +53,9 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void send(EmailVo emailVo, EmailConfig emailConfig) throws Exception {
 
+        if(emailConfig == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请先添加相应配置，再操作");
+        }
         /**
          * 封装
          */

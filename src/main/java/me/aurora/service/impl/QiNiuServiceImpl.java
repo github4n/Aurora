@@ -76,6 +76,9 @@ public class QiNiuServiceImpl implements QiNiuService {
     @Override
     public void upload(MultipartFile file,QiniuConfig qiniuConfig) {
 
+        if(qiniuConfig == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请先添加相应配置，再操作");
+        }
         /**
          * 构造一个带指定Zone对象的配置类
          */
@@ -140,6 +143,9 @@ public class QiNiuServiceImpl implements QiNiuService {
 
     @Override
     public void synchronize(QiniuConfig config) {
+        if(config == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请先添加相应配置，再操作");
+        }
         //构造一个带指定Zone对象的配置类
         Configuration cfg = QiNiuUtil.getConfiguration(config.getZone());
         Auth auth = Auth.create(config.getAccessKey(), config.getSecretKey());

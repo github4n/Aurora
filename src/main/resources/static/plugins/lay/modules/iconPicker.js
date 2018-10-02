@@ -24,17 +24,21 @@ layui.define(['laypage', 'form'], function (exports) {
             // 是否分页：true/false
             page = opts.page,
             // 每页显示数量
-            limit = limit == null ? 36 : opts.limit,
+            limit = 12,
             // 是否开启搜索：true/false
             search = opts.search == null ? true : opts.search,
             // 点击回调
             click = opts.click,
+            // 渲染成功后的回调
+            success = opts.success,
             // json数据
             data = {},
             // 唯一标识
             tmp = new Date().getTime(),
             // 是否使用的class数据
             isFontClass = opts.type === 'fontClass',
+            // 初始化时input的值
+            ORIGINAL_ELEM_VALUE = $(elem).val(),
             TITLE = 'layui-select-title',
             TITLE_ID = 'layui-select-title-' + tmp,
             ICON_BODY = 'layui-iconpicker-' + tmp,
@@ -49,8 +53,23 @@ layui.define(['laypage', 'form'], function (exports) {
                 data = common.getData[type]();
 
                 a.hideElem().createSelect().createBody().toggleSelect();
+                a.preventEvent().inputListen();
                 common.loadCss();
+                
+                if (success) {
+                    success(this.successHandle());
+                }
+
                 return a;
+            },
+            successHandle: function(){
+                var d = {
+                    options: opts,
+                    data: data,
+                    id: tmp,
+                    elem: $('#' + ICON_BODY)
+                };
+                return d;
             },
             /**
              * 隐藏elem
@@ -63,11 +82,29 @@ layui.define(['laypage', 'form'], function (exports) {
              * 绘制select下拉选择框
              */
             createSelect: function () {
+                var oriIcon = '<i class="layui-icon">';
+                
+                // 默认图标
+                if(ORIGINAL_ELEM_VALUE === '') {
+                    if(isFontClass) {
+                        ORIGINAL_ELEM_VALUE = 'layui-icon-circle-dot';
+                    } else {
+                        ORIGINAL_ELEM_VALUE = '&#xe617;';
+                    }
+                }
+
+                if (isFontClass) {
+                    oriIcon = '<i class="layui-icon '+ ORIGINAL_ELEM_VALUE +'">';
+                } else {
+                    oriIcon += ORIGINAL_ELEM_VALUE; 
+                }
+                oriIcon += '</i>';
+
                 var selectHtml = '<div class="layui-iconpicker layui-unselect layui-form-select" id="'+ ICON_BODY +'">' +
                     '<div class="'+ TITLE +'" id="'+ TITLE_ID +'">' +
                         '<div class="layui-iconpicker-item">'+
                             '<span class="layui-iconpicker-icon layui-unselect">' +
-                                '<i class="layui-icon">&#xe617;</i>' +
+                                oriIcon +
                             '</span>'+
                             '<i class="layui-edge"></i>' +
                         '</div>'+
@@ -82,14 +119,18 @@ layui.define(['laypage', 'form'], function (exports) {
              * 展开/折叠下拉框
              */
             toggleSelect: function () {
-                var item = '#' + TITLE_ID + ' .layui-iconpicker-item';
-                a.event('click', item, function () {
+                var item = '#' + TITLE_ID + ' .layui-iconpicker-item,#' + TITLE_ID + ' .layui-iconpicker-item .layui-edge';
+                a.event('click', item, function (e) {
                     var $icon = $('#' + ICON_BODY);
                     if ($icon.hasClass(selected)) {
                         $icon.removeClass(selected).addClass(unselect);
                     } else {
+                        // 隐藏其他picker
+                        $('.layui-form-select').removeClass(selected);
+                        // 显示当前picker
                         $icon.addClass(selected).removeClass(unselect);
                     }
+                    e.stopPropagation();
                 });
                 return a;
             },
@@ -134,15 +175,13 @@ layui.define(['laypage', 'form'], function (exports) {
                     _id = PAGE_ID;
 
                 // 图标列表
-                var c = 0,  //计数器：计算模糊查询时匹配到的数据量
-                    icons = [];
+                var icons = [];
 
                 for (var i = 0; i < l; i++) {
                     var obj = d[i];
 
                     // 判断是否模糊查询
                     if (text && obj.indexOf(text) === -1) {
-                        c++;
                         continue;
                     }
 
@@ -163,7 +202,7 @@ layui.define(['laypage', 'form'], function (exports) {
                 _pages = l % _limit === 0 ? l / _limit : parseInt(l / _limit + 1);
                 for (var i = 0; i < _pages; i++) {
                     // 按limit分块
-                    var lm = $('<div class="layui-iconpicker-icon-limit" id="layui-iconpicker-icon-limit-'+ (i+1) +'">');
+                    var lm = $('<div class="layui-iconpicker-icon-limit" id="layui-iconpicker-icon-limit-' + tmp + (i+1) +'">');
 
                     for (var j = i * _limit; j < (i+1) * _limit && j < l; j++) {
                         lm.append(icons[j]);
@@ -173,7 +212,7 @@ layui.define(['laypage', 'form'], function (exports) {
                 }
 
                 // 无数据
-                if (c === l) {
+                if (l === 0) {
                     listHtml.append('<p class="layui-iconpicker-tips">无数据</p>');
                 }
 
@@ -195,6 +234,14 @@ layui.define(['laypage', 'form'], function (exports) {
 
 
                 $('#' + ICON_BODY).find('.layui-anim').find('.' + LIST_BOX).html('').append(listHtml).append(pageHtml);
+                return a;
+            },
+            // 阻止Layui的一些默认事件
+            preventEvent: function() {
+                var item = '#' + ICON_BODY + ' .layui-anim';
+                a.event('click', item, function (e) {
+                    e.stopPropagation();
+                });
                 return a;
             },
             // 分页
@@ -223,8 +270,8 @@ layui.define(['laypage', 'form'], function (exports) {
                     $cur.html(current);
 
                     // 图标数据
-                    $('.layui-iconpicker-icon-limit').hide();
-                    $('#layui-iconpicker-icon-limit-' + current).show();
+                    $('#'+ ICON_BODY + ' .layui-iconpicker-icon-limit').hide();
+                    $('#layui-iconpicker-icon-limit-' + tmp + current).show();
                     e.stopPropagation();
                 });
                 return a;
@@ -261,7 +308,7 @@ layui.define(['laypage', 'form'], function (exports) {
                     }
 
                     $('#' + ICON_BODY).removeClass(selected).addClass(unselect);
-                    $(elem).attr('value', icon);
+                    $(elem).val(icon).attr('value', icon);
                     // 回调
                     if (click) {
                         click({
@@ -272,7 +319,19 @@ layui.define(['laypage', 'form'], function (exports) {
                 });
                 return a;
             },
-
+            // 监听原始input数值改变
+            inputListen: function(){
+                var el = $(elem);
+                // TODO
+                a.event('change', elem, function(){
+                    var value = el.val();
+                    console.log(value)
+                })
+                // el.change(function(){
+                    
+                // });
+                return a;
+            },
             event: function (evt, el, fn) {
                 $(BODY).on(evt, el, fn);
             }
@@ -283,7 +342,7 @@ layui.define(['laypage', 'form'], function (exports) {
              * 加载样式表
              */
             loadCss: function () {
-                var css = '.layui-iconpicker .layui-anim{display:none;position:absolute;left:0;top:42px;padding:5px 0;z-index:899;min-width:100%;border:1px solid #d2d2d2;max-height:300px;overflow-y:auto;background-color:#fff;border-radius:2px;box-shadow:0 2px 4px rgba(0,0,0,.12);box-sizing:border-box;}.layui-iconpicker-item{border:1px solid #e6e6e6;width:90px;height:38px;border-radius:4px;cursor:pointer;position:relative;}.layui-iconpicker-icon{border-right:1px solid #e6e6e6;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:block;width:60px;height:100%;float:left;text-align:center;background:#fff;transition:all .3s;}.layui-iconpicker-icon i{line-height:38px;font-size:18px;}.layui-iconpicker-item > .layui-edge{left:70px;}.layui-iconpicker-item:hover{border-color:#D2D2D2!important;}.layui-iconpicker-item:hover .layui-iconpicker-icon{border-color:#D2D2D2!important;}.layui-iconpicker.layui-form-selected .layui-anim{display:block;}.layui-iconpicker-body{padding:6px;}.layui-iconpicker .layui-iconpicker-list{background-color:#fff;border:1px solid #ccc;border-radius:4px;}.layui-iconpicker .layui-iconpicker-icon-item{display:inline-block;width:21.1%;line-height:36px;text-align:center;cursor:pointer;vertical-align:top;height:36px;margin:4px;border:1px solid #ddd;border-radius:2px;transition:300ms;}.layui-iconpicker .layui-iconpicker-icon-item i.layui-icon{font-size:17px;}.layui-iconpicker .layui-iconpicker-icon-item:hover{background-color:#eee;border-color:#ccc;-webkit-box-shadow:0 0 2px #aaa,0 0 2px #fff inset;-moz-box-shadow:0 0 2px #aaa,0 0 2px #fff inset;box-shadow:0 0 2px #aaa,0 0 2px #fff inset;text-shadow:0 0 1px #fff;}.layui-iconpicker-search{position:relative;margin:0 0 6px 0;border:1px solid #e6e6e6;border-radius:2px;transition:300ms;}.layui-iconpicker-search:hover{border-color:#D2D2D2!important;}.layui-iconpicker-search .layui-input{cursor:text;display:inline-block;width:86%;border:none;padding-right:0;margin-top:1px;}.layui-iconpicker-search .layui-icon{position:absolute;top:11px;right:4%;}.layui-iconpicker-tips{text-align:center;padding:8px 0;cursor:not-allowed;}.layui-iconpicker-page{margin-top:6px;margin-bottom:-6px;font-size:12px;padding:0 2px;}.layui-iconpicker-page-count{display:inline-block;}.layui-iconpicker-page-operate{display:inline-block;float:right;cursor:default;}.layui-iconpicker-page-operate .layui-icon{font-size:12px;cursor:pointer;}.layui-iconpicker-body-page .layui-iconpicker-icon-limit{display:none;}.layui-iconpicker-body-page .layui-iconpicker-icon-limit:first-child{display:block;}';
+                var css = '.layui-iconpicker {max-width: 280px;}.layui-iconpicker .layui-anim{display:none;position:absolute;left:0;top:42px;padding:5px 0;z-index:899;min-width:100%;border:1px solid #d2d2d2;max-height:300px;overflow-y:auto;background-color:#fff;border-radius:2px;box-shadow:0 2px 4px rgba(0,0,0,.12);box-sizing:border-box;}.layui-iconpicker-item{border:1px solid #e6e6e6;width:90px;height:38px;border-radius:4px;cursor:pointer;position:relative;}.layui-iconpicker-icon{border-right:1px solid #e6e6e6;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:block;width:60px;height:100%;float:left;text-align:center;background:#fff;transition:all .3s;}.layui-iconpicker-icon i{line-height:38px;font-size:18px;}.layui-iconpicker-item > .layui-edge{left:70px;}.layui-iconpicker-item:hover{border-color:#D2D2D2!important;}.layui-iconpicker-item:hover .layui-iconpicker-icon{border-color:#D2D2D2!important;}.layui-iconpicker.layui-form-selected .layui-anim{display:block;}.layui-iconpicker-body{padding:6px;}.layui-iconpicker .layui-iconpicker-list{background-color:#fff;border:1px solid #ccc;border-radius:4px;}.layui-iconpicker .layui-iconpicker-icon-item{display:inline-block;width:21.1%;line-height:36px;text-align:center;cursor:pointer;vertical-align:top;height:36px;margin:4px;border:1px solid #ddd;border-radius:2px;transition:300ms;}.layui-iconpicker .layui-iconpicker-icon-item i.layui-icon{font-size:17px;}.layui-iconpicker .layui-iconpicker-icon-item:hover{background-color:#eee;border-color:#ccc;-webkit-box-shadow:0 0 2px #aaa,0 0 2px #fff inset;-moz-box-shadow:0 0 2px #aaa,0 0 2px #fff inset;box-shadow:0 0 2px #aaa,0 0 2px #fff inset;text-shadow:0 0 1px #fff;}.layui-iconpicker-search{position:relative;margin:0 0 6px 0;border:1px solid #e6e6e6;border-radius:2px;transition:300ms;}.layui-iconpicker-search:hover{border-color:#D2D2D2!important;}.layui-iconpicker-search .layui-input{cursor:text;display:inline-block;width:86%;border:none;padding-right:0;margin-top:1px;}.layui-iconpicker-search .layui-icon{position:absolute;top:11px;right:4%;}.layui-iconpicker-tips{text-align:center;padding:8px 0;cursor:not-allowed;}.layui-iconpicker-page{margin-top:6px;margin-bottom:-6px;font-size:12px;padding:0 2px;}.layui-iconpicker-page-count{display:inline-block;}.layui-iconpicker-page-operate{display:inline-block;float:right;cursor:default;}.layui-iconpicker-page-operate .layui-icon{font-size:12px;cursor:pointer;}.layui-iconpicker-body-page .layui-iconpicker-icon-limit{display:none;}.layui-iconpicker-body-page .layui-iconpicker-icon-limit:first-child{display:block;}';
                 $('head').append('<style rel="stylesheet">'+css+'</style>');
             },
             /**

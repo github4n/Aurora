@@ -30,6 +30,10 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     public String toPayAsPC(AlipayConfig alipay, TradeVo trade) throws Exception {
+
+        if(alipay == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请先添加相应配置，再操作");
+        }
         AlipayClient alipayClient = new DefaultAlipayClient(alipay.getGatewayUrl(), alipay.getAppID(), alipay.getPrivateKey(), alipay.getFormat(), alipay.getCharset(), alipay.getPublicKey(), alipay.getSignType());
 
         double money = Double.parseDouble(trade.getTotalAmount());
@@ -70,6 +74,9 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     public String toPayAsWeb(AlipayConfig alipay, TradeVo trade) throws Exception {
+        if(alipay == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请先添加相应配置，再操作");
+        }
         AlipayClient alipayClient = new DefaultAlipayClient(alipay.getGatewayUrl(), alipay.getAppID(), alipay.getPrivateKey(), alipay.getFormat(), alipay.getCharset(), alipay.getPublicKey(), alipay.getSignType());
 
         double money = Double.parseDouble(trade.getTotalAmount());

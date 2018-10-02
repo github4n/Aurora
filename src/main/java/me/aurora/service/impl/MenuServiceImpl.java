@@ -115,16 +115,18 @@ public class MenuServiceImpl implements MenuService {
         }
         if(menu.getLevelNum() == 0){
             try {
-                Optional<Menu> optionalMenu = menuRepo.findById(menu.getPid().longValue());
-                ValidationUtil.isNull(optionalMenu,"pid:"+menu.getPid().longValue()+"is not find");
-                Menu pMenu = optionalMenu.get();
-                pMenu.setLevelNum(pMenu.getLevelNum()-1);
+                if(menu.getPid() != 0){
+                    Optional<Menu> optionalMenu = menuRepo.findById(menu.getPid().longValue());
+                    Menu pMenu = optionalMenu.get();
+                    pMenu.setLevelNum(pMenu.getLevelNum()-1);
+                }
             }catch (Exception e){
                 throw new AuroraException(HttpStatus.HTTP_INTERNAL_ERROR,e.toString());
             }
             menuRepo.delete(menu);
         } else {
-            Set<Menu> menus = menuRepo.findByPid(menu.getPid()).stream().collect(Collectors.toSet());
+            Set<Menu> menus = menuRepo.findByPid(Integer.parseInt(menu.getId()+"")).stream().collect(Collectors.toSet());
+            menus.add(menu);
             if(menus !=null && menus.size()!=0){
                 menuRepo.deleteAll(menus);
             }
