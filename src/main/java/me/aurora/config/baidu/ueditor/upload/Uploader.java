@@ -1,6 +1,5 @@
 package me.aurora.config.baidu.ueditor.upload;
 
-import me.aurora.config.baidu.ueditor.PathFormat;
 import me.aurora.config.baidu.ueditor.define.AppInfo;
 import me.aurora.config.baidu.ueditor.define.BaseState;
 import me.aurora.config.baidu.ueditor.define.State;
@@ -9,13 +8,9 @@ import me.aurora.domain.User;
 import me.aurora.service.PictureService;
 import me.aurora.util.FileUtil;
 import me.aurora.util.SpringContextUtils;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.shiro.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 

@@ -84,7 +84,7 @@ public class SysLogServiceImpl implements SysLogService {
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         // 设置IP地址
-        sysLog.setIp(IPUtils.getIpAddr(request));
+        sysLog.setIp(AddressUtils.getIpAddr(request));
         sysLog.setLocation(AddressUtils.getCityInfo(sysLog.getIp()));
         // 用户名
         User user = (User) SecurityUtils.getSubject().getPrincipal();

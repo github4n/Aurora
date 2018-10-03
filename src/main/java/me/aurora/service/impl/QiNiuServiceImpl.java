@@ -19,9 +19,9 @@ import me.aurora.repository.QiNiuConfigRepo;
 import me.aurora.repository.QiniuContentRepo;
 import me.aurora.repository.spec.QiNiuContentSpec;
 import me.aurora.service.QiNiuService;
+import me.aurora.util.FileUtil;
 import me.aurora.util.PageUtil;
 import me.aurora.util.QiNiuUtil;
-import me.aurora.util.SizeUtil;
 import me.aurora.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -96,7 +96,7 @@ public class QiNiuServiceImpl implements QiNiuService {
             qiniuContent.setType(qiniuConfig.getType());
             qiniuContent.setKey(putRet.key);
             qiniuContent.setUrl(qiniuConfig.getHost()+"/"+putRet.key);
-            qiniuContent.setSize(SizeUtil.getSize(Integer.parseInt(file.getSize()+"")));
+            qiniuContent.setSize(FileUtil.getSize(Integer.parseInt(file.getSize()+"")));
             qiniuContentRepo.save(qiniuContent);
         } catch (Exception e) {
            throw new AuroraException(HttpStatus.HTTP_INTERNAL_ERROR,e.getMessage());
@@ -165,7 +165,7 @@ public class QiNiuServiceImpl implements QiNiuService {
             for (FileInfo item : items) {
                 if(qiniuContentRepo.findByKey(item.key) == null){
                     qiniuContent = new QiniuContent();
-                    qiniuContent.setSize(SizeUtil.getSize(Integer.parseInt(item.fsize+"")));
+                    qiniuContent.setSize(FileUtil.getSize(Integer.parseInt(item.fsize+"")));
                     qiniuContent.setKey(item.key);
                     qiniuContent.setType(config.getType());
                     qiniuContent.setBucket(config.getBucket());

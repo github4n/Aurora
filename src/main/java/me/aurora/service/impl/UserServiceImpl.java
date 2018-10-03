@@ -1,6 +1,5 @@
 package me.aurora.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
 import me.aurora.config.AuroraProperties;
 import me.aurora.domain.Role;
@@ -11,7 +10,7 @@ import me.aurora.service.RoleService;
 import me.aurora.service.UserService;
 import me.aurora.service.dto.UserDTO;
 import me.aurora.service.mapper.UserMapper;
-import me.aurora.util.MD5Utils;
+import me.aurora.util.EncryptHelper;
 import me.aurora.util.PageUtil;
 import me.aurora.config.exception.AuroraException;
 import me.aurora.util.ValidationUtil;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -84,7 +82,7 @@ public class UserServiceImpl implements UserService {
         if(userRepo.findByEmail(user.getEmail())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户邮箱已存在");
         }
-        user.setPassword(MD5Utils.encrypt(user.getPassword()));
+        user.setPassword(EncryptHelper.encrypt(user.getPassword()));
         Set<Role> roleSet = new HashSet<>();
         for(String roleId:roles.split(",")){
             Role role = new Role();
@@ -107,7 +105,7 @@ public class UserServiceImpl implements UserService {
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户邮箱已存在");
         }
         old = userRepo.findById(user.getId()).get();
-        old.setPassword(MD5Utils.encrypt(user.getPassword()));
+        old.setPassword(EncryptHelper.encrypt(user.getPassword()));
         old.setUsername(user.getUsername());
         old.setEmail(user.getEmail());
 

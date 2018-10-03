@@ -1,4 +1,7 @@
 package me.aurora.util;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -6,14 +9,26 @@ import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
 /**
- * @date 2017/10/26.
- * Github Breakeval13
- * @author  blog firsh.me
+ * @date 2018/10/03 19:02:51
+ * @author  ~
+ * @update 郑杰
  */
 public class EncryptHelper {
 
     private static String strKey = "Passw0rd", strParam = "Passw0rd";
 
+    private static final String SALT = "aurora";
+
+    private static final String ALGORITH_NAME = "md5";
+
+    private static final int HASH_ITERATIONS = 2;
+
+    /**
+     * 对称加密
+     * @param source
+     * @return
+     * @throws Exception
+     */
     public static String desEncrypt(String source) throws Exception {
         if (source == null || source.length() == 0){
             return null;
@@ -28,11 +43,9 @@ public class EncryptHelper {
                 cipher.doFinal(source.getBytes("UTF-8"))).toUpperCase();
     }
 
-
     public static String byte2hex(byte[] inStr) {
         String stmp;
         StringBuffer out = new StringBuffer(inStr.length * 2);
-
         for (int n = 0; n < inStr.length; n++) {
             stmp = Integer.toHexString(inStr[n] & 0xFF);
             if (stmp.length() == 1) {
@@ -58,6 +71,12 @@ public class EncryptHelper {
         return b2;
     }
 
+    /**
+     * 对称解密
+     * @param source
+     * @return
+     * @throws Exception
+     */
     public static String desDecrypt(String source) throws Exception {
         if (source == null || source.length() == 0){
             return null;
@@ -73,18 +92,24 @@ public class EncryptHelper {
         return new String(retByte);
     }
 
-    public static  String formatKey(String key){
-        // 固定长度
-        int length=8;
-        // 自动补位
-        return key+String.format("%1$0"+(length-key.length())+"d",0);
+    /**
+     * MD5加盐加密
+     * @param pswd
+     * @return
+     */
+    public static String encrypt(String pswd) {
+        return new SimpleHash(ALGORITH_NAME, pswd, ByteSource.Util.bytes(SALT), HASH_ITERATIONS).toHex();
     }
 
-
-    public static void main(String[] args) throws Exception {
-        System.out.println(EncryptHelper.desDecrypt("53c8927a4dd1e9b6f44c9d53af92c794"));
-        System.out.println(EncryptHelper.desEncrypt("Hello World!"));
-
+    /**
+     * MD5加盐加密
+     * @param username
+     * @param pswd
+     * @return
+     */
+    public static String encrypt(String username, String pswd) {
+        return new SimpleHash(ALGORITH_NAME, pswd, ByteSource.Util.bytes(username.toLowerCase() + SALT),
+                HASH_ITERATIONS).toHex();
     }
 }
 

@@ -6,8 +6,8 @@ import me.aurora.domain.ResponseEntity;
 import me.aurora.domain.User;
 import me.aurora.service.MenuService;
 import me.aurora.service.UserService;
+import me.aurora.util.EncryptHelper;
 import me.aurora.util.HttpContextUtils;
-import me.aurora.util.MD5Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
@@ -35,7 +35,7 @@ public class UserSecurityController {
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestParam String username, @RequestParam String password, @RequestParam Boolean rememberMe){
         log.warn("REST request to login User: "+username);
-        password = MD5Utils.encrypt(password);
+        password = EncryptHelper.encrypt(password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         Subject subject = SecurityUtils.getSubject();
         try {

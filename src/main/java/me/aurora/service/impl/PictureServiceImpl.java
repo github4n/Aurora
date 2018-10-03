@@ -71,7 +71,7 @@ public class PictureServiceImpl implements PictureService {
         }
         //转成实体类
         picture = JSON.parseObject(jsonObject.get("data").toString(), Picture.class);
-        picture.setSize(SizeUtil.getSize(Integer.valueOf(picture.getSize())));
+        picture.setSize(FileUtil.getSize(Integer.valueOf(picture.getSize())));
         picture.setUser(user);
         picture.setFilename(FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename()));
         pictureRepo.save(picture);
