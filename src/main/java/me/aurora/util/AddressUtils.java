@@ -52,10 +52,11 @@ public class AddressUtils {
                 log.error("Error: Invalid ip address");
             }
             dataBlock = (DataBlock) method.invoke(searcher, ip);
+            String address = dataBlock.getRegion().replace("0|","");
             /**
              * 太难看了，转换下
              */
-            return dataBlock.getRegion().equals(AuroraConstant.REGION)?"内网IP":dataBlock.getRegion();
+            return address.equals(AuroraConstant.REGION)?"内网IP":address;
         } catch (Exception e) {
             log.error("获取地址信息异常：{}", e);
         }
