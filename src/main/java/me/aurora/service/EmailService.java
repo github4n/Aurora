@@ -18,6 +18,8 @@ public interface EmailService {
     /**
      * 更新邮件配置
      * @param emailConfig
+     * @param old
+     * @return
      */
     @CachePut(key = "#p0.getId()")
     EmailConfig updateConfig(EmailConfig emailConfig,EmailConfig old);
@@ -34,6 +36,7 @@ public interface EmailService {
      * 发送邮件
      * @param emailVo
      * @param emailConfig
+     * @throws Exception
      */
     @Async
     void send(EmailVo emailVo, EmailConfig emailConfig) throws Exception;

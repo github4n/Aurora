@@ -1,4 +1,4 @@
-package me.aurora.app.rest.web;
+package me.aurora.app.rest.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import me.aurora.annotation.Log;
@@ -38,7 +38,7 @@ public class PictureController {
     @GetMapping(value = "/index")
     public ModelAndView index(){
         log.warn("REST request to PicturePage");
-        return new ModelAndView("/web/picture/index");
+        return new ModelAndView("/utils/picture/index");
     }
 
     /**
@@ -73,7 +73,7 @@ public class PictureController {
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
         log.warn("REST request to addPicturePage");
-        return new ModelAndView("/web/picture/add");
+        return new ModelAndView("/utils/picture/add");
     }
 
     /**

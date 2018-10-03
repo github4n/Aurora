@@ -19,12 +19,13 @@ public class PathFormat {
 	private static final String MINUTE = "ii";
 	private static final String SECOND = "ss";
 	private static final String RAND = "rand";
+	private static final String REGEX = "\\{([^\\}]+)\\}";
 	
 	private static Date currentDate = null;
 	
 	public static String parse ( String input ) {
 		
-		Pattern pattern = Pattern.compile( "\\{([^\\}]+)\\}", Pattern.CASE_INSENSITIVE  );
+		Pattern pattern = Pattern.compile( REGEX, Pattern.CASE_INSENSITIVE  );
 		Matcher matcher = pattern.matcher(input);
 		
 		PathFormat.currentDate = new Date();
@@ -55,7 +56,7 @@ public class PathFormat {
 
 	public static String parse ( String input, String filename ) {
 	
-		Pattern pattern = Pattern.compile( "\\{([^\\}]+)\\}", Pattern.CASE_INSENSITIVE  );
+		Pattern pattern = Pattern.compile( REGEX, Pattern.CASE_INSENSITIVE  );
 		Matcher matcher = pattern.matcher(input);
 		String matchStr = null;
 		

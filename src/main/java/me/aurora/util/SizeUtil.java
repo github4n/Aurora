@@ -25,19 +25,19 @@ public class SizeUtil {
     /**
      * 格式化小数
      */
-    private static final DecimalFormat df = new DecimalFormat("0.00");
+    private static final DecimalFormat DF = new DecimalFormat("0.00");
 
     public static String getSize(int size){
         String resultSize = "";
         if (size / GB >= 1) {
             //如果当前Byte的值大于等于1GB
-            resultSize = df.format(size / (float) GB) + "GB   ";
+            resultSize = DF.format(size / (float) GB) + "GB   ";
         } else if (size / MB >= 1) {
             //如果当前Byte的值大于等于1MB
-            resultSize = df.format(size / (float) MB) + "MB   ";
+            resultSize = DF.format(size / (float) MB) + "MB   ";
         } else if (size / KB >= 1) {
             //如果当前Byte的值大于等于1KB
-            resultSize = df.format(size / (float) KB) + "KB   ";
+            resultSize = DF.format(size / (float) KB) + "KB   ";
         } else {
             resultSize = size + "B   ";
         }

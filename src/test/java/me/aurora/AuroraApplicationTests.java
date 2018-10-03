@@ -12,12 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class AuroraApplicationTests {
 
-    @Autowired
-    private UserService userService;
-
     @Test
-    public void test() throws Exception {
-        User user = userService.findById(1L);
-        System.out.println(user.toString());
+    public void test(){
     }
 }

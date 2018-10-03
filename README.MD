@@ -5,7 +5,7 @@
 ![https://img.shields.io/badge/apache%20shiro-1.4.0-green.svg?longCache=true&style=flat-square](https://img.shields.io/badge/apache%20shiro-1.4.0-green.svg?longCache=true&style=flat-square)
 
 Aurora是一个简单高效的后台管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单；数据访问层采用Spring boot Jpa，可快速高效对数据进行操作，消除了大量传统XML配置SQL的代码，分页使用Pageable；安全框架采用时下流行的Apache Shiro，可实现对按钮级别的权限控制；前端页面使用KidAdmin构建，并提供多套配色以供选择。
-### 预览地址
+### 预览地址，临时域名，正式域名auaur.net，已在备案中
 [http://xiswl.xyz](http://xiswl.xyz)
 ### SSM + shiro + redis 版移步
 [https://gitee.com/quella01/Quella](https://gitee.com/quella01/Quella)
@@ -34,15 +34,13 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 │  ├─SQL监控
 │  ├─在线用户
 │  └─系统日志
-│─网络资源
-│  ├─天气查询（开发中）
-│  └─图床管理
 │─第三方工具
-│  │-支付宝支付
-│  │-微信支付（开发中）
-│  │-百度富文本编辑器
 │  │-邮件工具
+│  │-支付宝支付
 │  │-七牛云储存
+│  │-SM.MS图床
+│  │-百度富文本编辑器
+│  │-微信支付（开发中）
 │  └─阿里大鱼（开发中）
 └─任务调度（开发中）
    ├─定时任务
@@ -103,35 +101,35 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 
 - 系统首页
 
-![](https://i.imgur.com/LaU377e.png)
+![](https://i.imgur.com/z1karH2.png)
 
 - 用户管理
 
-![](https://i.imgur.com/ouBHhXm.jpg)
+![](https://i.imgur.com/Ms6F5mk.png)
 
 - 菜单管理，使用树形表格
 
-![](https://i.imgur.com/GJw1PB9.png)
+![](https://i.imgur.com/NAXmLGr.png)
 
 - 日志管理
 
-![](https://i.imgur.com/rZbABhe.png)
+![](https://i.imgur.com/2spz8q3.png)
 
 - swagger文档
 
-![](https://i.imgur.com/7uzRRq9.png)
+![](https://i.imgur.com/3bBeSTt.png)
 
 - Redis终端
 
 ![](https://i.imgur.com/TvKl5SH.png)
 
-- 富文本编辑器
+- 七牛云存储，支持同步数据到数据库
 
-![](https://i.imgur.com/NCvS23x.png)
+![](https://i.imgur.com/3rBMJ6d.png)
 
-- sql日志打印使用log4jdbc+logback，效果如下
+- 发送邮件功能
 
-![](https://i.imgur.com/R1xsFXk.jpg)
+![](https://i.imgur.com/ByfMmkR.png)
 
 ### 开发与部署
 
@@ -141,7 +139,11 @@ GitHub 地址：https://github.com/dqjdda/Aurora
 
 下载后以Maven项目的方式导入Eclipse或者IDEA。
 
-项目需依赖redis，如果没安装reids请求将报错，安装步骤如下
+1、项目需安装lombok插件
+
+2、数据库文件目录 resources/sql/aurora.sql
+
+3、项目需依赖redis，如果没安装reids请求将报错，安装步骤如下
 
 #### 安装Redis
 
@@ -173,17 +175,20 @@ c:\Redis-x64-3.2.100>redis-server.exe redis.windows.conf
 然后打开另外一个CMD终端，输入：
 ```
 C:\Users\Administrator>cd c:\Redis-x64-3.2.100
-c:\Redis-x64-3.2.100>redis-cli.exe -p 6379
+c:\Redis-x64-3.2.100>redis-cli.exe
 127.0.0.1:6379>
 ```
-准备工作做完后，直接使用Spring Boot的入口类`me.aurora.AuroraRun`启动即可，访问地址[localhost]，账号zhengjie@tom.com，密码dqjdda1996.
+准备工作做完后，直接使用Spring Boot的入口类`me.aurora.AuroraRun`启动即可，访问地址[localhost]
 
-部署时，首先使用使用mvn package将项目打包成jar或war，然后使用命令`java -jar aurora-0.0.1-SNAPSHOT.war`启动即可，当然也可以使用tomcat启动。
+部署时，首先使用使用mvn package将项目打包成jar或war，然后使用命令`java -jar aurora-0.0.1-SNAPSHOT.war`启动即可，当然也可以使用tomcat部署。
 
 ### docker 中部署
-- 可参考链接[https://www.zhengjie.me/blog/271.html](https://www.zhengjie.me/blog/271.html)。
+- 项目提供了Dockerfile文件，可直接使用
+- 更多帮助可参考链接[https://www.zhengjie.me/categories/docker/](https://www.zhengjie.me/categories/docker/)。
 
 ### 反馈交流
+
+本人能有有限，项目如有不足之处，望指出
 
 - 作者QQ：201507802
 

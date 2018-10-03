@@ -1,8 +1,22 @@
-<div class="layui-fluid">
-    <div class="layui-row">
-        <div class="layui-col-xs12">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>七牛云存储</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <style>
+        .layui-form-label{float:left;display:block;padding:9px 15px;width:100px;font-weight:400;line-height:20px;text-align:right}
+    </style>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">图片列表</li>
+        <li>使用说明</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
             <div class="layui-card">
-                <div class="layui-card-header">图床管理</div>
                 <div class="layui-card-body">
                     <div class="layui-card-header">
                         <a id="add" class="layui-btn layui-btn-xs">
@@ -21,8 +35,61 @@
                 </div>
             </div>
         </div>
+
+        <div class="layui-tab-item">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                <legend>使用说明</legend>
+            </fieldset>
+            <blockquote class="layui-elem-quote">
+                SM.MS是什么</blockquote>
+            <pre class="layui-code">
+1、SM.MS是一个免费的图床网站
+2、无外链限制
+3、无流量限制</pre>
+            <blockquote class="layui-elem-quote">开始使用</blockquote>
+            <pre class="layui-code">
+//将参数合成一个请求
+HttpEntity requestEntity = new HttpEntity&lt;&gt;(file);
+RestTemplate rest = new RestTemplate();
+FileSystemResource resource = new FileSystemResource(file);
+MultiValueMap&lt;String, Object&gt; param = new LinkedMultiValueMap&lt;&gt;();
+//sm.ms 固定格式
+param.add("smfile", resource);
+//执行HTTP请求
+rest.postForObject("", param, String.class);
+String str = rest.postForObject("https://sm.ms/api/upload", param, String.class);
+JSONObject jsonObject = JSONUtil.parseObj(str);
+Picture picture = null;
+//判断上传状态
+if(){
+   throw new AuroraException();
+}
+//转成实体类
+picture = JSON.parseObject(jsonObject.get("data").toString(), Picture.class);
+//保存
+pictureRepo.save(picture);
+//正常情况为 success，出现错误时为 error，返回格式如下
+{
+	"code":"success",
+	"data":
+	{
+		"width":200,
+		"height":200,
+		"size":8698,
+		"ip":"36.25.51.131",
+		"url":"https://i.loli.net/2018/10/03/5bb422aaccfa9.jpg",
+		"delete":"https://sm.ms/delete/lv5AFYOCJ23Hoaj"
+	}
+}
+</pre>
+            <blockquote class="layui-elem-quote">更多帮助</blockquote>
+            <pre class="layui-code">更多帮助请查看系统源码，官方API文档
+SM.MS文档：<a style="color: #00a2d4" href="https://sm.ms/doc/" target="_blank">https://sm.ms/doc/</a>
+</pre>
+        </div>
     </div>
 </div>
+
 <script type="text/html" id="search_tpl_hash">
     <form class="layui-form" action="">
         <div class="layui-form-item">
@@ -54,17 +121,18 @@
                 ,content: '/picture/toAddPage'
                 ,area: ['550px', '400px']
                 ,btnAlign: 'c'
+                ,closeBtn :0//不显示关闭按钮
                 ,shade: 0.8
                 ,maxmin: true
                 ,title: '上传图片'
                 ,btn: ['确认', '取消']
                 ,yes: function(){
-                    layer.msg("操作成功", {icon: 6});
-                    layer.close(index);
+                    var body = layer.getChildFrame('body')
+                    body.contents().find("#testListAction").click()
+                }
+                ,btn2: function(){
                     table.reload('ID', {
-                        where: {
-                            username: $('input[name="username"]').val()
-                        }
+                        where: {}
                         ,page: {
                             curr: 1 //重新从第 1 页开始
                         }
@@ -178,3 +246,5 @@
         });
     });
 </script>
+</body>
+</html>

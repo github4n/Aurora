@@ -19,13 +19,13 @@ public class QiNiuUtil {
      */
     public static Configuration getConfiguration(String zone){
 
-        if(zone.equals("华东")){
+        if(AuroraConstant.QiNiu.HUAD.equals(zone)){
             return new Configuration(Zone.zone0());
-        } else if(zone.equals("华北")){
+        } else if(AuroraConstant.QiNiu.HUAB.equals(zone)){
             return new Configuration(Zone.zone1());
-        } else if(zone.equals("华南")){
+        } else if(AuroraConstant.QiNiu.HUAN.equals(zone)){
             return new Configuration(Zone.zone2());
-        } else if (zone.equals("北美")){
+        } else if (AuroraConstant.QiNiu.BEIM.equals(zone)){
             return new Configuration(Zone.zoneNa0());
         } else {
             return new Configuration(Zone.zoneAs0());

@@ -8,7 +8,16 @@ import java.util.Map;
  */
 public interface SessionService {
 
+	/**
+	 * 得到在线的用户
+	 * @return
+	 */
 	Map getOnlineInfo();
 
+	/**
+	 * 踢出
+	 * @param sessionId
+	 * @return
+	 */
 	boolean forceLogout(String sessionId);
 }

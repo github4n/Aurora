@@ -1,5 +1,6 @@
 package me.aurora.config;
 
+import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +31,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .paths(PathSelectors.any())
+                .paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .build();
     }
 

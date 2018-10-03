@@ -246,16 +246,17 @@ try {
                 ,area: ['550px', '400px']
                 ,btnAlign: 'c'
                 ,shade: 0.8
+                ,closeBtn :0//不显示关闭按钮
                 ,maxmin: true
                 ,title: '上传文件'
                 ,btn: ['确认', '取消']
                 ,yes: function(){
-                    layer.msg("操作成功", {icon: 6});
-                    layer.close(index);
+                    var body = layer.getChildFrame('body')
+                    body.contents().find("#testListAction").click()
+                }
+                ,btn2: function(){
                     table.reload('ID', {
-                        where: {
-                            username: $('input[name="username"]').val()
-                        }
+                        where: {}
                         ,page: {
                             curr: 1 //重新从第 1 页开始
                         }

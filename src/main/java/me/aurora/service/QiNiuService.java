@@ -32,6 +32,7 @@ public interface QiNiuService {
     /**
      * 修改配置
      * @param qiniuConfig
+     * @return
      */
     @CacheEvict(allEntries = true)
     QiniuConfig updateConfig(QiniuConfig qiniuConfig);

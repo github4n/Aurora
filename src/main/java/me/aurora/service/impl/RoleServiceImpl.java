@@ -66,6 +66,9 @@ public class RoleServiceImpl implements RoleService {
         if(roleRepo.findByName(role.getName())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"角色已存在");
         }
+        if(StrUtil.isEmpty(permissions)){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请至少为其分配一个权限");
+        }
         role.setPermissions(getPermissions(permissions));
         roleRepo.save(role);
     }
@@ -80,6 +83,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void update(Role role, String permissions) {
+        if(StrUtil.isEmpty(permissions)){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请至少为其分配一个权限");
+        }
         if(role.getId() == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"角色ID不能为空");
         }
@@ -117,6 +123,7 @@ public class RoleServiceImpl implements RoleService {
      * @return
      */
     public Set<Permission> getPermissions(String permissions){
+
         Set<Permission> permissionSet = new HashSet<>();
         for(String permissionId:permissions.split(",")){
             Permission permission = new Permission();

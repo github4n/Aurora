@@ -13,10 +13,7 @@ import me.aurora.repository.spec.PictureSpec;
 import me.aurora.service.PictureService;
 import me.aurora.service.dto.PictureDto;
 import me.aurora.service.mapper.PictureMapper;
-import me.aurora.util.FileUtil;
-import me.aurora.util.PageUtil;
-import me.aurora.util.SizeUtil;
-import me.aurora.util.ValidationUtil;
+import me.aurora.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
@@ -39,14 +36,6 @@ import java.util.Optional;
 @Slf4j
 @Service(value = "pictureService")
 public class PictureServiceImpl implements PictureService {
-
-    private final String uploadUrl = "https://sm.ms/api/upload";
-
-    private final String SUCCESS = "success";
-
-    private final String CODE = "code";
-
-    private final String MSG = "msg";
 
     @Autowired
     private PictureRepo pictureRepo;
@@ -74,11 +63,11 @@ public class PictureServiceImpl implements PictureService {
         //sm.ms 固定格式
         param.add("smfile", resource);
         //执行HTTP请求
-        String str = rest.postForObject(uploadUrl, param, String.class);
+        String str = rest.postForObject(AuroraConstant.Url.SM_MS_URL, param, String.class);
         JSONObject jsonObject = JSONUtil.parseObj(str);
         Picture picture = null;
-        if(!jsonObject.get(CODE).toString().equals(SUCCESS)){
-           throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,jsonObject.get(MSG).toString());
+        if(!jsonObject.get(AuroraConstant.Page.CODE).toString().equals(AuroraConstant.SUCCESS)){
+           throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,jsonObject.get(AuroraConstant.Page.MSG).toString());
         }
         //转成实体类
         picture = JSON.parseObject(jsonObject.get("data").toString(), Picture.class);

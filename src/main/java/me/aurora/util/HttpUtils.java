@@ -116,7 +116,7 @@ public class HttpUtils {
             String ret = "";
             while (ret != null) {
                 ret = indata.readLine();
-                if (ret != null && !ret.trim().equals("")) {
+                if (ret != null && !"".equals(ret.trim())) {
                     result.append(ret);
                 }
             }

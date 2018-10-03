@@ -13,6 +13,11 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",uses = {},unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PictureMapper extends EntityMapper<PictureDto, Picture>{
 
+    /**
+     * 转DTO
+     * @param picture
+     * @return
+     */
     @Mapping(target = "userName",source = "picture.user.username")
     @Override
     PictureDto toDto(Picture picture);

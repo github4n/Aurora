@@ -33,7 +33,7 @@ public class ListSortUtil<T> {
 
                     Method method1 = ((T)obj1).getClass().getMethod(methodStr, new Class[0]);
                     Method method2 = ((T)obj2).getClass().getMethod(methodStr, new Class[0]);
-                    if (sortMode != null && "desc".equals(sortMode)) {
+                    if (sortMode != null && AuroraConstant.Soft.DESC.equals(sortMode)) {
                         // 倒序
                         retVal = method2.invoke(((T) obj2), new Object[0]).toString().compareTo(method1.invoke(((T) obj1), new Object[0]).toString());
                     } else {

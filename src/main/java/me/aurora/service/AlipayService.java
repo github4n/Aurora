@@ -40,8 +40,9 @@ public interface AlipayService {
     AlipayConfig findById(long id);
 
     /**
-     * 配置
+     * 更新配置
      * @param alipayConfig
+     * @return
      */
     @CachePut(key = "#p0.getId()")
     AlipayConfig updateConfig(AlipayConfig alipayConfig);

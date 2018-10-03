@@ -31,7 +31,7 @@ public class EmailVo {
     private Boolean isHtml = true;
 
     public ArrayList<String> getTos() {
-        String str[] = this.tos.split("[,，；;]");
+        String[] str = this.tos.split("[,，；;]");
         ArrayList<String> list = new ArrayList<>();
         for (String s : str) {
             list.add(s);

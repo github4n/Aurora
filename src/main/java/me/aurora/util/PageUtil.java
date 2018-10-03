@@ -12,17 +12,12 @@ import java.util.Map;
  */
 public class PageUtil {
 
-    private static final String CODE = "code";
-    private static final String MSG = "msg";
-    private static final String COUNT = "count";
-    private static final String DATA = "data";
-
     public static Map<String,Object> buildPage(List list,Long total) {
         Map<String,Object> map = new HashMap<>(5);
-        map.put(PageUtil.CODE,0);
-        map.put(PageUtil.MSG,"");
-        map.put(PageUtil.COUNT,total);
-        map.put(PageUtil.DATA,list);
+        map.put(AuroraConstant.Page.CODE,0);
+        map.put(AuroraConstant.Page.MSG,"");
+        map.put(AuroraConstant.Page.COUNT,total);
+        map.put(AuroraConstant.Page.DATA,list);
         return map;
     }
 }

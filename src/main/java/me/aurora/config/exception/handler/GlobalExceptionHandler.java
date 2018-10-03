@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
         log.error(e.getMessage());
-        String str[] = e.getBindingResult().getAllErrors().get(0).getCodes()[1].split("\\.");
+        String[] str = e.getBindingResult().getAllErrors().get(0).getCodes()[1].split("\\.");
         StringBuffer msg = new StringBuffer(str[1]+":");
         msg.append(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         return ResponseEntity.error(msg.toString());

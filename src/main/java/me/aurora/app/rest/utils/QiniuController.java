@@ -20,6 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+/**
+ * @author 郑杰
+ * @date 2018/10/02
+ */
 @Slf4j
 @RestController
 @RequestMapping("qiNiu")

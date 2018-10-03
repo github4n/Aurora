@@ -17,8 +17,6 @@ import java.lang.reflect.Method;
  */
 public class AddressUtils {
 
-    static String region = "内网IP|0|0|内网IP|内网IP";
-
     private AddressUtils() {
     }
 
@@ -57,7 +55,7 @@ public class AddressUtils {
             /**
              * 太难看了，转换下
              */
-            return dataBlock.getRegion().equals(region)?"内网IP":dataBlock.getRegion();
+            return dataBlock.getRegion().equals(AuroraConstant.REGION)?"内网IP":dataBlock.getRegion();
         } catch (Exception e) {
             log.error("获取地址信息异常：{}", e);
         }

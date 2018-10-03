@@ -50,7 +50,7 @@ public interface RoleService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void inster(Role role, String permissions) throws AuroraException;
+    void inster(Role role, String permissions);
 
     /**
      * 根据ID查找Role
