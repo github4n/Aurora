@@ -5,9 +5,9 @@
                 <div class="layui-card-header">菜单管理</div>
                 <div class="layui-card-body">
                     <div class="layui-card-header">
-                        <a id="add" class="layui-btn layui-btn-xs">
+                        <a id="add" shiro:hasAnyPermissions="admin,menu:all,menu:add" class="layui-btn layui-btn-xs">
                             <i class="layui-icon"></i>
-                            <span shiro:hasAnyPermissions="admin,menu:all,menu:add">新增</span>
+                            <span>新增</span>
                         </a>
                         <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
                             <i class="layui-icon">&#xe615;</i>
