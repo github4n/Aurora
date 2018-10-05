@@ -70,7 +70,6 @@ public class UserController {
                                 @RequestParam(value = "enabled",required = false) Long enabled,
                                 @RequestParam(value = "page",defaultValue = "1")Integer page,
                                 @RequestParam(value = "limit",defaultValue = "10")Integer limit){
-        log.warn("REST request to findAll User");
         Sort sort = new Sort(Sort.Direction.ASC,"id");
         Pageable pageable = PageRequest.of(page-1,limit,sort);
         return userService.getUsersInfo(new UserSpec(username,email,enabled,id),pageable);
@@ -83,7 +82,6 @@ public class UserController {
     @RequiresPermissions (value={"admin", "user:all","user:add"}, logical= Logical.OR)
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
-        log.warn("REST request to addPage");
         return new ModelAndView("/user/add");
     }
 
@@ -95,13 +93,13 @@ public class UserController {
      */
     @Log("新增用户")
     @RequiresPermissions (value={"admin", "user:all","user:add"}, logical= Logical.OR)
-    @PostMapping(value = "/inster")
-    public ResponseEntity inster(@Validated(User.New.class) @RequestBody User user, @RequestParam String roles) {
-        log.warn("REST request to insterUser");
+    @PostMapping(value = "/insert")
+    public ResponseEntity insert(@Validated(User.New.class) @RequestBody User user, @RequestParam String roles) {
+        log.warn("REST request to insert User : {}" +user);
         if(StrUtil.hasEmpty(roles)){
             return ResponseEntity.error(HttpStatus.HTTP_NOT_FOUND,"角色为空，请至少为其分配一个角色");
         }
-        userService.inster(user,roles);
+        userService.insert(user,roles);
         return ResponseEntity.ok();
     }
 
@@ -112,11 +110,7 @@ public class UserController {
     @RequiresPermissions (value={"admin", "user:all","user:update"}, logical= Logical.OR)
     @GetMapping(value = "/toUpdatePage")
     public ModelAndView toUpdatePage(@RequestParam Long id){
-        log.warn("REST request to toUpdatePage");
         User user = userService.findById(id);
-        if(user == null){
-            return new ModelAndView("/exception/404");
-        }
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         String rolesSelect = roleService.getRoles(user.getRoles());
@@ -134,7 +128,7 @@ public class UserController {
     @RequiresPermissions (value={"admin", "user:all","user:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
     public ResponseEntity update(@Validated(User.Update.class) @RequestBody User user, @RequestParam String roles) {
-        log.warn("REST request to insterUser");
+        log.warn("REST request to update User : {}" +user);
         if(StrUtil.hasEmpty(roles)){
             return ResponseEntity.error(HttpStatus.HTTP_NOT_FOUND,"角色为空，请至少为其分配一个角色");
         }
@@ -151,7 +145,7 @@ public class UserController {
     @RequiresPermissions (value={"admin", "user:all","user:lock"}, logical= Logical.OR)
     @PutMapping(value = "/updateEnabled")
     public ResponseEntity updateEnabled(@RequestParam Long id){
-        log.warn("REST request to updateEnabled");
+        log.warn("REST request to updateEnabled User : {}" +id);
         userService.updateEnabled(userService.findById(id));
         return ResponseEntity.ok();
     }
@@ -165,7 +159,7 @@ public class UserController {
     @RequiresPermissions (value={"admin", "user:all","user:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) {
-        log.warn("REST request to deleteUser");
+        log.warn("REST request to delete User : {}" +id);
         userService.delete(userService.findById(id));
         return ResponseEntity.ok();
     }

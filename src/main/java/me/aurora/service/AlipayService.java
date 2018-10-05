@@ -37,7 +37,7 @@ public interface AlipayService {
      * @return
      */
     @Cacheable(key = "#p0")
-    AlipayConfig findById(long id);
+    AlipayConfig findById(Long id);
 
     /**
      * 更新配置

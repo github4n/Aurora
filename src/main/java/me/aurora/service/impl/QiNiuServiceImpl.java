@@ -48,7 +48,10 @@ public class QiNiuServiceImpl implements QiNiuService {
     private final String TYPE = "公开";
 
     @Override
-    public QiniuConfig findById(long id) {
+    public QiniuConfig findById(Long id) {
+        if(id == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
+        }
         Optional<QiniuConfig> qiniuConfig = qiNiuConfigRepo.findById(id);
         if(qiniuConfig.isPresent()){
             return qiniuConfig.get();

@@ -2,10 +2,10 @@
     <div class="layui-row">
         <div class="layui-col-xs12">
             <div class="layui-card">
-                <div class="layui-card-header">用户信息管理</div>
+                <div class="layui-card-header">数据字典</div>
                 <div class="layui-card-body">
                     <div class="layui-card-header">
-                        <a id="add" shiro:hasAnyPermissions="admin,user:all,user:add" class="layui-btn layui-btn-xs">
+                        <a id="add" shiro:hasAnyPermissions="admin,dict:all,dict:add" class="layui-btn layui-btn-xs">
                             <i class="layui-icon"></i>
                             <span>新增</span>
                         </a>
@@ -14,12 +14,9 @@
                         </a>
                     </div>
                     <table class="layui-table" id="myTable" lay-filter="tools"></table>
-                    <script type="text/html" id="checkLock">
-                        <input shiro:hasAnyPermissions="admin,user:all,user:lock" type="checkbox" name="enabled" value="{{d.id}}" lay-skin="switch" lay-text="Yes|No" lay-event="lock" lay-filter="lockDemo" {{ d.enabled == 1 ? 'checked' : '' }}>
-                    </script>
                     <script type="text/html" id="operation">
-                        <button shiro:hasAnyPermissions="admin,user:all,user:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
-                        <button shiro:hasAnyPermissions="admin,user:all,user:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                        <button shiro:hasAnyPermissions="admin,dict:all,dict:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,dict:all,dict:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
                     </script>
                 </div>
             </div>
@@ -29,31 +26,27 @@
 <script type="text/html" id="search_tpl_hash">
     <form class="layui-form" action="">
         <div class="layui-form-item">
-            <label class="layui-form-label">用户编号</label>
+            <label class="layui-form-label">表名</label>
             <div class=layui-input-lump>
-                <input type="text" name="id" placeholder="请输入用户编号.." autocomplete="off" class="layui-input">
+                <input type="text" name="tableName" placeholder="请输入表名.." autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">用户名</label>
+            <label class="layui-form-label">字段名</label>
             <div class=layui-input-lump>
-                <input type="text" name="username" placeholder="请输入用户名.." autocomplete="off" class="layui-input">
+                <input type="text" name="fieldName" placeholder="请输入字段名称.." autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
+            <label class="layui-form-label">字段值</label>
             <div class=layui-input-lump>
-                <input type="text" name="email" placeholder="请输入用户邮箱.." autocomplete="off" class="layui-input">
+                <input type="text" name="fieldValue" placeholder="请输入字段值.." autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">状态</label>
+            <label class="layui-form-label">字段描述</label>
             <div class=layui-input-lump>
-                <select name="enabled" lay-verify="">
-                    <option value="">请选择...</option>
-                    <option value="1">允许登录</option>
-                    <option value="0">禁止登录</option>
-                </select>
+                <input type="text" name="fieldDetail" placeholder="请输入字段描述.." autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -64,7 +57,6 @@
         </div>
     </form>
 </script>
-<script th:src="@{'/js/MD5.js'}"></script>
 <script>
     layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
         var $ = layui.jquery,
@@ -72,17 +64,16 @@
             table = layui.table,
             sidebar = layui.sidebar,
             form = layui.form;
-
         //监听新增事件
         $('#add').on('click', function(){
             var index = layer.open({
                 type: 2
-                ,content: '/user/toAddPage'
-                ,area: ['500px', '500px']
+                ,content: '/dict/toAddPage'
+                ,area: ['500px', '450px']
                 ,btnAlign: 'c'
                 ,shade: 0.8
+                ,title: '新增字典'
                 ,maxmin: true
-                ,title: '新增用户'
                 ,btn: ['确认', '取消']
                 ,yes: function(){
                     var body = layer.getChildFrame('body', index);
@@ -95,21 +86,22 @@
         //表格渲染
         table.render({
             elem: '#myTable'
-            ,url:'/user/getUsersInfo'
+            ,url:'/dict/getDictsInfo'
             ,page: true
             ,id:"ID"
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [
-                        [
-                          {field:'id',align:'center', width:70,  title: '编号'}
-                         ,{field:'username',  title: '用户昵称'}
-                         ,{field:'email',  title: '邮箱'}
-                         ,{field:'createDateTime',  title: '创建时间'}
-                         ,{field:'lastLoginTime',  title: '最近登录'}
-                         ,{field:'lock', align: 'center', width: 120, toolbar: '#checkLock', title: '是否允许登录'}
-                         ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作',fixed: 'right'}
-                        ]
-                    ]
+                [
+                    {field:'id',align:'center', width:70, unresize: true, title: '编号'}
+                    ,{field:'tableName',  title: '表名'}
+                    ,{field:'fieldName',  title: '字段名'}
+                    ,{field:'fieldValue',  title: '字段值'}
+                    ,{field:'fieldDetail',  title: '字段描述'}
+                    ,{field:'createTime',  title: '创建日期',width:170}
+                    ,{field:'updateTime', title: '更新日期',width:170}
+                    ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作',fixed: 'right'}
+                ]
+            ]
         });
 
         //监听搜索事件
@@ -120,10 +112,6 @@
                 content: $('#search_tpl_hash').html(),
                 title: '搜索',
                 shade: true,
-                // shadeClose:false,
-                // direction: 'left'
-                // dynamicRender: false,
-                // url: 'views/member/all/search.html',
                 width: '450px', //可以设置百分比和px
                 done: function () {
                     form.render();
@@ -131,10 +119,10 @@
                     form.on('submit(formDemo_hash)', function (data) {
                         table.reload('ID', {
                             where: {
-                                id: $('input[name="id"]').val(),
-                                username: $('input[name="username"]').val(),
-                                email: $('input[name="email"]').val(),
-                                enabled: $('select[name="enabled"]').val()
+                                tableName: $('input[name="tableName"]').val(),
+                                fieldName: $('input[name="fieldName"]').val(),
+                                fieldDetail: $('input[name="fieldDetail"]').val(),
+                                fieldValue: $('input[name="fieldValue"]').val()
                             }
                             ,page: {
                                 curr: 1 //重新从第 1 页开始
@@ -146,37 +134,18 @@
             });
         });
 
-        // 监听开关事件
-        form.on('switch(lockDemo)', function (data) {
-            // 开关方法
-            $.ajax({
-                url: "/user/updateEnabled?id="+this.value,
-                type: "PUT",
-                success: function(data){
-                    if (data.code == 200) {
-                        layer.msg(data.msg, {icon: 6, time: 1500});
-                    } else {
-                        layer.msg(data.msg, {icon: 5, time: 1500});
-                        setTimeout(function () {
-                            location.reload(true)
-                        },1500);
-                    }
-                }
-            });
-        });
-
         //监听修改按钮
         table.on('tool(tools)', function(obj){
             var data = obj.data;
             if(obj.event === 'edit'){
                 // 编辑
                 var index = layer.open({
-                     type: 2
-                    ,content: '/user/toUpdatePage?id='+data.id
-                    ,area: ['500px', '500px']
+                    type: 2
+                    ,content: '/dict/toUpdatePage?id='+data.id
+                    ,area: ['500px', '450px']
                     ,btnAlign: 'c'
                     ,shade: 0.8
-                    ,title: '编辑用户'
+                    ,title: '编辑字典'
                     ,maxmin: true
                     ,btn: ['确认', '取消']
                     ,yes: function(){
@@ -185,68 +154,52 @@
                     }
                 });
                 parent.layer.iframeAuto(index);
-            //监听删除事件
+                //监听删除事件
             } else if(obj.event === 'del'){
                 layer.confirm("你确定删除数据吗?", {icon: 3 ,btnAlign: 'c', title:'提示'},
                     function(index){//确定回调
-                    // 写删除方法
-                    $.ajax({
-                        url: "/user/delete?id="+data.id,
-                        type: "DELETE",
-                        success: function(data){
-                            if (data.code == 200) {
-                                layer.close(index);
-                                layui.layer.msg("删除成功", {icon: 6});
-                                setTimeout(function () {
-                                    table.reload('ID', {
-                                        where: {}
-                                        ,page: {
-                                            curr: 1
-                                        }
-                                    });
-                                },1000);
-                            } else {
-                                layer.close(index);
-                                layer.msg(data.msg, {icon: 5});
+                        // 写删除方法
+                        $.ajax({
+                            url: "/dict/delete?id="+data.id,
+                            type: "DELETE",
+                            success: function(data){
+                                if (data.code == 200) {
+                                    layer.close(index);
+                                    layui.layer.msg("删除成功", {icon: 6});
+                                    setTimeout(function () {
+                                        table.reload('ID', {
+                                            where: {}
+                                            ,page: {
+                                                curr: 1
+                                            }
+                                        });
+                                    },1000);
+                                } else {
+                                    layer.close(index);
+                                    layer.msg(data.msg, {icon: 5});
+                                }
                             }
-                        }
+                        });
                     });
-                });
             }
         });
     });
 
     /**
-     * 新增用户
+     * 新增
      * @param layer
      * @param body
      */
     function add(layer,body) {
-        var roles = body.contents().find("input[name=\"role\"]").val();
-        var pwd = MD5(body.contents().find("input[name=\"password\"]").val())
-        var rpwd = MD5(body.contents().find("input[name=\"rPassword\"]").val())
-        var username = body.contents().find("input[name=\"username\"]").val()
-        var email = body.contents().find("input[name=\"email\"]").val()
-        if(username == ''||null == username){
-            layui.layer.msg("用户名不能为空",{icon: 5});
-            return
-        }
-        if(email == ''||null == email){
-            layui.layer.msg("邮箱不能为空",{icon: 5});
-            return
-        }
-        if(pwd != rpwd){
-            layui.layer.msg("密码输入不一致",{icon: 5});
-            return
-        }
         $.ajax({
-            url: "/user/insert?roles="+roles,
+            url: "/dict/insert",
             contentType: "application/json",
             type: "POST",
             data:JSON.stringify({
-                username:username,
-                password:pwd,
-                email:email
+                tableName:body.contents().find("input[name=\"tableName\"]").val(),
+                fieldName:body.contents().find("input[name=\"fieldName\"]").val(),
+                fieldDetail:body.contents().find("textarea[name=\"fieldDetail\"]").val(),
+                fieldValue:body.contents().find("input[name=\"fieldValue\"]").val()
             }),
             dataType: "json",
             success: function(data){
@@ -257,7 +210,7 @@
                         layui.layer.msg("添加成功", {icon: 6});
                         setTimeout(function () {
                             layui.table.reload('ID', {
-                                 where: {}
+                                where: {}
                                 ,page: {
                                     curr: 1 //重新从第 1 页开始
                                 }
@@ -274,28 +227,21 @@
     }
 
     /**
-     * 更新用户
+     * 更新
      * @param layer
      * @param body
      */
     function update(layer,body) {
-        var roles = body.contents().find("input[name=\"role\"]").val();
-        var pwd = body.contents().find("input[name=\"password\"]").val()
-        var id = body.contents().find("input[name=\"id\"]").val()
-        var username = body.contents().find("input[name=\"username\"]").val()
-        var email = body.contents().find("input[name=\"email\"]").val()
-        if(!(pwd == ''||pwd == null)){
-            pwd = MD5(pwd)
-        }
         $.ajax({
-            url: "/user/update?roles="+roles,
+            url: "/dict/update",
             contentType: "application/json",
             type: "PUT",
             data:JSON.stringify({
-                id:id,
-                username:username,
-                password:pwd,
-                email:email
+                id:body.contents().find("input[name=\"id\"]").val(),
+                tableName:body.contents().find("input[name=\"tableName\"]").val(),
+                fieldName:body.contents().find("input[name=\"fieldName\"]").val(),
+                fieldDetail:body.contents().find("textarea[name=\"fieldDetail\"]").val(),
+                fieldValue:body.contents().find("input[name=\"fieldValue\"]").val()
             }),
             dataType: "json",
             success: function(data){

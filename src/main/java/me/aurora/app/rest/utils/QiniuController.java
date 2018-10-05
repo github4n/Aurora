@@ -33,7 +33,7 @@ public class QiniuController {
     private QiNiuService qiNiuService;
 
     @GetMapping(value = "/index")
-    public ModelAndView emailIndex(){
+    public ModelAndView index(){
         QiniuConfig qiniuConfig = qiNiuService.findById(1L);
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         request.setAttribute("qiniuConfig",qiniuConfig);
@@ -55,7 +55,6 @@ public class QiniuController {
     public Map getContentInfo(@RequestParam(value = "name",required = false) String name,
                           @RequestParam(value = "page",defaultValue = "1")Integer page,
                           @RequestParam(value = "limit",defaultValue = "10")Integer limit){
-        log.warn("REST request to findAll Log");
         Sort sort = new Sort(Sort.Direction.DESC,"updateTime");
         Pageable pageable = PageRequest.of(page-1,limit,sort);
         QiniuConfig qiniuConfig = qiNiuService.findById(1L);
@@ -67,7 +66,8 @@ public class QiniuController {
 
     @Log("配置七牛对象存储")
     @PostMapping(value = "/config")
-    public ResponseEntity emailConfig(@RequestBody @Validated(QiniuConfig.Update.class) QiniuConfig qiniuConfig){
+    public ResponseEntity qiNiuConfig(@RequestBody @Validated(QiniuConfig.Update.class) QiniuConfig qiniuConfig){
+        log.warn("REST request to qiNiuConfig QiniuConfig : {}" +qiniuConfig);
         qiniuConfig.setId(1L);
         qiNiuService.updateConfig(qiniuConfig);
         return ResponseEntity.ok();
@@ -79,7 +79,6 @@ public class QiniuController {
      */
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
-        log.warn("REST request to addPage");
         return new ModelAndView("/utils/qiNiu/add");
     }
 
@@ -91,6 +90,7 @@ public class QiniuController {
     @Log("上传文件到七牛云")
     @PostMapping(value = "/upload")
     public ResponseEntity upload(@RequestParam MultipartFile file){
+        log.warn("REST request to upload qiNiu : {}" +file.getOriginalFilename());
         qiNiuService.upload(file,qiNiuService.findById(1L));
         return ResponseEntity.ok();
     }
@@ -101,6 +101,7 @@ public class QiniuController {
     @Log("同步七牛云数据到数据库")
     @PostMapping(value = "/synchronize")
     public ResponseEntity synchronize(){
+        log.warn("REST request to synchronize qiNiu : {}");
         qiNiuService.synchronize(qiNiuService.findById(1L));
         return ResponseEntity.ok();
     }
@@ -114,6 +115,7 @@ public class QiniuController {
     @Log("下载七牛云文件")
     @PostMapping(value = "/download")
     public ResponseEntity download(@RequestParam Long id) throws UnsupportedEncodingException {
+        log.warn("REST request to download qiNiu : {}" +id);
         return qiNiuService.download(qiNiuService.findByContentId(id),qiNiuService.findById(1L));
     }
 
@@ -126,6 +128,7 @@ public class QiniuController {
     @Log("删除七牛云文件")
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) throws UnsupportedEncodingException {
+        log.warn("REST request to delete qiNiu : {}" +id);
         qiNiuService.delete(qiNiuService.findByContentId(id),qiNiuService.findById(1L));
         return ResponseEntity.ok();
     }

@@ -115,7 +115,10 @@ public class AlipayServiceImpl implements AlipayService {
     }
 
     @Override
-    public AlipayConfig findById(long id) {
+    public AlipayConfig findById(Long id) {
+        if(id == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
+        }
         Optional<AlipayConfig> alipayConfig = alipayRepo.findById(1L);
         if (alipayConfig.isPresent()){
             return alipayConfig.get();

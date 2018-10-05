@@ -57,7 +57,7 @@ public interface MenuService {
      * @param roles
      */
     @CacheEvict(allEntries = true)
-    void inster(Menu menu, Menu topMenu, String roles);
+    void insert(Menu menu, Menu topMenu, String roles);
 
     /**
      * 根据PID查询菜单

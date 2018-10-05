@@ -11,7 +11,7 @@ ADD *.war app.war
 
 RUN bash -c 'touch /app.jar'
 
-#指定端口
+#指定映射端口
 EXPOSE 8080
 
 CMD ["java","-jar","app.war"]

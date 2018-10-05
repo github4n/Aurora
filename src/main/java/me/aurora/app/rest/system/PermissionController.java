@@ -43,7 +43,7 @@ public class PermissionController {
     }
 
     /**
-     * 跳转到权限列表页面
+     * 跳转到权限列表
      * @return
      */
     @GetMapping(value = "/index")
@@ -68,7 +68,6 @@ public class PermissionController {
                                   @RequestParam(value = "remark",required = false) String remark,
                                   @RequestParam(value = "page",defaultValue = "1")Integer page,
                                   @RequestParam(value = "limit",defaultValue = "2000")Integer limit){
-        log.warn("REST request to findAll Permission");
         Sort sort = new Sort(Sort.Direction.DESC,"id");
         Pageable pageable = PageRequest.of(page-1,2000,sort);
         return permissionService.getPermissionInfo(new PermissionSpec(id,perms,remark),pageable);
@@ -81,7 +80,6 @@ public class PermissionController {
     @RequiresPermissions (value={"admin", "permission:all","permission:add"}, logical= Logical.OR)
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
-        log.warn("REST request to addPage");
         List<Permission> permissionList = permissionService.findByPid(0);
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
@@ -96,10 +94,10 @@ public class PermissionController {
      */
     @Log("新增权限")
     @RequiresPermissions (value={"admin", "permission:all","permission:add"}, logical= Logical.OR)
-    @PostMapping(value = "/inster")
-    public ResponseEntity inster(@Validated(Permission.New.class) @RequestBody Permission permission) {
-        log.warn("REST request to insterPermission");
-        permissionService.inster(permission);
+    @PostMapping(value = "/insert")
+    public ResponseEntity insert(@Validated(Permission.New.class) @RequestBody Permission permission) {
+        log.warn("REST request to insert Permission : {}"+permission);
+        permissionService.insert(permission);
         return ResponseEntity.ok();
     }
 
@@ -110,11 +108,7 @@ public class PermissionController {
     @RequiresPermissions (value={"admin", "permission:all","permission:update"}, logical= Logical.OR)
     @GetMapping(value = "/toUpdatePage")
     public ModelAndView toUpdatePage(@RequestParam Long id){
-        log.warn("REST request to toUpdatePage");
         Permission permission = permissionService.findById(id);
-        if(permission == null){
-            return new ModelAndView("/exception/404");
-        }
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         List<Permission> permissionList = permissionService.findByPid(0);
@@ -132,8 +126,8 @@ public class PermissionController {
     @RequiresPermissions (value={"admin", "permission:all","permission:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
     public ResponseEntity update(@Validated(Permission.New.class) @RequestBody Permission permission) {
-        log.warn("REST request to insterUser");
-        permissionService.update(permission);
+        log.warn("REST request to update Permission : {}"+permission);
+        permissionService.update(permissionService.findById(permission.getId()),permission);
         return ResponseEntity.ok();
     }
 
@@ -146,7 +140,7 @@ public class PermissionController {
     @RequiresPermissions (value={"admin", "permission:all","permission:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) {
-        log.warn("REST request to deletePermission");
+        log.warn("REST request to delete Permission : {}" +id);
         permissionService.delete(permissionService.findById(id));
         return ResponseEntity.ok();
     }

@@ -81,6 +81,9 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional(readOnly = true)
     public Menu findByPId(Integer pid) {
+        if(pid == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"pid not exist");
+        }
         Optional<Menu> menu = menuRepo.findById(pid.longValue());
         ValidationUtil.isNull(menu,"pid:"+pid+"is not find");
         return menu.get();
@@ -88,7 +91,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
-    public void inster(Menu menu, Menu topMenu, String roles) {
+    public void insert(Menu menu, Menu topMenu, String roles) {
         validation(menu);
         if(topMenu == null){
             menu.setLevel(1);
@@ -136,6 +139,9 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional(readOnly = true)
     public Menu findById(Long id) {
+        if(id == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
+        }
         Optional<Menu> menu = menuRepo.findById(id);
         ValidationUtil.isNull(menu,"id:"+id+"is not find");
         return menu.get();

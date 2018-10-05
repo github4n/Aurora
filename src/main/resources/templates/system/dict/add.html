@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Aurora- 新增数据字典</title>
+    <!-- build:css -->
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <!-- endbuild -->
+</head>
+<body>
+<div style="padding: 10px; line-height: 15px; font-weight: 300;">
+    <form class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item">
+        <label class="layui-form-label">表名</label>
+        <div class=layui-input-lump>
+            <input type="text" name="tableName" placeholder="请输入表名.." autocomplete="off" class="layui-input">
+        </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">字段名</label>
+            <div class=layui-input-lump>
+                <input type="text" name="fieldName" placeholder="请输入字段名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">字段值</label>
+            <div class=layui-input-lump>
+                <input type="text" name="fieldValue" placeholder="请输入字段值.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">字段描述</label>
+            <div class="layui-input-block">
+                <textarea name="fieldDetail" placeholder="请输入字段描述.." class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

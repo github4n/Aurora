@@ -53,7 +53,7 @@ public class MenuController {
      * 构建前端路由
      */
     @GetMapping(value = "/buildMenuUrl")
-    public Object buildMenuUrl(HttpServletRequest request){
+    public Object buildMenuUrl(){
         //查询出所有子菜单
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         user = userService.findById(user.getId());
@@ -63,7 +63,7 @@ public class MenuController {
     }
 
     /**
-     * 跳转到权限列表页面
+     * 跳转到列表页面
      * @return
      */
     @GetMapping(value = "/index")
@@ -86,7 +86,6 @@ public class MenuController {
                             @RequestParam(value = "name",required = false) String name,
                             @RequestParam(value = "page",defaultValue = "1")Integer page,
                             @RequestParam(value = "limit",defaultValue = "10")Integer limit){
-        log.warn("REST request to findAll MenusInfo");
         Sort sort = new Sort(Sort.Direction.DESC,"id");
         Pageable pageable = PageRequest.of(page-1,2000,sort);
         return menuService.getMenuInfo(new MenuSpec(id,name),pageable);
@@ -100,7 +99,6 @@ public class MenuController {
     @RequiresPermissions (value={"admin", "menu:all","menu:add"}, logical= Logical.OR)
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
-        log.warn("REST request to addPage");
         List<Menu> menus = menuService.findAllMenus();
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
@@ -115,15 +113,14 @@ public class MenuController {
      */
     @Log("新增菜单")
     @RequiresPermissions (value={"admin", "menu:all","menu:add"}, logical= Logical.OR)
-    @PostMapping(value = "/inster")
-    public ResponseEntity inster(@Validated(Menu.New.class) @RequestBody Menu menu, @RequestParam String roles){
-        log.warn("REST request to inster menu");
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
+    @PostMapping(value = "/insert")
+    public ResponseEntity insert(@Validated(Menu.New.class) @RequestBody Menu menu, @RequestParam String roles){
+        log.warn("REST request to insert Menu : {} " + menu);
         Menu topMenu = null;
         if(menu.getPid() != 0){
             topMenu = menuService.findByPId(menu.getPid());
         }
-        menuService.inster(menu,topMenu,roles);
+        menuService.insert(menu,topMenu,roles);
         return ResponseEntity.ok();
     }
 
@@ -134,11 +131,7 @@ public class MenuController {
     @RequiresPermissions (value={"admin", "menu:all","menu:update"}, logical= Logical.OR)
     @GetMapping(value = "/toUpdatePage")
     public ModelAndView toUpdatePage(@RequestParam Long id){
-        log.warn("REST request to toUpdatePage");
         Menu menu = menuService.findById(id);
-        if(menu == null){
-            return new ModelAndView("/exception/404");
-        }
         List<Menu> menus = menuService.findAllMenus();
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
@@ -157,7 +150,7 @@ public class MenuController {
     @RequiresPermissions (value={"admin", "menu:all","menu:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
     public ResponseEntity update(@Validated(Menu.Update.class) @RequestBody Menu menu,@RequestParam String roles) {
-        log.warn("REST request to update");
+        log.warn("REST request to update Menu : {} " + menu);
         menuService.update(menu,menuService.findById(menu.getId()),roles);
         return ResponseEntity.ok();
     }
@@ -171,7 +164,7 @@ public class MenuController {
     @RequiresPermissions (value={"admin", "menu:all","menu:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id){
-        log.warn("REST request to delete menu");
+        log.warn("REST request to delete Menu : {}" +id);
         menuService.delete(menuService.findById(id));
         return ResponseEntity.ok();
     }

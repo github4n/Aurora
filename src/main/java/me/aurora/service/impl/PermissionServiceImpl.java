@@ -41,7 +41,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void inster(Permission permission) throws AuroraException {
+    public void insert(Permission permission) throws AuroraException {
         if(permissionRepo.findByPerms(permission.getPerms())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"权限已存在");
         }
@@ -51,20 +51,21 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     @Transactional(readOnly = true)
     public Permission findById(Long id) {
+        if(id == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
+        }
         Optional<Permission> permission = permissionRepo.findById(id);
         ValidationUtil.isNull(permission,"id:"+id+"is not find");
         return permission.get();
     }
 
     @Override
-    public void update(Permission permission) throws AuroraException {
-        if(null == permission.getId()){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"权限ID不能为空");
-        }
-        Permission old = permissionRepo.findByPerms(permission.getPerms());
-        if(old !=null && !old.getId().equals(permission.getId())){
+    public void update(Permission old, Permission permission) throws AuroraException {
+        Permission permission1 = permissionRepo.findByPerms(permission.getPerms());
+        if(permission1 !=null && !permission1.getId().equals(permission.getId())){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"权限已存在");
         }
+        permission.setCreateTime(old.getCreateTime());
         permissionRepo.save(permission);
     }
 

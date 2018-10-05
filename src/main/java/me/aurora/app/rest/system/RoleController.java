@@ -43,7 +43,7 @@ public class RoleController {
     }
 
     /**
-     * 跳转到角色列表页面
+     * 跳转到角色列表
      * @return
      */
     @GetMapping(value = "/index")
@@ -68,7 +68,6 @@ public class RoleController {
                             @RequestParam(value = "remark",required = false) String remark,
                             @RequestParam(value = "page",defaultValue = "1")Integer page,
                             @RequestParam(value = "limit",defaultValue = "10")Integer limit){
-        log.warn("REST request to findAll roles");
         Sort sort = new Sort(Sort.Direction.DESC,"id");
         Pageable pageable = PageRequest.of(page-1,limit,sort);
         return roleService.getRoleInfo(new RoleSpec(id,name,remark),pageable);
@@ -93,10 +92,10 @@ public class RoleController {
      */
     @Log("新增角色")
     @RequiresPermissions (value={"admin", "role:all","role:add"}, logical= Logical.OR)
-    @PostMapping(value = "/inster")
-    public ResponseEntity inster(@Validated(Role.New.class) @RequestBody Role role, @RequestParam String permissions) {
-        log.warn("REST request to insterRoles");
-        roleService.inster(role,permissions);
+    @PostMapping(value = "/insert")
+    public ResponseEntity insert(@Validated(Role.New.class) @RequestBody Role role, @RequestParam String permissions) {
+        log.warn("REST request to insert Role : {}" +role);
+        roleService.insert(role,permissions);
         return ResponseEntity.ok();
     }
 
@@ -107,12 +106,8 @@ public class RoleController {
     @RequiresPermissions (value={"admin", "role:all","role:update"}, logical= Logical.OR)
     @GetMapping(value = "/toUpdatePage")
     public ModelAndView toUpdatePage(@RequestParam Long id){
-        log.warn("REST request to toUpdatePage");
         Role role = roleService.findById(id);
         String permissionSelect = roleService.getPermissions(role.getPermissions());
-        if(role == null){
-            return new ModelAndView("/exception/404");
-        }
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         request.setAttribute("role", roleMapper.toDto(role));
@@ -130,8 +125,8 @@ public class RoleController {
     @RequiresPermissions (value={"admin", "role:all","role:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
     public ResponseEntity update(@Validated(Role.Update.class) @RequestBody Role role,@RequestParam String permissions) {
-        log.warn("REST request to insterUser");
-        roleService.update(role,permissions);
+        log.warn("REST request to update Role : {}" +role);
+        roleService.update(roleService.findById(role.getId()),role,permissions);
         return ResponseEntity.ok();
     }
 
@@ -144,7 +139,7 @@ public class RoleController {
     @RequiresPermissions (value={"admin", "role:all","role:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) {
-        log.warn("REST request to deleteRole");
+        log.warn("REST request to delete Role : {}" +id);
         roleService.delete(roleService.findById(id));
         return ResponseEntity.ok();
     }

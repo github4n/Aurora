@@ -62,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void inster(Role role, String permissions) {
+    public void insert(Role role, String permissions) {
         if(roleRepo.findByName(role.getName())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"角色已存在");
         }
@@ -76,21 +76,21 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(readOnly = true)
     public Role findById(Long id) {
+        if(id == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
+        }
         Optional<Role> role = roleRepo.findById(id);
         ValidationUtil.isNull(role,"id:"+id+"is not find");
         return role.get();
     }
 
     @Override
-    public void update(Role role, String permissions) {
+    public void update(Role old,Role role, String permissions) {
         if(StrUtil.isEmpty(permissions)){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请至少为其分配一个权限");
         }
-        if(role.getId() == null){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"角色ID不能为空");
-        }
-        Role old = roleRepo.findByName(role.getName());
-        if(old!=null && !role.getId().equals(old.getId())){
+        Role role1 = roleRepo.findByName(role.getName());
+        if(role1!=null && !role.getId().equals(role1.getId())){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"角色已存在");
         }
         old.setName(role.getName());

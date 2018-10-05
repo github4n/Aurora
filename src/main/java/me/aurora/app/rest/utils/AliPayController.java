@@ -1,6 +1,7 @@
 package me.aurora.app.rest.utils;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import me.aurora.annotation.Log;
 import me.aurora.domain.ResponseEntity;
 import me.aurora.domain.utils.AlipayConfig;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @author zhengjie
  * @date 2018/07/27 13:41:41
  */
+@Slf4j
 @RestController
 @RequestMapping("/aliPay")
 public class AliPayController {
@@ -37,7 +39,7 @@ public class AliPayController {
      * @return
      */
     @GetMapping(value = "/index")
-    public ModelAndView emailIndex(){
+    public ModelAndView index(){
         AlipayConfig alipay = alipayService.findById(1L);
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         request.setAttribute("alipay",alipay);
@@ -49,7 +51,8 @@ public class AliPayController {
 
     @Log("配置支付宝参数")
     @PostMapping(value = "/config")
-    public ResponseEntity emailConfig(@Validated(AlipayConfig.New.class) @RequestBody AlipayConfig alipayConfig){
+    public ResponseEntity payConfig(@Validated(AlipayConfig.New.class) @RequestBody AlipayConfig alipayConfig){
+        log.warn("REST request to payConfig AlipayConfig : {}" +alipayConfig);
         alipayConfig.setId(1L);
         alipayService.updateConfig(alipayConfig);
         return ResponseEntity.ok();
@@ -59,6 +62,7 @@ public class AliPayController {
     @ApiOperation(value = "PC网页支付")
     @PostMapping(value = "/toPayAsPC")
     public ResponseEntity toPayAsPC(@Validated(TradeVo.New.class) @RequestBody TradeVo trade) throws Exception{
+        log.warn("REST request to toPayAsPC Trade : {}" +trade);
         AlipayConfig alipay = alipayService.findById(1L);
         trade.setOutTradeNo(alipayUtils.getOrderCode());
         String payUrl = alipayService.toPayAsPC(alipay,trade);
@@ -69,6 +73,7 @@ public class AliPayController {
     @ApiOperation(value = "手机网页支付")
     @PostMapping(value = "/toPayAsWeb")
     public ResponseEntity toPayAsWeb(@Validated(TradeVo.New.class) @RequestBody TradeVo trade) throws Exception{
+        log.warn("REST request to toPayAsWeb Trade : {}" +trade);
         AlipayConfig alipay = alipayService.findById(1L);
         trade.setOutTradeNo(alipayUtils.getOrderCode());
         String payUrl = alipayService.toPayAsWeb(alipay,trade);
@@ -98,7 +103,7 @@ public class AliPayController {
             /**
              * 根据业务需要返回数据
              */
-            return ResponseEntity.ok();
+            return ResponseEntity.error();
         }
     }
 

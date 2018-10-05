@@ -83,6 +83,9 @@ public class PictureServiceImpl implements PictureService {
     @Override
     @Transactional(readOnly = true)
     public Picture findById(Long id) {
+        if(id == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
+        }
         Optional<Picture> picture = pictureRepo.findById(id);
         ValidationUtil.isNull(picture,"id:"+id+"is not find");
         return picture.get();

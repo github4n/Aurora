@@ -50,7 +50,7 @@ public interface RoleService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void inster(Role role, String permissions);
+    void insert(Role role, String permissions);
 
     /**
      * 根据ID查找Role
@@ -63,11 +63,12 @@ public interface RoleService {
     /**
      * 更新角色
      * @param role
+     * @param old
      * @param permissions
      * @return
      */
     @CacheEvict(allEntries = true)
-    void update(Role role, String permissions);
+    void update(Role old,Role role, String permissions);
 
     /**
      * 删除角色

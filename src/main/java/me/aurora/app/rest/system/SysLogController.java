@@ -1,6 +1,5 @@
 package me.aurora.app.rest.system;
 
-import lombok.extern.slf4j.Slf4j;
 import me.aurora.repository.spec.LogSpec;
 import me.aurora.service.SysLogService;
 import org.apache.shiro.authz.annotation.Logical;
@@ -17,7 +16,6 @@ import java.util.Map;
  * @author 郑杰
  * @date 2018/08/23 9:57:14
  */
-@Slf4j
 @RestController
 @RequestMapping("sysLog")
 public class SysLogController {
@@ -31,7 +29,6 @@ public class SysLogController {
      */
     @GetMapping(value = "/index")
     public ModelAndView index(){
-        log.warn("REST request to toLogPage");
         return new ModelAndView("/system/log/index");
     }
 
@@ -53,7 +50,6 @@ public class SysLogController {
                           @RequestParam(value = "location",required = false) String location,
                           @RequestParam(value = "page",defaultValue = "1")Integer page,
                           @RequestParam(value = "limit",defaultValue = "10")Integer limit){
-        log.warn("REST request to findAll Log");
         Sort sort = new Sort(Sort.Direction.DESC,"createTime");
         Pageable pageable = PageRequest.of(page-1,limit,sort);
         return sysLogService.getLogInfo(new LogSpec(username,method,operation,location),pageable);

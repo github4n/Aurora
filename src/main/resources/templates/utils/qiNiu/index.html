@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>七牛云存储</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
-    <style>
-        .layui-form-label{float:left;display:block;padding:9px 15px;width:100px;font-weight:400;line-height:20px;text-align:right}
-    </style>
-</head>
-<body>
 <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
     <ul class="layui-tab-title">
         <li class="layui-this">参数配置</li>
@@ -19,28 +8,28 @@
         <div class="layui-tab-item layui-show">
             <form class="layui-form" action="">
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;accessKey</label>
+                    <label class="layui-form-label" style="width: 100px"><span class="layui-badge-dot"></span> &nbsp;accessKey</label>
                     <div class="layui-input-inline" style="width: 40%">
                         <input name="accessKey" th:value="${qiniuConfig.accessKey}" lay-verify="required" placeholder="accessKey" autocomplete="off" class="layui-input" type="text">
                     </div>
                     <div class="layui-form-mid layui-word-aux">accessKey，在安全中心，秘钥管理中查看</div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;secretKey</label>
+                    <label class="layui-form-label" style="width: 100px"><span class="layui-badge-dot"></span> &nbsp;secretKey</label>
                     <div class="layui-input-inline" style="width: 40%">
                         <input name="secretKey" th:value="${qiniuConfig.secretKey}" lay-verify="required" placeholder="secretKey" autocomplete="off" class="layui-input" type="text">
                     </div>
                     <div class="layui-form-mid layui-word-aux">secretKey，在安全中心，秘钥管理中查看</div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;bucket</label>
+                    <label class="layui-form-label" style="width: 100px"><span class="layui-badge-dot"></span> &nbsp;bucket</label>
                     <div class="layui-input-inline" style="width: 40%">
                         <input name="bucket" th:value="${qiniuConfig.bucket}" lay-verify="required" placeholder="bucket" autocomplete="off" class="layui-input" type="text">
                     </div>
                     <div class="layui-form-mid layui-word-aux">存储空间名称作为唯一的 Bucket 识别符</div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;Host</label>
+                    <label class="layui-form-label" style="width: 100px"><span class="layui-badge-dot"></span> &nbsp;Host</label>
                     <div class="layui-input-inline" style="width: 40%">
                         <input name="host" th:value="${qiniuConfig.host}" lay-verify="required"  placeholder="外链域名" autocomplete="off" class="layui-input" type="text">
                     </div>
@@ -48,7 +37,7 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;存储区域</label>
+                    <label class="layui-form-label" style="width: 100px"><span class="layui-badge-dot"></span> &nbsp;存储区域</label>
                     <div class="layui-input-inline">
                         <select name="zone" lay-verify="required" lay-search="">
                             <option th:selected="${qiniuConfig.zone == '华东'}" value="华东">华东</option>
@@ -61,7 +50,7 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;空间类型</label>
+                    <label class="layui-form-label" style="width: 100px"><span class="layui-badge-dot"></span> &nbsp;空间类型</label>
                     <div class="layui-input-inline">
                         <input type="radio" th:checked="${qiniuConfig.type == '公开'}" name="type" value="公开" title="公开">
                         <input type="radio" th:checked="${qiniuConfig.type == '私有'}" name="type" value="私有" title="私有">
@@ -363,5 +352,3 @@ try {
         });
     });
 </script>
-</body>
-</html>

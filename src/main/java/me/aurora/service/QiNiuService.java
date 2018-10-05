@@ -27,7 +27,7 @@ public interface QiNiuService {
      * @return
      */
     @Cacheable(key = "#p0")
-    QiniuConfig findById(long id);
+    QiniuConfig findById(Long id);
 
     /**
      * 修改配置

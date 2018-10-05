@@ -55,7 +55,7 @@ public interface UserService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void inster(User user, String roles);
+    void insert(User user, String roles);
 
     /**
      * 更新用户

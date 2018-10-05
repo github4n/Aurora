@@ -42,6 +42,7 @@ public class SessionController {
     @RequiresPermissions(value={"admin", "user:all","user:logout"}, logical= Logical.OR)
     @DeleteMapping("/forceLogout")
     public ResponseEntity forceLogout(String id) {
+        log.warn("REST request to forceLogout User : {}" +id);
         sessionService.forceLogout(id);
         return ResponseEntity.ok();
     }

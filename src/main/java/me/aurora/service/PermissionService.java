@@ -3,7 +3,6 @@ package me.aurora.service;
 import me.aurora.domain.Permission;
 import me.aurora.domain.Role;
 import me.aurora.repository.spec.PermissionSpec;
-import me.aurora.config.exception.AuroraException;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,7 +33,7 @@ public interface PermissionService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    void inster(Permission permission);
+    void insert(Permission permission);
 
     /**
      * 根据id查询权限
@@ -46,11 +45,13 @@ public interface PermissionService {
 
     /**
      * 更新权限
+     *
+     * @param old
      * @param permission
      * @return
      */
     @CacheEvict(allEntries = true)
-    void update(Permission permission);
+    void update(Permission old, Permission permission);
 
     /**
      * 删除权限

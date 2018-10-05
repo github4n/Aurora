@@ -34,7 +34,7 @@ public class UserSecurityController {
     @Log("用户登录")
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestParam String username, @RequestParam String password, @RequestParam Boolean rememberMe){
-        log.warn("REST request to login User: "+username);
+        log.warn("REST request to login User : {}"+username);
         password = EncryptHelper.encrypt(password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
         Subject subject = SecurityUtils.getSubject();
@@ -54,6 +54,7 @@ public class UserSecurityController {
 
     @GetMapping("/index")
     public ModelAndView index() {
+        log.warn("REST request to index User : {}");
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         user = userService.findById(user.getId());
         // 获取request

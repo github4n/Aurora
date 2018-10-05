@@ -45,6 +45,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User findById(Long id) {
+        if(id == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
+        }
         Optional<User> user = userRepo.findById(id);
         ValidationUtil.isNull(user,"id:"+id+"is not find");
         return user.get();
@@ -75,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void inster(User user, String roles) {
+    public void insert(User user, String roles) {
         if(userRepo.findByUsername(user.getUsername())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户名已存在");
         }

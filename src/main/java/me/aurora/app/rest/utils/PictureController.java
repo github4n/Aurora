@@ -37,7 +37,6 @@ public class PictureController {
      */
     @GetMapping(value = "/index")
     public ModelAndView index(){
-        log.warn("REST request to PicturePage");
         return new ModelAndView("/utils/picture/index");
     }
 
@@ -58,8 +57,6 @@ public class PictureController {
                           @RequestParam(value = "endTime",required = false) Timestamp endTime,
                           @RequestParam(value = "page",defaultValue = "1")Integer page,
                           @RequestParam(value = "limit",defaultValue = "10")Integer limit){
-
-        log.warn("REST request to findAll Log");
         Sort sort = new Sort(Sort.Direction.DESC,"createTime");
         Pageable pageable = PageRequest.of(page-1,limit,sort);
         return pictureService.getPictureInfo(new PictureSpec(username,createTime,endTime),pageable);
@@ -72,7 +69,6 @@ public class PictureController {
     @RequiresPermissions (value={"admin", "picture:all","picture:upload"}, logical= Logical.OR)
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
-        log.warn("REST request to addPicturePage");
         return new ModelAndView("/utils/picture/add");
     }
 
@@ -85,7 +81,8 @@ public class PictureController {
     @Log("上传图片")
     @RequiresPermissions (value={"admin", "picture:all","picture:upload"}, logical= Logical.OR)
     @PostMapping(value = "/upload")
-    public ResponseEntity upload(@RequestParam MultipartFile file) throws Exception {
+    public ResponseEntity upload(@RequestParam MultipartFile file){
+        log.warn("REST request to upload Picture : {}" +file.getOriginalFilename());
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         pictureService.upload(file,user);
         return ResponseEntity.ok();
@@ -100,7 +97,7 @@ public class PictureController {
     @RequiresPermissions (value={"admin", "picture:all","picture:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) {
-        log.warn("REST request to delete picture");
+        log.warn("REST request to delete Picture : {}" +id);
         pictureService.delete(pictureService.findById(id));
         return ResponseEntity.ok();
     }

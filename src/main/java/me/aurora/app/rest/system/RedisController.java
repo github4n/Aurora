@@ -1,5 +1,6 @@
 package me.aurora.app.rest.system;
 
+import lombok.extern.slf4j.Slf4j;
 import me.aurora.annotation.Log;
 import me.aurora.domain.ResponseEntity;
 import me.aurora.service.RedisService;
@@ -17,6 +18,7 @@ import java.util.Set;
  * @author 郑杰
  * @date 2018/09/22 10:48:11
  */
+@Slf4j
 @RestController
 @RequestMapping("redis")
 public class RedisController {
@@ -28,7 +30,7 @@ public class RedisController {
 
     @GetMapping("terminal")
     @RequiresPermissions (value={"admin", "redis:all","redis:terminal"}, logical= Logical.OR)
-    public ModelAndView redisTerminal(Model model) {
+    public ModelAndView terminal(Model model) {
         String osName = System.getProperty("os.name");
         model.addAttribute("osName", osName);
         return new ModelAndView("/system/redis/terminal");
@@ -37,6 +39,7 @@ public class RedisController {
     @Log("执行Redis keys命令")
     @GetMapping("keys")
     public ResponseEntity keys(String arg) {
+        log.warn("REST request to keys Redis : {}" +arg);
         try {
             Set<String> set = this.redisService.getKeys(arg);
             return ResponseEntity.ok(set);
@@ -48,6 +51,7 @@ public class RedisController {
     @Log("执行Redis get命令")
     @GetMapping("get")
     public ResponseEntity get(String arg) {
+        log.warn("REST request to get Redis : {}" +arg);
         try {
             String result = this.redisService.get(arg);
             return ResponseEntity.ok(result == null ? "" : result);
@@ -59,6 +63,7 @@ public class RedisController {
     @Log("执行Redis set命令")
     @GetMapping("set")
     public ResponseEntity set(String arg) {
+        log.warn("REST request to set Redis : {}" +arg);
         try {
             String[] args = arg.split(",");
             if (args.length == 1){
@@ -76,6 +81,7 @@ public class RedisController {
     @Log("执行Redis del命令")
     @GetMapping("del")
     public ResponseEntity del(String arg) {
+        log.warn("REST request to del Redis : {}" +arg);
         try {
             String[] args = arg.split(",");
             Long result = this.redisService.del(args);
@@ -88,6 +94,7 @@ public class RedisController {
     @Log("执行Redis exists命令")
     @GetMapping("exists")
     public ResponseEntity exists(String arg) {
+        log.warn("REST request to exists Redis : {}" +arg);
         try {
             int count = 0;
             String[] arr = arg.split(",");
@@ -105,6 +112,7 @@ public class RedisController {
     @Log("执行Redis pttl命令")
     @GetMapping("pttl")
     public ResponseEntity pttl(String arg) {
+        log.warn("REST request to pttl Redis : {}" +arg);
         try {
             return ResponseEntity.ok(INTEGER_PREFIX + this.redisService.pttl(arg));
         } catch (Exception e) {
@@ -115,6 +123,7 @@ public class RedisController {
     @Log("执行Redis pexpire命令")
     @GetMapping("pexpire")
     public ResponseEntity pexpire(String arg) {
+        log.warn("REST request to pexpire Redis : {}" +arg);
         try {
             String[] arr = arg.split(",");
             if (arr.length != 2 || !isValidLong(arr[1])) {
@@ -129,6 +138,7 @@ public class RedisController {
     @Log("执行flushdb命令")
     @GetMapping("flushdb")
     public ResponseEntity flushdb() {
+        log.warn("REST request to flushdb Redis : {}");
         try {
             return ResponseEntity.ok(INTEGER_PREFIX + this.redisService.flushdb());
         } catch (Exception e) {
@@ -139,6 +149,7 @@ public class RedisController {
     @Log("执行flushall命令")
     @GetMapping("flushall")
     public ResponseEntity flushall() {
+        log.warn("REST request to flushall Redis : {}");
         try {
             return ResponseEntity.ok(INTEGER_PREFIX + this.redisService.flushall());
         } catch (Exception e) {

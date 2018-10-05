@@ -41,6 +41,9 @@ public class EmailServiceImpl implements EmailService {
     @Override
     @Transactional(readOnly = true)
     public EmailConfig findById(Long id) {
+        if(id == null){
+            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
+        }
         Optional<EmailConfig> emailConfig = emailRepo.findById(id);
         if(emailConfig.isPresent()){
             return emailConfig.get();
