@@ -70,10 +70,10 @@ public class UserServiceImpl implements UserService {
     public Map getUsersInfo(UserSpec userSpec, Pageable pageable) {
         Page<User> users = userRepo.findAll(userSpec,pageable);
         List<UserDTO> userDTOS = new ArrayList<>();
-        for(User user:users.getContent()){
+        users.getContent().forEach(user -> {
             UserDTO userDTO = userMapper.toDto(user,roleService.getRoles(user.getRoles()));
             userDTOS.add(userDTO);
-        }
+        });
         return PageUtil.buildPage(userDTOS,users.getTotalElements());
     }
 

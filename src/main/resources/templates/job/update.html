@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Aurora- 新增任务</title>
+    <!-- build:css -->
+    <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+    <!-- endbuild -->
+</head>
+<body>
+<div style="padding: 10px; line-height: 15px; font-weight: 300;">
+    <form class="layui-form layui-form-pane" action="">
+        <input type="text" th:value="${job.id}" name="id" hidden="hidden">
+        <div class="layui-form-item">
+            <label class="layui-form-label">Bean名称</label>
+            <div class=layui-input-lump>
+                <input type="text" th:value="${job.beanName}" name="beanName" placeholder="请输入Bean名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">方法名称</label>
+            <div class=layui-input-lump>
+                <input type="text" th:value="${job.methodName}" name="methodName" placeholder="请输入方法名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">cron表达式</label>
+            <div class=layui-input-lump>
+                <input type="text" th:value="${job.cronExpression}" name="cronExpression" placeholder="请输入cron表达式.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数</label>
+            <div class="layui-input-block">
+                <input  type="text" th:value="${job.params}" name="params" lay-verify="required" placeholder="请输入参数.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="remark" placeholder="请输入备注.." class="layui-textarea">[[${job.remark}]]</textarea>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

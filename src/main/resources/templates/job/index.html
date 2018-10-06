@@ -1,0 +1,300 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">定时任务管理</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a id="add" shiro:hasAnyPermissions="admin,job:all,job:add" class="layui-btn layui-btn-xs">
+                            <i class="layui-icon"></i>
+                            <span>新增</span>
+                        </a>
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                    <script type="text/html" id="checkLock">
+                        <input shiro:hasAnyPermissions="admin,job:all,job:status" value="{{d.id}}" type="checkbox" name="status"  lay-skin="switch" lay-text="启动|暂停" lay-event="lock" lay-filter="lockDemo" {{ d.status == 0 ? 'checked' : '' }}>
+                    </script>
+                    <script type="text/html" id="operation">
+                        <button shiro:hasAnyPermissions="admin,job:all,job:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,job:all,job:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">Bean名称</label>
+            <div class=layui-input-lump>
+                <input type="text" name="beanName" placeholder="请输入Bean名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">方法名称</label>
+            <div class=layui-input-lump>
+                <input type="text" name="methodName" placeholder="请输入方法名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务备注</label>
+            <div class=layui-input-lump>
+                <input type="text" name="remark" placeholder="请输入备注.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务状态</label>
+            <div class=layui-input-lump>
+                <select name="status" lay-verify="">
+                    <option value="">请选择...</option>
+                    <option value="0">运行中</option>
+                    <option value="1">已暂停</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script>
+    layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+
+        //监听新增事件
+        $('#add').on('click', function(){
+            var index = layer.open({
+                type: 2
+                ,content: '/job/toAddPage'
+                ,area: ['500px', '500px']
+                ,btnAlign: 'c'
+                ,shade: 0.8
+                ,maxmin: true
+                ,title: '新增任务'
+                ,btn: ['确认', '取消']
+                ,yes: function(){
+                    var body = layer.getChildFrame('body', index);
+                    add(layer,body);
+                }
+            });
+            parent.layer.iframeAuto(index);
+        });
+
+        //表格渲染
+        table.render({
+            elem: '#myTable'
+            ,url:'/job/getJobsInfo'
+            ,page: true
+            ,id:"ID"
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                        [
+                          {field:'id',align:'center', width:100,  title: '任务ID'}
+                         ,{field:'beanName',  title: 'Bean名称'}
+                         ,{field:'methodName',  title: '方法名'}
+                         ,{field:'params',  title: '参数'}
+                         ,{field:'cronExpression',  title: 'cron表达式'}
+                         ,{field:'remark',  title: '备注'}
+                         ,{field:'updateTime',  title: '更新日期',width:180}
+                         ,{field:'lock', align: 'center', width: 120, toolbar: '#checkLock', title: '任务状态'}
+                         ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作',fixed: 'right'}
+                        ]
+                    ]
+        });
+
+        //监听搜索事件
+        $('#search_hash').on('click', function () {
+            var that = this;
+            sidebar.render({
+                elem: that,
+                content: $('#search_tpl_hash').html(),
+                title: '搜索',
+                shade: true,
+                width: '450px', //可以设置百分比和px
+                done: function () {
+                    form.render();
+                    //监听提交
+                    form.on('submit(formDemo_hash)', function (data) {
+                        table.reload('ID', {
+                            where: {
+                                beanName: $('input[name="beanName"]').val(),
+                                methodName: $('input[name="methodName"]').val(),
+                                remark: $('input[name="remark"]').val(),
+                                status: $('select[name="status"]').val()
+                            }
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                        return false;
+                    });
+                }
+            });
+        });
+
+        // 监听状态事件
+        form.on('switch(lockDemo)', function (data) {
+            // 开关方法
+            $.ajax({
+                url: "/job/updateStatus?id="+this.value,
+                type: "PUT",
+                success: function(data){
+                    if (data.code == 200) {
+                        layer.msg(data.msg, {icon: 6, time: 1500});
+                    } else {
+                        layer.msg(data.msg, {icon: 5, time: 1500});
+                        setTimeout(function () {
+                            location.reload(true)
+                        },1500);
+                    }
+                }
+            });
+        });
+
+        //监听修改按钮
+        table.on('tool(tools)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'edit'){
+                // 编辑
+                var index = layer.open({
+                     type: 2
+                    ,content: '/job/toUpdatePage?id='+data.id
+                    ,area: ['500px', '500px']
+                    ,btnAlign: 'c'
+                    ,shade: 0.8
+                    ,title: '编辑用户'
+                    ,maxmin: true
+                    ,btn: ['确认', '取消']
+                    ,yes: function(){
+                        var body = layer.getChildFrame('body', index);
+                        update(layer,body);
+                    }
+                });
+                parent.layer.iframeAuto(index);
+            //监听删除事件
+            } else if(obj.event === 'del'){
+                layer.confirm("你确定删除任务吗?", {icon: 3 ,btnAlign: 'c', title:'提示'},
+                    function(index){//确定回调
+                    // 写删除方法
+                    $.ajax({
+                        url: "/job/delete?id="+data.id,
+                        type: "DELETE",
+                        success: function(data){
+                            if (data.code == 200) {
+                                layer.close(index);
+                                layui.layer.msg("删除成功", {icon: 6});
+                                setTimeout(function () {
+                                    table.reload('ID', {
+                                        where: {}
+                                        ,page: {
+                                            curr: 1
+                                        }
+                                    });
+                                },1000);
+                            } else {
+                                layer.close(index);
+                                layer.msg(data.msg, {icon: 5});
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    /**
+     * 新增
+     * @param layer
+     * @param body
+     */
+    function add(layer,body) {
+        $.ajax({
+            url: "/job/insert",
+            contentType: "application/json",
+            type: "POST",
+            data:JSON.stringify({
+                beanName:body.contents().find("input[name=\"beanName\"]").val(),
+                methodName:body.contents().find("input[name=\"methodName\"]").val(),
+                remark:body.contents().find("textarea[name=\"remark\"]").val(),
+                cronExpression:body.contents().find("input[name=\"cronExpression\"]").val(),
+                params:body.contents().find("input[name=\"params\"]").val()
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("添加成功", {icon: 6});
+                        setTimeout(function () {
+                            layui.table.reload('ID', {
+                                 where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 更新
+     * @param layer
+     * @param body
+     */
+    function update(layer,body) {
+        $.ajax({
+            url: "/job/update",
+            contentType: "application/json",
+            type: "PUT",
+            data:JSON.stringify({
+                id:body.contents().find("input[name=\"id\"]").val(),
+                beanName:body.contents().find("input[name=\"beanName\"]").val(),
+                methodName:body.contents().find("input[name=\"methodName\"]").val(),
+                remark:body.contents().find("textarea[name=\"remark\"]").val(),
+                cronExpression:body.contents().find("input[name=\"cronExpression\"]").val(),
+                params:body.contents().find("input[name=\"params\"]").val()
+            }),
+            dataType: "json",
+            success: function(data){
+                if(data.code==200){
+                    //同步更新表格和缓存对应的值
+                    layui.use(['jquery', 'layer'], function (){
+                        layer.closeAll();
+                        layui.layer.msg("修改成功", {icon: 6});
+                        setTimeout(function () {
+                            layui.table.reload('ID', {
+                                where: {}
+                                ,page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        },1000)
+                    });
+                }else {
+                    layui.use(['jquery', 'layer'], function (){
+                        layui.layer.msg(data.msg, {icon: 5});
+                    });
+                }
+            }
+        });
+    }
+</script>

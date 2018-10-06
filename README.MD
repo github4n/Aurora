@@ -1,4 +1,4 @@
-### Aurora 1.0 
+### Aurora
 ![https://img.shields.io/badge/build-success-brightgreen.svg?longCache=true&style=flat-square](https://img.shields.io/badge/build-success-brightgreen.svg?longCache=true&style=flat-square)
 ![https://img.shields.io/badge/license-Apache%202-blue.svg?longCache=true&style=flat-square](https://img.shields.io/badge/license-Apache%202-blue.svg?longCache=true&style=flat-square)
 ![https://img.shields.io/badge/springboot-2.0.4-yellow.svg?longCache=true&style=popout-square](https://img.shields.io/badge/springboot-2.0.4-yellow.svg?longCache=true&style=popout-square)
@@ -40,10 +40,8 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 │  │-支付宝支付
 │  │-七牛云储存
 │  │-SM.MS图床
-│  │-百度富文本编辑器
-│  │-微信支付（开发中）
-│  └─阿里大鱼（开发中）
-└─任务调度（开发中）
+│  └─百度富文本编辑器
+└─任务调度
    ├─定时任务
    └─调度日志
 ```
@@ -71,6 +69,8 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 - 接口文档 swagger2
 
 - 工具包：hutool-all
+
+- 任务调度：quartz
 
 - 其他：fastjson，aop，MapStruct等。
 

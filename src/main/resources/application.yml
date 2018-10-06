@@ -135,12 +135,3 @@ aurora:
   # 是否开启 AOP 日志，默认开启
   openAopLog: true
   userAvatar: https://i.loli.net/2018/08/16/5b75166b3157a.jpg
-
-  db:
-    username: root
-    password: dqjdda@1996.
-    dbName: aurora
-    # 将resources下的sql文件，复制到Windows或者linux系统下，用于还原操作
-    path: sql/aurora.sql
-    pathName: aurora.sql
-    linuxDbPath: /data/db

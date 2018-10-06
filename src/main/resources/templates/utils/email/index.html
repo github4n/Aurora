@@ -7,9 +7,6 @@
     <script type="text/javascript" charset="utf-8" th:src="@{'/plugins/richText/all.min.js'}"> </script>
     <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
     <script type="text/javascript" charset="utf-8" th:src="@{'/plugins/richText/lang/zh-cn/zh-cn.js'}"></script>
-    <style>
-        .layui-form-label{float:left;display:block;padding:9px 15px;width:100px;font-weight:400;line-height:20px;text-align:right}
-    </style>
 </head>
 <body>
 <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
@@ -44,7 +41,7 @@
                     <div class="layui-form-mid layui-word-aux">注意，某些邮箱需要为SMTP服务单独设置密码</div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;SMTP地址</label>
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;SMTP</label>
                     <div class="layui-input-inline" style="width: 40%">
                         <input name="host" th:value="${email.host}" lay-verify="required" placeholder="请输入SMTP地址" autocomplete="off" class="layui-input" type="text">
                     </div>
@@ -52,9 +49,9 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;SMTP端口</label>
+                    <label class="layui-form-label"><span class="layui-badge-dot"></span> &nbsp;端口</label>
                     <div class="layui-input-inline" style="width: 40%">
-                        <input name="port" th:value="${email.port}" lay-verify="required" placeholder="请输入SMTP端口" autocomplete="off" class="layui-input" type="password">
+                        <input name="port" th:value="${email.port}" lay-verify="required" placeholder="请输入SMTP端口" autocomplete="off" class="layui-input" type="text">
                     </div>
                     <div class="layui-form-mid layui-word-aux">邮件服务器SMTP端口</div>
                 </div>

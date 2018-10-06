@@ -22,20 +22,20 @@ public class Dict implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(groups = {Menu.New.class, Menu.Update.class})
+    @NotBlank(groups = {New.class, Update.class})
     @Column(name = "table_name",nullable = false)
     private String tableName;
 
-    @NotBlank(groups = {Menu.New.class, Menu.Update.class})
+    @NotBlank(groups = {New.class, Update.class})
     @Column(name = "fteld_name",nullable = false)
     private String fieldName;
 
-    @NotBlank(groups = {Menu.New.class, Menu.Update.class})
+    @NotBlank(groups = {New.class, Update.class})
     @Column(name = "field_value",nullable = false)
     private String fieldValue;
 
     @Column(name = "field_detail",nullable = false)
-    @NotBlank(groups = {Menu.New.class, Menu.Update.class})
+    @NotBlank(groups = {New.class, Update.class})
     private String fieldDetail;
 
     @CreationTimestamp

@@ -11,7 +11,7 @@
  Target Server Version : 50559
  File Encoding         : 65001
 
- Date: 05/10/2018 15:02:12
+ Date: 06/10/2018 14:05:55
 */
 
 SET NAMES utf8mb4;
@@ -54,7 +54,7 @@ CREATE TABLE `zj_dict`  (
   `table_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `updateTime` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_dict
@@ -68,6 +68,10 @@ INSERT INTO `zj_dict` VALUES (6, '2018-10-05 14:15:18', '内链菜单', 'iframe'
 INSERT INTO `zj_dict` VALUES (7, '2018-10-05 14:15:39', '外链菜单', 'iframe', '1', 'zj_menu', '2018-10-05 14:15:39');
 INSERT INTO `zj_dict` VALUES (8, '2018-10-05 14:16:36', '系统菜单', 'sys', '1', 'zj_menu', '2018-10-05 14:16:36');
 INSERT INTO `zj_dict` VALUES (9, '2018-10-05 14:16:55', '普通菜单', 'sys', '0', 'zj_menu', '2018-10-05 14:16:55');
+INSERT INTO `zj_dict` VALUES (11, '2018-10-06 12:31:03', '启动', 'status', '0', 'zj_job', '2018-10-06 12:31:03');
+INSERT INTO `zj_dict` VALUES (12, '2018-10-06 12:31:19', '暂停', 'status', '1', 'zj_job', '2018-10-06 12:31:19');
+INSERT INTO `zj_dict` VALUES (13, '2018-10-06 12:31:36', '成功', 'status', '0', 'zj_job_log', '2018-10-06 12:31:36');
+INSERT INTO `zj_dict` VALUES (14, '2018-10-06 12:31:49', '失败', 'status', '1', 'zj_job_log', '2018-10-06 12:31:49');
 
 -- ----------------------------
 -- Table structure for zj_email_config
@@ -90,6 +94,46 @@ CREATE TABLE `zj_email_config`  (
 INSERT INTO `zj_email_config` VALUES (1, 'auaur@sina.com', 'smtp.sina.com', '21BC734311FFD2BA881D34A08DAB61AE', '465', 'auaur', b'1');
 
 -- ----------------------------
+-- Table structure for zj_job
+-- ----------------------------
+DROP TABLE IF EXISTS `zj_job`;
+CREATE TABLE `zj_job`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `baen_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cron_expression` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `params` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `updateTime` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of zj_job
+-- ----------------------------
+INSERT INTO `zj_job` VALUES (1, 'myTaskTest', '0/5 * * * * ?', 'test', '测试', '带参数测试', '1', '2018-10-06 12:45:19');
+INSERT INTO `zj_job` VALUES (2, 'myTaskTest', '0/6 * * * * ?', 'test1', '', '不带参数测试', '1', '2018-10-06 12:46:13');
+
+-- ----------------------------
+-- Table structure for zj_job_log
+-- ----------------------------
+DROP TABLE IF EXISTS `zj_job_log`;
+CREATE TABLE `zj_job_log`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `baen_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `createTime` datetime NULL DEFAULT NULL,
+  `cron_expression` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `error_msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `job_id` bigint(20) NULL DEFAULT NULL,
+  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `params` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `times` bigint(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
 -- Table structure for zj_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `zj_menu`;
@@ -108,7 +152,7 @@ CREATE TABLE `zj_menu`  (
   `sys` bit(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_cbhg0bi3f1emxkhqqtvca9btx`(`soft`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_menu
@@ -131,6 +175,9 @@ INSERT INTO `zj_menu` VALUES (22, 'layui-icon-edit', 18, 2, '邮件工具', 41, 
 INSERT INTO `zj_menu` VALUES (24, 'layui-icon-dollar', 18, 2, '支付宝工具', 42, '/aliPay/index', '2018-09-30 15:16:43', '2018-10-02 16:27:09', 0, b'0', b'1');
 INSERT INTO `zj_menu` VALUES (25, 'layui-icon-upload', 18, 2, '七牛云存储', 43, '/qiNiu/index', '2018-10-02 11:03:27', '2018-10-02 16:26:42', 0, b'0', b'1');
 INSERT INTO `zj_menu` VALUES (27, 'layui-icon-read', 7, 2, '字典管理', 6, '/dict/index', '2018-10-05 14:03:40', '2018-10-05 14:03:40', 0, b'0', b'0');
+INSERT INTO `zj_menu` VALUES (28, 'layui-icon-log', 0, 1, '任务调度', 20, '', '2018-10-06 10:37:11', '2018-10-06 11:55:59', 2, b'0', b'0');
+INSERT INTO `zj_menu` VALUES (29, 'layui-icon-radio', 28, 2, '定时任务', 21, '/job/index', '2018-10-06 10:38:06', '2018-10-06 10:38:06', 0, b'0', b'0');
+INSERT INTO `zj_menu` VALUES (30, 'layui-icon-survey', 28, 2, '调度日志', 22, '/jobLog/index', '2018-10-06 11:55:59', '2018-10-06 11:55:59', 0, b'0', b'0');
 
 -- ----------------------------
 -- Table structure for zj_menus_roles
@@ -166,6 +213,9 @@ INSERT INTO `zj_menus_roles` VALUES (22, 1);
 INSERT INTO `zj_menus_roles` VALUES (24, 1);
 INSERT INTO `zj_menus_roles` VALUES (25, 1);
 INSERT INTO `zj_menus_roles` VALUES (27, 1);
+INSERT INTO `zj_menus_roles` VALUES (28, 1);
+INSERT INTO `zj_menus_roles` VALUES (29, 1);
+INSERT INTO `zj_menus_roles` VALUES (30, 1);
 INSERT INTO `zj_menus_roles` VALUES (5, 3);
 INSERT INTO `zj_menus_roles` VALUES (6, 3);
 INSERT INTO `zj_menus_roles` VALUES (7, 3);
@@ -194,7 +244,7 @@ CREATE TABLE `zj_permission`  (
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_djtxn2vldlgrkfk21d155b48i`(`perms`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_permission
@@ -232,6 +282,13 @@ INSERT INTO `zj_permission` VALUES (33, 'dict:select', '字典查询', '2018-10-
 INSERT INTO `zj_permission` VALUES (34, 'dict:add', '新增字典', '2018-10-05 14:01:19', '2018-10-05 14:01:19', 32);
 INSERT INTO `zj_permission` VALUES (35, 'dict:update', '更新字典', '2018-10-05 14:01:33', '2018-10-05 14:01:33', 32);
 INSERT INTO `zj_permission` VALUES (36, 'dict:delete', '删除字典', '2018-10-05 14:01:46', '2018-10-05 14:01:46', 32);
+INSERT INTO `zj_permission` VALUES (37, 'job:all', '任务调度', '2018-10-06 12:28:06', '2018-10-06 12:28:06', 0);
+INSERT INTO `zj_permission` VALUES (38, 'job:select', '任务查询', '2018-10-06 12:28:39', '2018-10-06 12:28:39', 37);
+INSERT INTO `zj_permission` VALUES (39, 'job:log', '任务日志查询', '2018-10-06 12:28:59', '2018-10-06 12:29:06', 37);
+INSERT INTO `zj_permission` VALUES (40, 'job:add', '新增任务', '2018-10-06 12:29:28', '2018-10-06 12:29:28', 37);
+INSERT INTO `zj_permission` VALUES (41, 'job:status', '任务状态修改', '2018-10-06 12:29:45', '2018-10-06 12:29:45', 37);
+INSERT INTO `zj_permission` VALUES (42, 'job:update', '更新任务', '2018-10-06 12:30:00', '2018-10-06 12:30:00', 37);
+INSERT INTO `zj_permission` VALUES (43, 'job:delete', '删除任务', '2018-10-06 12:30:16', '2018-10-06 12:30:16', 37);
 
 -- ----------------------------
 -- Table structure for zj_permissions_roles
@@ -275,7 +332,7 @@ CREATE TABLE `zj_picture`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FK5qtt7wql9517j0e2read2pdus`(`user_id`) USING BTREE,
   CONSTRAINT `FK5qtt7wql9517j0e2read2pdus` FOREIGN KEY (`user_id`) REFERENCES `zj_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_picture
@@ -315,12 +372,7 @@ CREATE TABLE `zj_qiniu_content`  (
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `updateTime` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of zj_qiniu_content
--- ----------------------------
-INSERT INTO `zj_qiniu_content` VALUES (1, 'aurora', '8.49KB   ', '5ba46d305018d20181003145806.jpg', '公开', 'http://pfywktugt.bkt.clouddn.com/5ba46d305018d20181003145806.jpg', '2018-10-05 11:50:30');
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for zj_role
@@ -356,7 +408,7 @@ CREATE TABLE `zj_syslog`  (
   `time` int(11) NULL DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 369 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for zj_user
@@ -373,12 +425,12 @@ CREATE TABLE `zj_user`  (
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_kpubos9gc2cvtkb0thktkbkes`(`email`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_user
 -- ----------------------------
-INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-10-05 14:58:50', '65a674ce6632479005ea7a9071234cfb', 'aurora');
+INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-10-06 14:01:49', '65a674ce6632479005ea7a9071234cfb', 'aurora');
 INSERT INTO `zj_user` VALUES (2, 'https://i.loli.net/2018/08/16/5b75166b3157a.jpg', '2018-10-03 09:16:20', 'everyone@aurora.xyz', 1, '2018-10-05 11:29:44', '36318d4cc46eb68050b8b81ebc620f05', 'everyone');
 
 -- ----------------------------

@@ -159,6 +159,12 @@
             <version>4.1.8</version>
         </dependency>
 
+        <!-- quartz -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
+
         <!--七牛云存储-->
         <dependency>
             <groupId>com.qiniu</groupId>

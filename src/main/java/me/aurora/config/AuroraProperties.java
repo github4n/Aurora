@@ -1,7 +1,6 @@
 package me.aurora.config;
 
 import lombok.Data;
-import me.aurora.config.scheduled.db.DBProperties;
 import me.aurora.config.shiro.ShiroProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Component;
 public class AuroraProperties {
 
     private ShiroProperties shiro  = new ShiroProperties();
-
-    private DBProperties db = new DBProperties();
 
     private Boolean openAopLog;
 

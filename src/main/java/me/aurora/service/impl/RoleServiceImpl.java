@@ -36,14 +36,14 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Map<String, Object>> buildRoleTree(List<Role> roles) {
         List<Map<String,Object>> maps = new LinkedList<>();
-        for (Role role:roles) {
+        roles.forEach(role -> {
             if (role!=null){
                 Map<String,Object> map = new HashMap<>(16);
                 map.put("id",role.getId());
                 map.put("name",role.getName());
                 maps.add(map);
             }
-        }
+        });
         return maps;
     }
 

@@ -1,0 +1,137 @@
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-header">调度日志</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="search_tpl_hash">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">Bean名称</label>
+            <div class=layui-input-lump>
+                <input type="text" name="beanName" placeholder="请输入Bean名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">方法名称</label>
+            <div class=layui-input-lump>
+                <input type="text" name="methodName" placeholder="请输入方法名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务备注</label>
+            <div class=layui-input-lump>
+                <input type="text" name="remark" placeholder="请输入备注.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务状态</label>
+            <div class=layui-input-lump>
+                <select name="status" lay-verify="">
+                    <option value="">请选择...</option>
+                    <option value="0">成功</option>
+                    <option value="1">失败</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-lump">
+                <button class="layui-btn" lay-submit lay-filter="formDemo_hash">搜索</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script>
+    layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+
+        //表格渲染
+        table.render({
+            elem: '#myTable'
+            ,url:'/jobLog/getJobLogsInfo'
+            ,page: true
+            ,id:"ID"
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [
+                        [
+                          {field:'id',align:'center', width:80,  title: '编号'}
+                         ,{field:'jobId',align:'center', width:87,  title: '任务ID'}
+                         ,{field:'beanName',  title: 'Bean名称'}
+                         ,{field:'methodName',  title: '方法名'}
+                         ,{field:'params',  title: '参数'}
+                         ,{field:'cronExpression',  title: 'cron表达式'}
+                         ,{field:'status',  title: '状态'}
+                         ,{field:'error',  title: '错误信息'}
+                         ,{field:'times', align:'center', title: '耗时(毫秒)', width:100}
+                         ,{field:'createTime',  title: '创建日期',width:185}
+                        ]
+                    ]
+            ,done:function(res, curr, count) {    //res 接口返回的信息
+
+                $("td[data-field$='status']").children().each(function () {
+
+                    if ($(this).text() == '1') {
+
+                        $(this).text("失败");
+
+                    } else if ($(this).text() == '0') {
+
+                        $(this).text("成功");
+
+                    }
+
+                });
+
+                $("td[data-field$='times']").children().each(function () {
+                    $(this).html("<span class=\"layui-badge\">"+$(this).text()+"</span>");
+                });
+            }
+        });
+
+        //监听搜索事件
+        $('#search_hash').on('click', function () {
+            var that = this;
+            sidebar.render({
+                elem: that,
+                content: $('#search_tpl_hash').html(),
+                title: '搜索',
+                shade: true,
+                width: '450px', //可以设置百分比和px
+                done: function () {
+                    form.render();
+                    //监听提交
+                    form.on('submit(formDemo_hash)', function (data) {
+                        table.reload('ID', {
+                            where: {
+                                beanName: $('input[name="beanName"]').val(),
+                                methodName: $('input[name="methodName"]').val(),
+                                remark: $('input[name="remark"]').val(),
+                                status: $('select[name="status"]').val()
+                            }
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                        return false;
+                    });
+                }
+            });
+        });
+    });
+</script>

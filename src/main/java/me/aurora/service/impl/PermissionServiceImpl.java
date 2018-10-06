@@ -12,6 +12,7 @@ import me.aurora.service.mapper.PerMissionMapper;
 import me.aurora.util.PageUtil;
 import me.aurora.config.exception.AuroraException;
 import me.aurora.util.ValidationUtil;
+import me.aurora.util.job.ScheduleUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -88,21 +89,22 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public List<Map<String, Object>> buildPermissionTree(List<Permission> permissions) {
         List<Map<String,Object>> maps = new LinkedList<>();
-        for (Permission permission:permissions) {
-            if (permission!=null){
-                List<Permission> permissionList = permissionRepo.findByPid(Integer.parseInt(permission.getId()+""));
-                Map<String,Object> map = new HashMap<>(16);
-                map.put("id",permission.getId());
-                String name = !StrUtil.isEmpty(permission.getRemark())?permission.getRemark():permission.getPerms();
-                map.put("name",name);
-                if(permissionList!=null && permissionList.size()!=0){
-                    map.put("open",true);
-                    map.put("isParent",true);
-                    map.put("children",buildPermissionTree(permissionList));
+        permissions.forEach(permission -> {
+                if (permission!=null){
+                    List<Permission> permissionList = permissionRepo.findByPid(Integer.parseInt(permission.getId()+""));
+                    Map<String,Object> map = new HashMap<>(16);
+                    map.put("id",permission.getId());
+                    String name = !StrUtil.isEmpty(permission.getRemark())?permission.getRemark():permission.getPerms();
+                    map.put("name",name);
+                    if(permissionList!=null && permissionList.size()!=0){
+                        map.put("open",true);
+                        map.put("isParent",true);
+                        map.put("children",buildPermissionTree(permissionList));
+                    }
+                    maps.add(map);
                 }
-                maps.add(map);
             }
-        }
+        );
         return maps;
     }
 
