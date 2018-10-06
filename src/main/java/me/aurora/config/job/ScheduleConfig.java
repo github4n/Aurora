@@ -40,7 +40,7 @@ public class ScheduleConfig {
 	}
 
 	/**
-	 * 注入scheduler到spring，在下面quartzManege会用到
+	 * 注入scheduler到spring，在下面JobServiceImpl会用到
 	 * @param quartzJobFactory
 	 * @return
 	 * @throws Exception
