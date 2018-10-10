@@ -33,6 +33,9 @@ public class MyJobRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments applicationArguments){
+
+        System.out.println("--------------------开始注入定时任务---------------------");
+
         List<Job> jobs = jobRepo.findAll();
         jobs.forEach(scheduleJob -> {
             ScheduleUtils.createScheduleJob(scheduler, scheduleJob);

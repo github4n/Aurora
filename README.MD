@@ -7,6 +7,8 @@
 Aurora是一个简单高效的后台管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单；数据访问层采用Spring boot Jpa，可快速高效对数据进行操作，消除了大量传统XML配置SQL的代码，分页使用Pageable；安全框架采用时下流行的Apache Shiro，可实现对按钮级别的权限控制；前端页面使用KidAdmin构建，并提供多套配色以供选择。
 ### 预览地址，临时域名，正式域名auaur.net，已在备案中
 [http://xiswl.xyz](http://xiswl.xyz)
+### 项目相关教程
+[Spring boot循序渐进](https://www.zhengjie.me/categories/Spring-boot-循序渐进/)
 ### SSM + shiro + redis 版移步
 [https://gitee.com/quella01/Quella](https://gitee.com/quella01/Quella)
 <!--more-->

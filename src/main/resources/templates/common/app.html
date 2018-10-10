@@ -38,15 +38,14 @@
           <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
               <div class="layui-card">
-                <div class="layui-card-header">源码地址</div>
+                <div class="layui-card-header">项目源码</div>
                 <div class="layui-card-body">
-                  <p style="margin-bottom: 5px;">代码实现以后会更新到博客：<a href="https://www.zhengjie.me">zhengjie.me</a></p>
-                  <p style="margin-bottom: 5px;">脚手架源码:
-                    <a href='https://gitee.com/hgpt/Aurora' target="_blank">
-                        <img src='https://gitee.com/hgpt/Aurora/badge/star.svg?theme=white' alt='star'></img>
-                    </a>
-                    （开发中...）
+                  <p style="margin-bottom: 5px;">项目相关实现：<a style="color: #4183C4" href="https://www.zhengjie.me/categories/Spring-boot-循序渐进/">Spring boot循序渐进</a></p>
+                  <p style="margin-bottom: 5px;">码云&nbsp;
+                    <a href='https://gitee.com/hgpt/Aurora' target="_blank"><img src='https://gitee.com/hgpt/Aurora/badge/star.svg?theme=gray' alt='star'></img></a>
                   </p>
+                    <p style="margin-bottom: 5px;">github&nbsp;</p>
+                    <div class="github-widget-repo" data-repo="dqjdda/Aurora" style="width:100%;margin-top: 3px;"></div>
                 </div>
               </div>
             </div>
@@ -231,6 +230,8 @@
     </div>
   </div>
 </div>
+<!-- build:js -->
+<script th:src="@{'/js/github_repo_widget_en.js'}"></script>
 <script>
   layui.config({
     base: '/src/js/'
@@ -444,7 +445,7 @@
       }
     });
   });
-</script>
+  </script>
+<!-- endbuild -->
 <style scoped>
-
 </style>
