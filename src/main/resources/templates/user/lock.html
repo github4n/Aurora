@@ -83,7 +83,7 @@
                 type:"POST",
                 success:function(result){
                     if(result && result.code != 200){
-                        layer.msg(result.msg, {offset: 70, shift: 0});
+                        layer.msg(result.msg+",默认密码：123456", {offset: 70, shift: 0});
                         return;
                     }else{
                         var url = result.msg.replace(",","#");

@@ -139,6 +139,7 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 ![](https://i.imgur.com/ByfMmkR.png)
 
 ### 开发与部署
+账号：aurora 密码：123456
 
 码云地址：https://gitee.com/hgpt/Aurora 
 

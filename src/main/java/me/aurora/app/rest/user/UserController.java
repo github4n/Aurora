@@ -168,6 +168,7 @@ public class UserController {
      * 锁屏
      * @return
      */
+    @Log("锁屏")
     @GetMapping(value = "/lock")
     public ResponseEntity lock(HttpServletRequest request,@RequestParam String url){
         request.getSession(true).setAttribute("lock",url);
@@ -178,6 +179,7 @@ public class UserController {
      * 解锁
      * @return
      */
+    @Log("解锁")
     @PostMapping(value = "/unlock")
     public ResponseEntity unlock(@RequestParam String password){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
