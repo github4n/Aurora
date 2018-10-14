@@ -1,6 +1,8 @@
 package me.aurora.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -10,6 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class ConfigurerAdapter implements WebMvcConfigurer {
+
+    @Bean
+    LockInterceptor lockInterceptor(){
+        return new LockInterceptor();
+    }
 
     /**
      * 以前要访问一个页面需要先创建个Controller控制类，再写方法跳转到页面
@@ -31,5 +38,13 @@ public class ConfigurerAdapter implements WebMvcConfigurer {
         //跳转登陆注册页面
         registry.addViewController("/login.html").setViewName("/user/login");
         registry.addViewController("/signUp.html").setViewName("/register");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        /**
+         * 添加锁屏的拦截器，并添加过滤规则
+         */
+        registry.addInterceptor(new LockInterceptor()).addPathPatterns("/**").excludePathPatterns("/login.html","/user/lock.html","/logout","/login","/user/unlock","/css/**","/js/**","/plugins/**","/swagger/**");
     }
 }

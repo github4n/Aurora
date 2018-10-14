@@ -99,6 +99,25 @@ layui.define(mods, function(exports) {
       if (target === 'help') {
         layer.alert('作者QQ：201507802');
       }
+
+      if (target === 'lock') {
+          var url = window.location.pathname + window.location.hash;
+          url = url.replace("#",",");
+          $.ajax({
+              async:false,
+              type:"GET",
+              url:"/user/lock?url="+url,
+              dataType:"json",
+              success:function (result) {
+                  if(result && result.code != 200){
+                      layer.msg(result.msg, {offset: 70, shift: 0});
+                  }else{
+                      window.location.href="/user/lock.html";
+                  }
+
+              }
+          });
+      }
     });
 
     // 注入mock

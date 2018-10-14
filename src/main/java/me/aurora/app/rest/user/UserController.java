@@ -10,13 +10,16 @@ import me.aurora.repository.spec.UserSpec;
 import me.aurora.service.RoleService;
 import me.aurora.service.UserService;
 import me.aurora.service.mapper.UserMapper;
+import me.aurora.util.EncryptHelper;
 import me.aurora.util.HttpContextUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -148,6 +151,47 @@ public class UserController {
         log.warn("REST request to updateEnabled User : {}" +id);
         userService.updateEnabled(userService.findById(id));
         return ResponseEntity.ok();
+    }
+
+    /**
+     * 锁屏页面
+     * @return
+     */
+    @GetMapping(value = "/lock.html")
+    public ModelAndView lockPage(HttpServletRequest request){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        request.setAttribute("user",user);
+        return new ModelAndView("/user/lock");
+    }
+
+    /**
+     * 锁屏
+     * @return
+     */
+    @GetMapping(value = "/lock")
+    public ResponseEntity lock(HttpServletRequest request,@RequestParam String url){
+        request.getSession(true).setAttribute("lock",url);
+        return ResponseEntity.ok();
+    }
+
+    /**
+     * 解锁
+     * @return
+     */
+    @PostMapping(value = "/unlock")
+    public ResponseEntity unlock(@RequestParam String password){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        password = EncryptHelper.encrypt(password);
+        if(password.equals(user.getPassword())){
+            /**
+             * 将锁屏清掉
+             */
+            HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
+            String url = request.getSession(true).getAttribute("lock").toString();
+            request.getSession(true).setAttribute("lock",null);
+            return ResponseEntity.ok(url);
+        }
+        return ResponseEntity.error("密码错误");
     }
 
     /**

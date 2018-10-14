@@ -8,6 +8,7 @@
   <link rel="stylesheet" th:href="@{'/css/github_activity_widget.css'}">
   <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
   <link rel="stylesheet" th:href="@{'/plugins/css/theme/default.css'}" th:id="theme">
+  <link rel="stylesheet" th:href="@{'/plugins/font-awesome/css/font-awesome.min.css'}">
   <!-- endbuild -->
 </head>
 <body class="layui-layout-body kit-theme-default">
@@ -33,10 +34,10 @@
               <span>帮助</span>
             </a>
           </li>
-          <li class="kit-item" id="cc">
-            <a href="/druid" target="_blank" title="SQL监控">
-              <i class="layui-icon">&#xe62c;</i>
-            </a>
+          <li class="kit-item" kit-target="lock">
+              <a href="javascript:;" title="点击锁屏">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+              </a>
           </li>
           <li class="kit-item">
             <a href="javascript:;">

@@ -40,6 +40,11 @@ public class UserSecurityController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
+            /**
+             * 登录成功后将锁屏清掉
+             */
+            HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
+            request.getSession(true).setAttribute("lock",null);
             return ResponseEntity.ok();
         } catch (UnknownAccountException e) {
             return ResponseEntity.error(e.getMessage());
