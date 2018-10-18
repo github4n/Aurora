@@ -7,7 +7,7 @@
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%black(%contextName-) %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %gray(%msg%n)</pattern>
-            <charset>UTF-8</charset>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
 

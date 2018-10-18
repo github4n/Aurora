@@ -74,13 +74,19 @@
                             ,{field:'operation',  title: '描述',width:135}
                             ,{field:'method',  title: '请求方法'}
                             ,{field:'params', title: '请求参数'}
-                            ,{field:'time', align:'center', title: '耗时(毫秒)', width:90}
+                            ,{field:'time', align:'center', title: '耗时(毫秒)', width:96}
                             ,{field:'createTime',width:160, title: '创建时间'}
                          ]
                     ]
             ,done:function(res, curr, count) {    //res 接口返回的信息
                 $("td[data-field$='time']").children().each(function () {
-                    $(this).html("<span class=\"layui-badge\">"+$(this).text()+"</span>");
+                    if($(this).text()<100){
+                        $(this).html("<span class=\"layui-badge layui-bg-cyan\">"+$(this).text()+"</span>");
+                    } else if($(this).text()<1000){
+                        $(this).html("<span class=\"layui-badge layui-bg-orange\">"+$(this).text()+"</span>");
+                    } else{
+                        $(this).html("<span class=\"layui-badge\">"+$(this).text()+"</span>");
+                    }
                 });
             }
         });

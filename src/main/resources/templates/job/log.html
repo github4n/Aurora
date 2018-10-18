@@ -99,7 +99,13 @@
                 });
 
                 $("td[data-field$='times']").children().each(function () {
-                    $(this).html("<span class=\"layui-badge\">"+$(this).text()+"</span>");
+                    if($(this).text()<100){
+                        $(this).html("<span class=\"layui-badge layui-bg-cyan\">"+$(this).text()+"</span>");
+                    } else if($(this).text()<1000){
+                        $(this).html("<span class=\"layui-badge layui-bg-orange\">"+$(this).text()+"</span>");
+                    } else{
+                        $(this).html("<span class=\"layui-badge\">"+$(this).text()+"</span>");
+                    }
                 });
             }
         });
