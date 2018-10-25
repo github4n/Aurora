@@ -40,7 +40,7 @@ public class DictController {
         return new ModelAndView("/system/dict/index");
     }
 
-    @Log("查询所有字典")
+    @Log("查询字典")
     @RequiresPermissions(value={"admin", "dict:all","dict:select"}, logical= Logical.OR)
     @GetMapping(value = "/getDictsInfo")
     public Map getDictsInfo(@RequestParam(value = "tableName",required = false) String tableName,

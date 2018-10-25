@@ -26,6 +26,8 @@ public class UserDTO implements Serializable {
 
     private String rolesSelect;
 
+    private String departmentName;
+
     private Timestamp createDateTime;
 
     private Timestamp lastLoginTime;

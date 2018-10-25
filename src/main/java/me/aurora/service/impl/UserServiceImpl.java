@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.*;
@@ -28,6 +29,7 @@ import java.util.*;
  * @date 2018/08/23 11:54:10
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -43,7 +45,6 @@ public class UserServiceImpl implements UserService {
     private RoleService roleService;
 
     @Override
-    @Transactional(readOnly = true)
     public User findById(Long id) {
         if(id == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
@@ -54,19 +55,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User findByUsername(String userName) {
         return userRepo.findByUsername(userName);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User findByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Map getUsersInfo(UserSpec userSpec, Pageable pageable) {
         Page<User> users = userRepo.findAll(userSpec,pageable);
         List<UserDTO> userDTOS = new ArrayList<>();
@@ -78,6 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insert(User user, String roles) {
         if(userRepo.findByUsername(user.getUsername())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户名已存在");
@@ -98,6 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update(User user, String roles) {
         User old = userRepo.findByUsername(user.getUsername());
         if(old!=null&&!old.getId().equals(user.getId())){
@@ -111,6 +111,7 @@ public class UserServiceImpl implements UserService {
         old.setPassword(EncryptHelper.encrypt(user.getPassword()));
         old.setUsername(user.getUsername());
         old.setEmail(user.getEmail());
+        old.setDepartment(user.getDepartment());
 
         Set<Role> roleSet = new HashSet<>();
         for(String roleId:roles.split(",")){
@@ -124,12 +125,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void checkLastLoginTime(User user) {
         user.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
         userRepo.save(user);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(User user) {
         if(user == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"用户不存在，请检查缓存！！");
@@ -142,6 +145,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateEnabled(User user) {
         if(user == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"用户不存在，请检查缓存！！");

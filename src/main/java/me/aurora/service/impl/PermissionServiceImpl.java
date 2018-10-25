@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -26,6 +27,7 @@ import java.util.*;
  * @date 2018/08/23 17:30:58
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
@@ -42,6 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insert(Permission permission) throws AuroraException {
         if(permissionRepo.findByPerms(permission.getPerms())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"权限已存在");
@@ -50,17 +53,14 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Permission findById(Long id) {
-        if(id == null){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
-        }
         Optional<Permission> permission = permissionRepo.findById(id);
         ValidationUtil.isNull(permission,"id:"+id+"is not find");
         return permission.get();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update(Permission old, Permission permission) throws AuroraException {
         Permission permission1 = permissionRepo.findByPerms(permission.getPerms());
         if(permission1 !=null && !permission1.getId().equals(permission.getId())){
@@ -71,6 +71,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Permission permission) {
         try {
             permissionRepo.delete(permission);
@@ -81,7 +82,6 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Permission> getAll() {
         return permissionRepo.findAll();
     }
@@ -109,14 +109,19 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Permission> findByPid(int pid) {
         return permissionRepo.findByPid(pid);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Permission> findByRoles(Set<Role> roles) {
-        return permissionRepo.findByRoles(roles);
+
+        List<Permission> permissionList = new ArrayList<>();
+        for (Role role : roles) {
+            Set<Role> roleSet = new HashSet<>();
+            roleSet.add(role);
+            permissionList.addAll(permissionRepo.findByRoles(roleSet));
+        }
+        return permissionList;
     }
 }

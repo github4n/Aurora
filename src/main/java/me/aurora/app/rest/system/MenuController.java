@@ -2,11 +2,10 @@ package me.aurora.app.rest.system;
 
 import lombok.extern.slf4j.Slf4j;
 import me.aurora.annotation.Log;
-import me.aurora.domain.Menu;
-import me.aurora.domain.ResponseEntity;
-import me.aurora.domain.User;
+import me.aurora.domain.*;
 import me.aurora.domain.vo.MenuVo;
 import me.aurora.repository.spec.MenuSpec;
+import me.aurora.service.DepartmentService;
 import me.aurora.service.MenuService;
 import me.aurora.service.RoleService;
 import me.aurora.service.UserService;
@@ -25,8 +24,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author 郑杰
@@ -47,6 +48,9 @@ public class MenuController {
     private RoleService roleService;
 
     @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
     private MenuMapper menuMapper;
 
     /**
@@ -57,7 +61,13 @@ public class MenuController {
         //查询出所有子菜单
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         user = userService.findById(user.getId());
-        List<MenuDTO> menuDTOS = menuService.findMenusByUserRols(user.getRoles());
+
+        // 获取部门信息，获取部门的角色菜单
+        Department department = departmentService.findById(user.getDepartment().getId());
+
+        Set<Role> roleSet = user.getRoles();
+        roleSet.addAll(department.getRoles());
+        List<MenuDTO> menuDTOS = menuService.findMenusByUserRols(roleSet);
         List<MenuVo> menuVoList = menuService.buildMenuUrl(menuDTOS);
         return menuVoList;
     }
@@ -79,7 +89,7 @@ public class MenuController {
      * @param limit
      * @return
      */
-    @Log("查询所有菜单")
+    @Log("查询菜单")
     @RequiresPermissions(value={"admin", "menu:all","menu:select"}, logical= Logical.OR)
     @GetMapping(value = "/getMenusInfo")
     public Map getMenusInfo(@RequestParam(value = "id",required = false) Long id,

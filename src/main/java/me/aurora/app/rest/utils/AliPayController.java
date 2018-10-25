@@ -49,7 +49,7 @@ public class AliPayController {
         return new ModelAndView("/utils/alipay/index");
     }
 
-    @Log("配置支付宝参数")
+    @Log("配置支付宝")
     @PostMapping(value = "/config")
     public ResponseEntity payConfig(@Validated(AlipayConfig.New.class) @RequestBody AlipayConfig alipayConfig){
         log.warn("REST request to payConfig AlipayConfig : {}" +alipayConfig);

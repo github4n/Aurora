@@ -11,6 +11,7 @@ import me.aurora.service.EmailService;
 import me.aurora.util.EncryptHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -20,12 +21,14 @@ import java.util.Optional;
  * @date 2018/09/28 7:11:56
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private EmailRepo emailRepo;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public EmailConfig updateConfig(EmailConfig emailConfig,EmailConfig old) {
         try {
             if(!emailConfig.getPass().equals(old.getPass())){
@@ -39,7 +42,6 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public EmailConfig findById(Long id) {
         if(id == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
@@ -54,6 +56,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void send(EmailVo emailVo, EmailConfig emailConfig) throws Exception {
 
         if(emailConfig == null){

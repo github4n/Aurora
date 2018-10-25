@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -37,6 +39,7 @@ import java.util.Optional;
  * @date 2018/10/02
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class QiNiuServiceImpl implements QiNiuService {
 
     @Autowired
@@ -62,6 +65,7 @@ public class QiNiuServiceImpl implements QiNiuService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public QiniuConfig updateConfig(QiniuConfig qiniuConfig) {
         if (!(qiniuConfig.getHost().toLowerCase().startsWith("http://")||qiniuConfig.getHost().toLowerCase().startsWith("https://"))) {
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"外链域名必须以http://或者https://开头");
@@ -77,6 +81,7 @@ public class QiNiuServiceImpl implements QiNiuService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void upload(MultipartFile file,QiniuConfig qiniuConfig) {
 
         if(qiniuConfig == null){
@@ -130,6 +135,7 @@ public class QiNiuServiceImpl implements QiNiuService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(QiniuContent content, QiniuConfig config) {
         //构造一个带指定Zone对象的配置类
         Configuration cfg = QiNiuUtil.getConfiguration(config.getZone());
@@ -145,6 +151,7 @@ public class QiNiuServiceImpl implements QiNiuService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void synchronize(QiniuConfig config) {
         if(config == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请先添加相应配置，再操作");

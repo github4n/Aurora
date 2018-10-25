@@ -1,10 +1,8 @@
 package me.aurora.domain.vo;
 
 import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 发送邮件时，接收参数的类
@@ -17,13 +15,13 @@ public class EmailVo {
     /**
      * 收件人，支持多个收件人，用逗号分隔
      */
-    @NotBlank(groups = New.class)
+    @NotBlank
     private String tos;
 
-    @NotBlank(groups = New.class)
+    @NotBlank
     private String subject;
 
-    @NotBlank(groups = New.class)
+    @NotBlank
     private String content;
     /**
      * 是否为html，默认为true
@@ -38,6 +36,4 @@ public class EmailVo {
         }
         return list;
     }
-
-    public interface New {}
 }

@@ -43,7 +43,7 @@ public class JobController {
         return new ModelAndView("/job/index");
     }
 
-    @Log("查询所有任务")
+    @Log("查询任务")
     @RequiresPermissions(value={"admin", "job:all","job:select"}, logical= Logical.OR)
     @GetMapping(value = "/getJobsInfo")
     public Map getJobsInfo(@RequestParam(value = "beanName",required = false) String beanName,
@@ -86,7 +86,7 @@ public class JobController {
      * @param id
      * @return
      */
-    @Log("更新任务状态")
+    @Log("更新任务")
     @RequiresPermissions (value={"admin", "job:all","job:status"}, logical= Logical.OR)
     @PutMapping(value = "/updateStatus")
     public ResponseEntity updateStatus(@RequestParam Long id){

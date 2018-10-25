@@ -1,9 +1,11 @@
 package me.aurora.config.shiro;
 
 import lombok.extern.slf4j.Slf4j;
+import me.aurora.domain.Department;
 import me.aurora.domain.Permission;
 import me.aurora.domain.Role;
 import me.aurora.domain.User;
+import me.aurora.service.DepartmentService;
 import me.aurora.service.PermissionService;
 import me.aurora.service.UserService;
 import me.aurora.util.ValidationUtil;
@@ -32,6 +34,9 @@ public class ShiroRealm extends AuthorizingRealm {
 	private UserService userService;
 
 	@Autowired
+    private DepartmentService departmentService;
+
+	@Autowired
 	private PermissionService permissionService;
 
 	/**
@@ -40,6 +45,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
 		User user = (User) SecurityUtils.getSubject().getPrincipal();
+
 		//获取用户详细信息
 		user = userService.findById(user.getId());
 		log.warn("=====>>>>>用户" + user.getUsername() + "获取权限");
@@ -47,6 +53,12 @@ public class ShiroRealm extends AuthorizingRealm {
 
 		// 获取用户角色集
 		Set<Role> roles = user.getRoles();
+
+		// 获取部门信息
+		Department department = departmentService.findById(user.getDepartment().getId());
+
+        // 获取部门角色集
+		roles.addAll(department.getRoles());
         Set<String> roleSet = roles.stream().map(Role::getName).collect(Collectors.toSet());
 		simpleAuthorizationInfo.setRoles(roleSet);
 

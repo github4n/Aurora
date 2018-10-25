@@ -32,7 +32,6 @@ public class SessionController {
         return new ModelAndView("/system/online/index");
     }
 
-    @Log("获取在线用户")
     @GetMapping(value = "/getOnlineInfo")
     public Map getOnlineInfo(){
         return sessionService.getOnlineInfo();

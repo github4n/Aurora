@@ -64,18 +64,19 @@ public class UserController {
      * @param limit
      * @return
      */
-    @Log("查询所有用户")
+    @Log("查询用户")
     @RequiresPermissions (value={"admin", "user:all","user:select"}, logical= Logical.OR)
     @GetMapping(value = "/getUsersInfo")
     public Map getUsersInfo(@RequestParam(value = "id",required = false) Long id,
                                 @RequestParam(value = "username",required = false) String username,
+                                @RequestParam(value = "departmentName",required = false) String departmentName,
                                 @RequestParam(value = "email",required = false) String email,
                                 @RequestParam(value = "enabled",required = false) Long enabled,
                                 @RequestParam(value = "page",defaultValue = "1")Integer page,
                                 @RequestParam(value = "limit",defaultValue = "10")Integer limit){
         Sort sort = new Sort(Sort.Direction.ASC,"id");
         Pageable pageable = PageRequest.of(page-1,limit,sort);
-        return userService.getUsersInfo(new UserSpec(username,email,enabled,id),pageable);
+        return userService.getUsersInfo(new UserSpec(username,departmentName,email,enabled,id),pageable);
     }
 
     /**
@@ -118,6 +119,7 @@ public class UserController {
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         String rolesSelect = roleService.getRoles(user.getRoles());
         request.setAttribute("editUser", userMapper.toDto(user,rolesSelect));
+        request.setAttribute("departmentId", user.getDepartment().getId());
         return new ModelAndView("/user/update");
     }
 
@@ -144,7 +146,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @Log("设置用户账号是否允许登录")
+    @Log("更新账号状态")
     @RequiresPermissions (value={"admin", "user:all","user:lock"}, logical= Logical.OR)
     @PutMapping(value = "/updateEnabled")
     public ResponseEntity updateEnabled(@RequestParam Long id){

@@ -17,6 +17,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import java.util.Optional;
  * @date 2018/08/23 9:57:45
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class SysLogServiceImpl implements SysLogService {
 
     @Autowired
@@ -38,7 +40,6 @@ public class SysLogServiceImpl implements SysLogService {
     private SysLogMapper sysLogMapper;
 
     @Override
-    @Transactional(readOnly = true)
     public Map getLogInfo(LogSpec logSpec, Pageable pageable) {
         Page<SysLog> sysLogPage = sysLogRepo.findAll(logSpec,pageable);
         Page<SysLogDTO> sysLogDTOS = sysLogPage.map(sysLogMapper::toDto);
@@ -46,6 +47,7 @@ public class SysLogServiceImpl implements SysLogService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void save(ProceedingJoinPoint joinPoint, long time) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

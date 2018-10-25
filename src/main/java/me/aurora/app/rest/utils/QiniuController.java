@@ -50,7 +50,7 @@ public class QiniuController {
      * @param limit
      * @return
      */
-    @Log("查询七牛云全部文件")
+    @Log("查询七牛云文件")
     @GetMapping(value = "/getContentInfo")
     public Map getContentInfo(@RequestParam(value = "name",required = false) String name,
                           @RequestParam(value = "page",defaultValue = "1")Integer page,
@@ -64,7 +64,7 @@ public class QiniuController {
         return qiNiuService.getContentInfo(new QiNiuContentSpec(name,qiniuConfig.getBucket()),pageable);
     }
 
-    @Log("配置七牛对象存储")
+    @Log("配置七牛云")
     @PostMapping(value = "/config")
     public ResponseEntity qiNiuConfig(@RequestBody @Validated(QiniuConfig.Update.class) QiniuConfig qiniuConfig){
         log.warn("REST request to qiNiuConfig QiniuConfig : {}" +qiniuConfig);
@@ -87,7 +87,7 @@ public class QiniuController {
      * @param file
      * @return
      */
-    @Log("上传文件到七牛云")
+    @Log("上传文件")
     @PostMapping(value = "/upload")
     public ResponseEntity upload(@RequestParam MultipartFile file){
         log.warn("REST request to upload qiNiu : {}" +file.getOriginalFilename());
@@ -98,7 +98,7 @@ public class QiniuController {
      * 同步七牛云数据到数据库
      * @return
      */
-    @Log("同步七牛云数据到数据库")
+    @Log("同步七牛云数据")
     @PostMapping(value = "/synchronize")
     public ResponseEntity synchronize(){
         log.warn("REST request to synchronize qiNiu : {}");
@@ -112,7 +112,7 @@ public class QiniuController {
      * @return
      * @throws Exception
      */
-    @Log("下载七牛云文件")
+    @Log("下载文件")
     @PostMapping(value = "/download")
     public ResponseEntity download(@RequestParam Long id) throws UnsupportedEncodingException {
         log.warn("REST request to download qiNiu : {}" +id);
@@ -125,7 +125,7 @@ public class QiniuController {
      * @return
      * @throws Exception
      */
-    @Log("删除七牛云文件")
+    @Log("删除文件")
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id) throws UnsupportedEncodingException {
         log.warn("REST request to delete qiNiu : {}" +id);

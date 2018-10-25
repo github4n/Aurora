@@ -13,6 +13,9 @@ import me.aurora.service.AlipayService;
 import me.aurora.util.pay.AlipayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 /**
@@ -20,6 +23,7 @@ import java.util.Optional;
  * @date 2018/09/30 14:12:35
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class AlipayServiceImpl implements AlipayService {
 
     @Autowired

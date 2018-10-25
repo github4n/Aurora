@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -25,6 +26,7 @@ import java.util.*;
  * @date 2018/08/23 17:27:03
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
@@ -48,13 +50,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Role> getAllRole() {
         return roleRepo.findAll();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Map getRoleInfo(RoleSpec roleSpec, Pageable pageable) {
         Page<Role> roles = roleRepo.findAll(roleSpec,pageable);
         Page<RoleDTO> roleDTOS = roles.map(roleMapper::toDto);
@@ -62,6 +62,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insert(Role role, String permissions) {
         if(roleRepo.findByName(role.getName())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"角色已存在");
@@ -74,17 +75,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Role findById(Long id) {
-        if(id == null){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
-        }
         Optional<Role> role = roleRepo.findById(id);
         ValidationUtil.isNull(role,"id:"+id+"is not find");
         return role.get();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update(Role old,Role role, String permissions) {
         if(StrUtil.isEmpty(permissions)){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"请至少为其分配一个权限");
@@ -100,6 +98,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Role role) {
         try {
             roleRepo.delete(role);

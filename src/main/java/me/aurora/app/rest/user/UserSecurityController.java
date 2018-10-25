@@ -2,8 +2,11 @@ package me.aurora.app.rest.user;
 
 import lombok.extern.slf4j.Slf4j;
 import me.aurora.annotation.Log;
+import me.aurora.domain.Department;
 import me.aurora.domain.ResponseEntity;
+import me.aurora.domain.Role;
 import me.aurora.domain.User;
+import me.aurora.service.DepartmentService;
 import me.aurora.service.MenuService;
 import me.aurora.service.UserService;
 import me.aurora.util.EncryptHelper;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 /**
  * 用户登录、注册、修改密码
@@ -31,7 +35,10 @@ public class UserSecurityController {
     @Autowired
     private MenuService menuService;
 
-    @Log("用户登录")
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Log("登录")
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestParam String username, @RequestParam String password, @RequestParam Boolean rememberMe){
         log.warn("REST request to login User : {}"+username);
@@ -62,10 +69,17 @@ public class UserSecurityController {
         log.warn("REST request to index User : {}");
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         user = userService.findById(user.getId());
+
+        //获取部门信息，获取部门的角色菜单
+        Department department = departmentService.findById(user.getDepartment().getId());
+
+        Set<Role> roleSet = user.getRoles();
+        roleSet.addAll(department.getRoles());
+
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         request.setAttribute("user", user);
-        request.setAttribute("menus",menuService.findMenusByUserRols(user.getRoles()));
+        request.setAttribute("menus",menuService.findMenusByUserRols(roleSet));
         return new ModelAndView("/index");
     }
 }

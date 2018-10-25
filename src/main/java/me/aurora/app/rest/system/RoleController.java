@@ -60,7 +60,7 @@ public class RoleController {
      * @param limit
      * @return
      */
-    @Log("查询所有角色")
+    @Log("查询角色")
     @RequiresPermissions(value={"admin", "role:all","role:select"}, logical= Logical.OR)
     @GetMapping(value = "/getRolesInfo")
     public Map getRolesInfo(@RequestParam(value = "id",required = false) Long id,

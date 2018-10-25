@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,6 +23,7 @@ import java.util.Optional;
  * @date 2018/10/05 12:09:28
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class DictServiceImpl implements DictService {
 
     @Autowired
@@ -32,27 +36,27 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insert(Dict dict) {
         dictRepo.save(dict);
     }
 
     @Override
     public Dict findById(Long id) {
-        if(id == null){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
-        }
         Optional<Dict> dict = dictRepo.findById(id);
         ValidationUtil.isNull(dict,"id:"+id+" is not find");
         return dict.get();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update(Dict old, Dict dict) {
         dict.setCreateTime(old.getCreateTime());
         dictRepo.save(dict);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Dict dict) {
         dictRepo.delete(dict);
     }

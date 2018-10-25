@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Aurora- 更新用户</title>
     <!-- build:css -->
+    <link rel="stylesheet" th:href="@{'/plugins/css/treeselect.css'}">
     <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
     <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/ztree/metro/ztree.css'}" media="all"/>
     <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/treeselect.css'}" media="all"/>
@@ -34,6 +35,12 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">选择部门</label>
+            <div class="layui-input-block">
+                <input type="text" th:value="${departmentId}" id="tree" placeholder="选择部门" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">选择角色</label>
             <div class="layui-input-block layui-input-treeselect" >
                 <input type="text" name="role" th:value="${editUser.rolesSelect}" id="treeselect1" required lay-verify="required" autocomplete="off" class="layui-input">
@@ -46,6 +53,20 @@
 <script th:src="@{'/plugins/layui.js'}"></script>
 <!-- build:use -->
 <script>
+    layui.config({
+        base: '../plugins/lay/modules/'
+    }).extend({
+        treeSelect:'treeSelect'
+    }).use(['treeSelect'], function () {
+
+        var  treeSelect = layui.treeSelect;
+        treeSelect.render(
+            {
+                elem: "#tree",
+                data: '/department/getAllDepartment?isTop=false',
+                method: "GET"
+            });
+    });
     layui.config({
         base: '/plugins/lay/layui-treeselect/src/js/' //自定义组件的目录--相对路径
     }).use(['form', 'treeselect'], function () {

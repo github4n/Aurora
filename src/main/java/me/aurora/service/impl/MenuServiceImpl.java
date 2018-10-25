@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * @date 2018/08/23 17:27:57
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class MenuServiceImpl implements MenuService {
 
     @Autowired
@@ -55,7 +57,13 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuDTO> findMenusByUserRols(Set<Role> roles) {
-        Set<Menu> menuSet = new HashSet<>(menuRepo.findByRoles(roles));
+
+        Set<Menu> menuSet = new LinkedHashSet<>();
+        for (Role role : roles) {
+            Set<Role> roleSet = new HashSet<>();
+            roleSet.add(role);
+            menuSet.addAll(menuRepo.findByRoles(roleSet));
+        }
         List<Menu> menus = new ArrayList<>(menuSet);
         List<MenuDTO> menuDTOS = menuMapper.toDto(menus);
         ListSortUtil<MenuDTO> sortList = new ListSortUtil<MenuDTO>();
@@ -64,7 +72,6 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Map getMenuInfo(MenuSpec menuSpec, Pageable pageable) {
         Page<Menu> menuPage = menuRepo.findAll(menuSpec,pageable);
         Page<MenuDTO> menuDTOS = menuPage.map(menuMapper::toDto);
@@ -72,7 +79,6 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Menu> findAllMenus() {
         Integer level = 1;
         return menuRepo.findAllByLevel(level);
@@ -137,11 +143,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Menu findById(Long id) {
-        if(id == null){
-            throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
-        }
         Optional<Menu> menu = menuRepo.findById(id);
         ValidationUtil.isNull(menu,"id:"+id+"is not find");
         return menu.get();

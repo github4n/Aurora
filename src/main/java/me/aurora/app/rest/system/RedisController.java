@@ -36,7 +36,7 @@ public class RedisController {
         return new ModelAndView("/system/redis/terminal");
     }
 
-    @Log("执行Redis keys命令")
+    @Log("执行Redis keys")
     @GetMapping("keys")
     public ResponseEntity keys(String arg) {
         log.warn("REST request to keys Redis : {}" +arg);
@@ -48,7 +48,7 @@ public class RedisController {
         }
     }
 
-    @Log("执行Redis get命令")
+    @Log("执行Redis get")
     @GetMapping("get")
     public ResponseEntity get(String arg) {
         log.warn("REST request to get Redis : {}" +arg);
@@ -60,7 +60,7 @@ public class RedisController {
         }
     }
 
-    @Log("执行Redis set命令")
+    @Log("执行Redis set")
     @GetMapping("set")
     public ResponseEntity set(String arg) {
         log.warn("REST request to set Redis : {}" +arg);
@@ -78,7 +78,7 @@ public class RedisController {
         }
     }
 
-    @Log("执行Redis del命令")
+    @Log("执行Redis del")
     @GetMapping("del")
     public ResponseEntity del(String arg) {
         log.warn("REST request to del Redis : {}" +arg);
@@ -91,7 +91,7 @@ public class RedisController {
         }
     }
 
-    @Log("执行Redis exists命令")
+    @Log("执行Redis exists")
     @GetMapping("exists")
     public ResponseEntity exists(String arg) {
         log.warn("REST request to exists Redis : {}" +arg);
@@ -109,7 +109,7 @@ public class RedisController {
         }
     }
 
-    @Log("执行Redis pttl命令")
+    @Log("执行Redis pttl")
     @GetMapping("pttl")
     public ResponseEntity pttl(String arg) {
         log.warn("REST request to pttl Redis : {}" +arg);
@@ -120,7 +120,7 @@ public class RedisController {
         }
     }
 
-    @Log("执行Redis pexpire命令")
+    @Log("执行Redis pexpire")
     @GetMapping("pexpire")
     public ResponseEntity pexpire(String arg) {
         log.warn("REST request to pexpire Redis : {}" +arg);
@@ -135,7 +135,7 @@ public class RedisController {
         }
     }
 
-    @Log("执行flushdb命令")
+    @Log("执行flushdb")
     @GetMapping("flushdb")
     public ResponseEntity flushdb() {
         log.warn("REST request to flushdb Redis : {}");
@@ -146,7 +146,7 @@ public class RedisController {
         }
     }
 
-    @Log("执行flushall命令")
+    @Log("执行flushall")
     @GetMapping("flushall")
     public ResponseEntity flushall() {
         log.warn("REST request to flushall Redis : {}");

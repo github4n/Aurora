@@ -5,8 +5,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -25,6 +28,7 @@ public class User implements Serializable {
     @Id
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull(groups = {Update.class})
     private Long id;
 
     @Column(unique = true,nullable = false)
@@ -54,6 +58,12 @@ public class User implements Serializable {
     @ManyToMany
     @JoinTable(name = "zj_users_roles", joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
     private Set<Role> roles;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    @NotNull(groups = {New.class,Update.class})
+    @Valid
+    private Department department;
 
     @OneToMany
     @JsonIgnore

@@ -35,7 +35,7 @@ public class JobLogController {
         return new ModelAndView("/job/log");
     }
 
-    @Log("查询所有任务日志")
+    @Log("查询任务日志")
     @RequiresPermissions(value={"admin", "job:all","job:log"}, logical= Logical.OR)
     @GetMapping(value = "/getJobLogsInfo")
     public Map getJobLogsInfo(@RequestParam(value = "beanName",required = false) String beanName,

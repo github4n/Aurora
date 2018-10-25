@@ -60,7 +60,7 @@ public class PermissionController {
      * @param limit
      * @return
      */
-    @Log("查询所有权限")
+    @Log("查询权限")
     @RequiresPermissions(value={"admin", "permission:all","permission:select"}, logical= Logical.OR)
     @GetMapping(value = "/getPermissionsInfo")
     public Map getPermissionsInfo(@RequestParam(value = "id",required = false) Long id,
@@ -125,7 +125,7 @@ public class PermissionController {
     @Log("更新权限")
     @RequiresPermissions (value={"admin", "permission:all","permission:update"}, logical= Logical.OR)
     @PutMapping(value = "/update")
-    public ResponseEntity update(@Validated(Permission.New.class) @RequestBody Permission permission) {
+    public ResponseEntity update(@Validated(Permission.Update.class) @RequestBody Permission permission) {
         log.warn("REST request to update Permission : {}"+permission);
         permissionService.update(permissionService.findById(permission.getId()),permission);
         return ResponseEntity.ok();

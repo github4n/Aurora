@@ -1,11 +1,14 @@
-<div class="layui-fluid">
-    <div class="layui-row">
-        <div class="layui-col-xs12">
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">部门管理</li>
+        <li>组织架构图</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
             <div class="layui-card">
-                <div class="layui-card-header">权限管理</div>
                 <div class="layui-card-body">
                     <div class="layui-card-header">
-                        <a id="add" shiro:hasAnyPermissions="admin,permission:all,permission:add" class="layui-btn layui-btn-xs">
+                        <a id="add" shiro:hasAnyPermissions="admin,department:all,department:add" class="layui-btn layui-btn-xs">
                             <i class="layui-icon"></i>
                             <span>新增</span>
                         </a>
@@ -15,32 +18,31 @@
                     </div>
                     <table class="layui-table" id="myTable" lay-filter="tools"></table>
                     <script type="text/html" id="operation">
-                        <button shiro:hasAnyPermissions="admin,permission:all,permission:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
-                        <button shiro:hasAnyPermissions="admin,permission:all,permission:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                        <button shiro:hasAnyPermissions="admin,department:all,department:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,department:all,department:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
                     </script>
                 </div>
             </div>
         </div>
+
+        <div class="layui-tab-item" style="padding: 10px;">
+            <div class="orgWrap"></div>
+        </div>
     </div>
 </div>
+
 <script type="text/html" id="search_tpl_hash">
     <form class="layui-form" action="">
         <div class="layui-form-item">
-            <label class="layui-form-label">权限编号</label>
+            <label class="layui-form-label">部门编号</label>
             <div class=layui-input-lump>
-                <input type="text" name="id" placeholder="请输入权限编号.." autocomplete="off" class="layui-input">
+                <input type="text" name="id" placeholder="请输入部门编号.." autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">权限名称</label>
+            <label class="layui-form-label">部门名称</label>
             <div class=layui-input-lump>
-                <input type="text" name="perms" placeholder="请输入权限名称.." autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">权限说明</label>
-            <div class=layui-input-lump>
-                <input type="text" name="remark" placeholder="请输入权限说明.." autocomplete="off" class="layui-input">
+                <input type="text" name="name" placeholder="请输入部门名称.." autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -53,23 +55,59 @@
 </script>
 <script>
     var treeGrid = null;
-    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
+    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid' ,'orgChart'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
             sidebar = layui.sidebar,
+            orgChart = layui.orgChart,
             form = layui.form;
-            treeGrid = layui.treeGrid;
+        treeGrid = layui.treeGrid;
+
+        $.ajax({
+            url:'/department/getOrgChart',
+            type:"GET",
+            dataType: "json",
+            success:function(result){
+                var data = result.data;
+
+                //3表示显示到部门的第3级
+                orgChart.render({
+                    elm: '.orgWrap',
+                    data: data,
+                    drag: true,
+                    depth: 2,
+                    renderdata: function(data, $dom) {
+                        var value = data;
+                        if(value && Object.keys(value).length) {
+                            var $name = $('<div class="name"></div>');
+                            !!(value.name) && $name.text(value.name);
+                            $dom.append($name)
+
+                            var dom =  $dom.attr("class")
+                            $dom.attr("class",dom+' organization')
+                        }
+                    },
+                    callback: function() {
+
+                    }
+                });
+            },
+            error:function(e){
+                var msg = e.msg;
+                layer.msg(msg,new Function());
+            }
+        });
 
         //监听新增事件
         $('#add').on('click', function(){
             var index = layer.open({
                 type: 2
-                ,content: '/permission/toAddPage'
+                ,content: '/department/toAddPage'
                 ,area: ['500px', '450px']
                 ,btnAlign: 'c'
                 ,shade: 0.8
-                ,title: '新增权限'
+                ,title: '新增部门'
                 ,maxmin: true
                 ,btn: ['确认', '取消']
                 ,yes: function(){
@@ -82,14 +120,14 @@
 
         //表格渲染
         treeGrid.render({
-             id:"ID"
+            id:"ID"
             ,elem: '#myTable'
             ,idField:'id'
-            ,url:'/permission/getPermissionsInfo'
+            ,url:'/department/getDepartmentsInfo'
             ,cellMinWidth: 100
             ,treeId:'id'//树形id字段名称
             ,treeUpId:'pid'//树形父id字段名称
-            ,treeShowName:'perms'//以树形式显示的字段
+            ,treeShowName:'name'//以树形式显示的字段
             ,height:'full-140'
             ,isFilter:false
             ,iconOpen:false//是否显示图标【默认显示】
@@ -97,11 +135,9 @@
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [
                 [
-                    {field:'id',align:'center', width:70,  title: '编号'}
-                    ,{field:'perms',  title: '权限名称'}
-                    ,{field:'remark',  title: '权限说明'}
+                     {field:'id',align:'center', width:70,  title: '编号'}
+                    ,{field:'name',  title: '部门名称'}
                     ,{field:'createTime',  title: '创建日期'}
-                    ,{field:'updateTime', title: '更新日期'}
                     ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作'}
                 ]
             ]
@@ -124,8 +160,7 @@
                         treeGrid.query('ID', {
                             where: {
                                 id: $('input[name="id"]').val(),
-                                perms: $('input[name="perms"]').val(),
-                                remark: $('input[name="remark"]').val()
+                                name: $('input[name="name"]').val(),
                             }
                             ,page: {
                                 curr: 1 //重新从第 1 页开始
@@ -144,11 +179,11 @@
                 // 编辑
                 var index = layer.open({
                     type: 2
-                    ,content: '/permission/toUpdatePage?id='+data.id
+                    ,content: '/department/toUpdatePage?id='+data.id
                     ,area: ['500px', '450px']
                     ,btnAlign: 'c'
                     ,shade: 0.8
-                    ,title: '编辑权限'
+                    ,title: '编辑部门'
                     ,maxmin: true
                     ,btn: ['确认', '取消']
                     ,yes: function(){
@@ -163,7 +198,7 @@
                     function(index){//确定回调
                         // 写删除方法
                         $.ajax({
-                            url: "/permission/delete?id="+data.id,
+                            url: "/department/delete?id="+data.id,
                             type: "DELETE",
                             success: function(data){
                                 if (data.code == 200) {
@@ -198,20 +233,16 @@
      * @param body
      */
     function add(layer,body) {
-        var perms = body.contents().find("input[name=\"perms\"]").val()
-        var pid = body.contents().find("select[name=\"pid\"]").val();
-        var remark = body.contents().find("textarea[name=\"remark\"]").val()
-        if(perms == ''||null == perms){
-            layui.layer.msg("权限名称不能为空",{icon: 5});
-            return
-        }
+        var name = body.contents().find("input[name=\"name\"]").val();
+        var pid = body.contents().find("#tree").val();
+        var roles = body.contents().find("input[name=\"role\"]").val();
+
         $.ajax({
-            url: "/permission/insert",
+            url: "/department/insert?roles="+roles,
             contentType: "application/json",
             type: "POST",
             data:JSON.stringify({
-                perms:perms,
-                remark:remark,
+                name:name,
                 pid:pid
             }),
             dataType: "json",
@@ -245,22 +276,19 @@
      * @param body
      */
     function update(layer,body) {
-        var id = body.contents().find("input[name=\"id\"]").val()
-        var perms = body.contents().find("input[name=\"perms\"]").val()
-        var pid = body.contents().find("select[name=\"pid\"]").val();
-        var remark = body.contents().find("textarea[name=\"remark\"]").val()
-        if(perms == ''||null == perms){
-            layui.layer.msg("权限名称不能为空",{icon: 5});
-            return
-        }
+
+        var id = body.contents().find("input[name=\"id\"]").val();
+        var name = body.contents().find("input[name=\"name\"]").val();
+        var pid = body.contents().find("#tree").val();
+        var roles = body.contents().find("input[name=\"role\"]").val();
+
         $.ajax({
-            url: "/permission/update",
+            url: "/department/update?roles="+roles,
             contentType: "application/json",
             type: "PUT",
             data:JSON.stringify({
                 id:id,
-                perms:perms,
-                remark:remark,
+                name:name,
                 pid:pid
             }),
             dataType: "json",

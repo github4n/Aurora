@@ -41,6 +41,12 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">所属部门</label>
+            <div class=layui-input-lump>
+                <input type="text" name="departmentName" placeholder="请输入部门名称.." autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">邮箱</label>
             <div class=layui-input-lump>
                 <input type="text" name="email" placeholder="请输入用户邮箱.." autocomplete="off" class="layui-input">
@@ -103,9 +109,10 @@
                         [
                           {field:'id',align:'center', width:70,  title: '编号'}
                          ,{field:'username',  title: '用户昵称'}
+                         ,{field:'departmentName',  title: '所属部门'}
                          ,{field:'email',  title: '邮箱'}
-                         ,{field:'createDateTime',  title: '创建时间'}
-                         ,{field:'lastLoginTime',  title: '最近登录'}
+                         ,{field:'createDateTime',  title: '创建时间',width: 172}
+                         ,{field:'lastLoginTime',  title: '最近登录',width: 172}
                          ,{field:'lock', align: 'center', width: 120, toolbar: '#checkLock', title: '是否允许登录'}
                          ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作',fixed: 'right'}
                         ]
@@ -133,6 +140,7 @@
                             where: {
                                 id: $('input[name="id"]').val(),
                                 username: $('input[name="username"]').val(),
+                                departmentName: $('input[name="departmentName"]').val(),
                                 email: $('input[name="email"]').val(),
                                 enabled: $('select[name="enabled"]').val()
                             }
@@ -223,20 +231,17 @@
      */
     function add(layer,body) {
         var roles = body.contents().find("input[name=\"role\"]").val();
+        var departmentId = body.contents().find("#tree").val();
         var pwd = MD5(body.contents().find("input[name=\"password\"]").val())
         var rpwd = MD5(body.contents().find("input[name=\"rPassword\"]").val())
         var username = body.contents().find("input[name=\"username\"]").val()
         var email = body.contents().find("input[name=\"email\"]").val()
-        if(username == ''||null == username){
-            layui.layer.msg("用户名不能为空",{icon: 5});
-            return
-        }
-        if(email == ''||null == email){
-            layui.layer.msg("邮箱不能为空",{icon: 5});
-            return
-        }
         if(pwd != rpwd){
             layui.layer.msg("密码输入不一致",{icon: 5});
+            return
+        }
+        if(departmentId == null || departmentId == ""){
+            layui.layer.msg("请选择部门",{icon: 5});
             return
         }
         $.ajax({
@@ -246,7 +251,10 @@
             data:JSON.stringify({
                 username:username,
                 password:pwd,
-                email:email
+                email:email,
+                department:{
+                    id:departmentId
+                }
             }),
             dataType: "json",
             success: function(data){
@@ -282,10 +290,15 @@
         var roles = body.contents().find("input[name=\"role\"]").val();
         var pwd = body.contents().find("input[name=\"password\"]").val()
         var id = body.contents().find("input[name=\"id\"]").val()
+        var departmentId = body.contents().find("#tree").val();
         var username = body.contents().find("input[name=\"username\"]").val()
         var email = body.contents().find("input[name=\"email\"]").val()
         if(!(pwd == ''||pwd == null)){
             pwd = MD5(pwd)
+        }
+        if(departmentId == null || departmentId == ""){
+            layui.layer.msg("请选择部门",{icon: 5});
+            return
         }
         $.ajax({
             url: "/user/update?roles="+roles,
@@ -295,7 +308,10 @@
                 id:id,
                 username:username,
                 password:pwd,
-                email:email
+                email:email,
+                department:{
+                    id:departmentId
+                }
             }),
             dataType: "json",
             success: function(data){

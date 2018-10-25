@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * 发送邮件
@@ -48,7 +49,7 @@ public class EmailController {
 
     @Log("发送邮件")
     @PostMapping(value = "send")
-    public ResponseEntity send(@Validated(EmailVo.New.class) @RequestBody EmailVo emailVo) throws Exception {
+    public ResponseEntity send(@Valid @RequestBody EmailVo emailVo) throws Exception {
         log.warn("REST request to send Email : {}" +emailVo);
         emailService.send(emailVo,emailService.findById(1L));
         return ResponseEntity.ok();

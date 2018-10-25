@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class CommonController {
 
-    @Log("访问swagger页面")
+    @Log("访问swagger")
     @GetMapping(value = "/swagger/index")
     public ModelAndView index(){
         return new ModelAndView("/system/api/index");

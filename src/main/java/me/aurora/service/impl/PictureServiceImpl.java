@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -35,6 +36,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service(value = "pictureService")
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class PictureServiceImpl implements PictureService {
 
     @Autowired
@@ -44,7 +46,6 @@ public class PictureServiceImpl implements PictureService {
     private PictureMapper pictureMapper;
 
     @Override
-    @Transactional(readOnly = true)
     public Map getPictureInfo(PictureSpec pictureSpec, Pageable pageable) {
         Page<Picture> picturePage = pictureRepo.findAll(pictureSpec,pageable);
         Page<PictureDto> pictureDtos = picturePage.map(pictureMapper::toDto);
@@ -81,7 +82,6 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Picture findById(Long id) {
         if(id == null){
             throw new AuroraException(HttpStatus.HTTP_NOT_FOUND,"id not exist");
@@ -92,6 +92,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(Picture picture) {
         RestTemplate rest = new RestTemplate();
         try {

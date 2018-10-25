@@ -49,7 +49,7 @@ public class PictureController {
      * @param limit
      * @return
      */
-    @Log("查询全部图片")
+    @Log("查询图片")
     @RequiresPermissions(value={"admin", "picture:all","picture:select"}, logical= Logical.OR)
     @GetMapping(value = "/getPictureInfo")
     public Map getInfo(@RequestParam(value = "username",required = false) String username,
