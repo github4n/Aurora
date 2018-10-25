@@ -15,7 +15,7 @@
 layui.define("jquery", function(exports) {
 	var $ = layui.jquery;
 	"use strict";
-	layui.link(layui.cache.base + "../css/orgChart.css");
+    layui.link(layui.cache.base + "../../css/orgChart.css");
 	var self,
 		objs = {
 			render: function(options) {
