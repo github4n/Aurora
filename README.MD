@@ -5,10 +5,22 @@
 ![https://img.shields.io/badge/apache%20shiro-1.4.0-green.svg?longCache=true&style=flat-square](https://img.shields.io/badge/apache%20shiro-1.4.0-green.svg?longCache=true&style=flat-square)
 
 Aurora是一个简单高效的后台管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单；数据访问层采用Spring boot Jpa，可快速高效对数据进行操作，消除了大量传统XML配置SQL的代码，分页使用Pageable；安全框架采用时下流行的Apache Shiro，可实现对按钮级别的权限控制；前端页面使用KidAdmin构建，并提供多套配色以供选择。
-### 预览地址，临时域名，正式域名auauz.net，已在备案中
+
+### Aurora1.2 版本更新计划
+
+- 用户个人中心、安全中心
+- 部门管理、组织机构展示
+- 短信模块、生日自动通知
+- 站内信模块、消息通知
+- 请假管理、Activiti工作流
+
+### 预览地址，临时域名
 [http://xiswl.xyz](http://xiswl.xyz)
+
 ### 项目相关教程
+
 [Spring boot循序渐进(码云)](https://gitee.com/hgpt/SpringBoot_All)
+
 [Spring boot循序渐进(github)](https://github.com/dqjdda/SpringBoot_All)
 
 ### SSM + shiro + redis 版移步
@@ -40,6 +52,7 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 │  ├─在线用户
 │  └─系统日志
 │─第三方工具
+│  │-天气显示
 │  │-邮件工具
 │  │-支付宝支付
 │  │-七牛云储存
@@ -104,9 +117,9 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 
 - 前端模板使用kitadmin，前端框架使用layui
 
-- 系统首页
+- 系统首页，新增心知天气
 
-![](https://i.imgur.com/z1karH2.png)
+![](https://i.loli.net/2018/10/25/5bd11baaa7b02.png)
 
 - 用户管理
 

@@ -26,6 +26,23 @@
       </div>
       <div class="layui-layout-left">
       </div>
+        <div id="tp-weather-widget" style="margin-top: -3%;margin-left: 72%"></div>
+        <script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
+        <script>tpwidget("init", {
+            "flavor": "slim",
+            "location": "WX4FBXXFKE4F",
+            "geolocation": "enabled",
+            "language": "auto",
+            "unit": "c",
+            "theme": "chameleon",
+            "container": "tp-weather-widget",
+            "bubble": "enabled",
+            "alarmType": "circle",
+            "color": "#FFFFFF",
+            "uid": "UDA3C883F3",
+            "hash": "5c9a4a9843c8fc8e069f5dba6a33f081"
+        });
+        tpwidget("show");</script>
       <div class="layui-layout-right">
         <ul class="kit-nav" lay-filter="header_right">
           <li class="kit-item" kit-target="help">
