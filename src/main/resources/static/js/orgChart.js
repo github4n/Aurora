@@ -189,7 +189,7 @@ layui.define("jquery", function(exports) {
 							_move = true;
 							_x = e.pageX - parseInt(dragEle.css("left"));
 							_y = e.pageY - parseInt(dragEle.css("top"));
-							// dragEle.fadeTo(20, 0.9);//点击后开始拖动并透明显示
+							dragEle.fadeTo(20, 0.9);//点击后开始拖动并透明显示
 						});
 						$(document).mousemove(function(e) {
 							if(_move) {

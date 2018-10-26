@@ -55,13 +55,17 @@
 </script>
 
 <script>
+    var treeGrid = null;
     layui.config({
         base: '../js/'
-    }).extend({
-        treeSelect:'orgChart'
-    }).use(['orgChart'], function () {
-
+    }).use(['orgChart','jquery', 'sidebar', 'form' , 'treeGrid'], function () {
         var  orgChart = layui.orgChart;
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+            treeGrid = layui.treeGrid;
 
         $.ajax({
             url:'/department/getOrgChart',
@@ -97,18 +101,6 @@
                 layer.msg(msg,new Function());
             }
         });
-    });
-</script>
-
-<script>
-    var treeGrid = null;
-    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
-        var $ = layui.jquery,
-            layer = layui.layer,
-            table = layui.table,
-            sidebar = layui.sidebar,
-            form = layui.form;
-        treeGrid = layui.treeGrid;
 
         //监听新增事件
         $('#add').on('click', function(){
@@ -146,7 +138,7 @@
             ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             ,cols: [
                 [
-                     {field:'id',align:'center', width:70,  title: '编号'}
+                    {field:'id',align:'center', width:70,  title: '编号'}
                     ,{field:'name',  title: '部门名称'}
                     ,{field:'createTime',  title: '创建日期'}
                     ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作'}
