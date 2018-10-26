@@ -61,7 +61,6 @@
     ,table: 'modules/table' //表格
     ,element: 'modules/element' //常用元素操作
     ,rate: 'modules/rate'  //评分组件
-    ,orgChart: 'modules/orgChart'  //组织结构
     ,carousel: 'modules/carousel' //轮播
     ,flow: 'modules/flow' //流加载
     ,util: 'modules/util' //工具块

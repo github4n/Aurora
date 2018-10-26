@@ -53,16 +53,15 @@
         </div>
     </form>
 </script>
+
 <script>
-    var treeGrid = null;
-    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid' ,'orgChart'], function () {
-        var $ = layui.jquery,
-            layer = layui.layer,
-            table = layui.table,
-            sidebar = layui.sidebar,
-            orgChart = layui.orgChart,
-            form = layui.form;
-        treeGrid = layui.treeGrid;
+    layui.config({
+        base: '../js/'
+    }).extend({
+        treeSelect:'orgChart'
+    }).use(['orgChart'], function () {
+
+        var  orgChart = layui.orgChart;
 
         $.ajax({
             url:'/department/getOrgChart',
@@ -98,6 +97,18 @@
                 layer.msg(msg,new Function());
             }
         });
+    });
+</script>
+
+<script>
+    var treeGrid = null;
+    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form;
+        treeGrid = layui.treeGrid;
 
         //监听新增事件
         $('#add').on('click', function(){
