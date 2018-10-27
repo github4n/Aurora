@@ -24,10 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author 郑杰
@@ -73,6 +70,25 @@ public class MenuController {
     }
 
     /**
+     * 构建上级类目树形菜单
+     */
+    @GetMapping(value = "/buildMenu")
+    public Object buildMenu(){
+
+        List<Menu> list = new ArrayList<>();
+
+        Menu menu = new Menu();
+        menu.setId(0L);
+        menu.setName("顶级类目");
+        menu.setPid(null);
+
+        list.add(menu);
+
+        List<Map<String, Object>> mapList = menuService.buildMenu(list);
+        return mapList;
+    }
+
+    /**
      * 跳转到列表页面
      * @return
      */
@@ -109,10 +125,6 @@ public class MenuController {
     @RequiresPermissions (value={"admin", "menu:all","menu:add"}, logical= Logical.OR)
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
-        List<Menu> menus = menuService.findAllMenus();
-        // 获取request
-        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-        request.setAttribute("topMenus",menus);
         return new ModelAndView("/system/menu/add");
     }
 
@@ -142,11 +154,9 @@ public class MenuController {
     @GetMapping(value = "/toUpdatePage")
     public ModelAndView toUpdatePage(@RequestParam Long id){
         Menu menu = menuService.findById(id);
-        List<Menu> menus = menuService.findAllMenus();
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
         String rolesSelect = roleService.getRoles(menu.getRoles());
-        request.setAttribute("topMenus",menus);
         request.setAttribute("menu",menuMapper.toDto(menu,rolesSelect));
         return new ModelAndView("/system/menu/update");
     }

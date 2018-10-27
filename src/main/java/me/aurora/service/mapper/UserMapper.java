@@ -21,5 +21,18 @@ public interface UserMapper extends EntityMapper<UserDTO, User>{
      */
     @Mapping(source = "rolesSelect",target = "rolesSelect")
     @Mapping(source = "user.department.name",target = "departmentName")
+    @Mapping(source = "user.sex",target = "sex")
+    @Mapping(source = "user.birthday",target = "birthday")
     UserDTO toDto(User user,String rolesSelect);
+
+    /**
+     * 自定义转换
+     * @param user
+     * @return
+     */
+    @Mapping(source = "user.department.name",target = "departmentName")
+    @Override
+    UserDTO toDto(User user);
+
+
 }

@@ -38,7 +38,17 @@ public class PermissionController {
 
     @GetMapping(value = "/getAllPermissions")
     public Object getAllRole(){
-        List<Map<String, Object>> permissionList = permissionService.buildPermissionTree(permissionService.findByPid(0));
+        List<Map<String, Object>> permissionList = permissionService.buildPermissionTree(permissionService.findByPid(0,false));
+        return permissionList;
+    }
+
+    /**
+     * 用于上级权限
+     * @return
+     */
+    @GetMapping(value = "/getTopPermissions")
+    public Object getTopPermissions(){
+        List<Map<String, Object>> permissionList = permissionService.buildTopPermissionTree(permissionService.findByPid(0,true));
         return permissionList;
     }
 
@@ -80,10 +90,6 @@ public class PermissionController {
     @RequiresPermissions (value={"admin", "permission:all","permission:add"}, logical= Logical.OR)
     @GetMapping(value = "/toAddPage")
     public ModelAndView toAddPage(){
-        List<Permission> permissionList = permissionService.findByPid(0);
-        // 获取request
-        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-        request.setAttribute("topPermissions",permissionList);
         return new ModelAndView("/system/permission/add");
     }
 
@@ -111,8 +117,6 @@ public class PermissionController {
         Permission permission = permissionService.findById(id);
         // 获取request
         HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-        List<Permission> permissionList = permissionService.findByPid(0);
-        request.setAttribute("topPermissions",permissionList);
         request.setAttribute("permission",perMissionMapper.toDto(permission));
         return new ModelAndView("/system/permission/update");
     }

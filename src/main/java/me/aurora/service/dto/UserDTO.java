@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
@@ -28,7 +29,9 @@ public class UserDTO implements Serializable {
 
     private String departmentName;
 
-    private Timestamp createDateTime;
+    private String sex;
 
-    private Timestamp lastLoginTime;
+    private LocalDate birthday;
+
+    private Timestamp createDateTime;
 }

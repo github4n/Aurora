@@ -93,7 +93,6 @@ public class ShiroRealm extends AuthorizingRealm {
 		if (enabled.equals(user.getEnabled())) {
 			throw new LockedAccountException("账号已被锁定,请联系管理员！");
 		}
-		userService.checkLastLoginTime(user);
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
 		return info;
 	}

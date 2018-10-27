@@ -87,6 +87,37 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    public List<Map<String, Object>> buildTopPermissionTree(List<Permission> permissions) {
+        List<Map<String,Object>> maps = new LinkedList<>();
+        permissions.forEach(permission -> {
+                    if (permission!=null){
+                        List<Permission> permissionList = new ArrayList<>();
+                        Map<String,Object> map = new HashMap<>(16);
+                        map.put("id",permission.getId());
+                        String name = !StrUtil.isEmpty(permission.getRemark())?permission.getRemark():permission.getPerms();
+                        map.put("name",name);
+
+                        if(permission.getId().equals(0L)){
+                            permissionList = permissionRepo.findByPid(0);
+                        }
+
+                        if(permissionList!=null && permissionList.size()!=0){
+
+                            /**
+                             * 只遍历一级类目
+                             */
+                            if(permission.getId().equals(0L)){
+                                map.put("children",buildTopPermissionTree(permissionList));
+                            }
+                        }
+                        maps.add(map);
+                    }
+                }
+        );
+        return maps;
+    }
+
+    @Override
     public List<Map<String, Object>> buildPermissionTree(List<Permission> permissions) {
         List<Map<String,Object>> maps = new LinkedList<>();
         permissions.forEach(permission -> {
@@ -109,8 +140,19 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public List<Permission> findByPid(int pid) {
-        return permissionRepo.findByPid(pid);
+    public List<Permission> findByPid(int pid,Boolean isTop) {
+
+        List<Permission> list = new ArrayList<>();
+        if(isTop){
+            Permission permission = new Permission();
+            permission.setId(0L);
+            permission.setPerms("顶级类目");
+            permission.setPid(null);
+            list.add(permission);
+        } else {
+            list.addAll(permissionRepo.findByPid(pid));
+        }
+        return list;
     }
 
     @Override

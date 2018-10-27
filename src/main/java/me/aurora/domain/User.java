@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
@@ -28,32 +29,35 @@ public class User implements Serializable {
     @Id
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = {Update.class})
+    @NotNull(groups = {Update.class,UpdateInfo.class})
     private Long id;
 
     @Column(unique = true,nullable = false)
     @NotBlank(groups = {New.class,Update.class})
     private String username;
 
-    @NotBlank(groups = {New.class,Update.class})
+    @NotNull(groups = {New.class,Update.class})
+    private String sex;
+
+    @NotNull(groups = {New.class,Update.class})
+    private LocalDate birthday;
+
     @Column(nullable = false)
     private String password;
 
-    @NotBlank(groups = {New.class,Update.class})
+    @NotBlank(groups = {New.class,Update.class,UpdateInfo.class})
     @Column(unique = true,nullable = false)
     private String email;
 
     private Integer enabled=1;
 
     @Column(nullable = false)
+    @NotBlank(groups = {UpdateInfo.class})
     private String avatar;
 
     @Column
     @CreationTimestamp
     private Timestamp createDateTime;
-
-    @Column
-    private Timestamp lastLoginTime;
 
     @ManyToMany
     @JoinTable(name = "zj_users_roles", joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
@@ -71,6 +75,7 @@ public class User implements Serializable {
 
     public interface New{};
     public interface Update{};
+    public interface UpdateInfo{};
 
     @Override
     public String toString() {
@@ -82,7 +87,6 @@ public class User implements Serializable {
                 ", enabled=" + enabled +
                 ", avatar='" + avatar + '\'' +
                 ", createDateTime=" + createDateTime +
-                ", lastLoginTime=" + lastLoginTime +
                 '}';
     }
 }

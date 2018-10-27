@@ -109,12 +109,13 @@
             ,cols: [
                         [
                           {field:'id',align:'center', width:70,  title: '编号'}
-                         ,{field:'username',  title: '用户昵称'}
+                         ,{field:'username',  title: '用户名',width:105}
                          ,{field:'departmentName',  title: '所属部门'}
                          ,{field:'email',  title: '邮箱'}
-                         ,{field:'createDateTime',  title: '创建时间',width: 172}
-                         ,{field:'lastLoginTime',  title: '最近登录',width: 172}
-                         ,{field:'lock', align: 'center', width: 120, toolbar: '#checkLock', title: '是否允许登录'}
+                         ,{field:'sex',  title: '性别',width:81}
+                         ,{field:'birthday',  title: '出生年月',width:105}
+                         ,{field:'createDateTime',  title: '创建时间',width: 170}
+                         ,{field:'lock', align: 'center', width: 120, toolbar: '#checkLock', title: '允许登录'}
                          ,{field:'operation',align:'center', width:150, toolbar: '#operation', title: '操作',fixed: 'right'}
                         ]
                     ]
@@ -250,14 +251,10 @@
     function add(layer,body) {
         var roles = body.contents().find("input[name=\"role\"]").val();
         var departmentId = body.contents().find("#tree").val();
-        var pwd = MD5(body.contents().find("input[name=\"password\"]").val())
-        var rpwd = MD5(body.contents().find("input[name=\"rPassword\"]").val())
+        var sex = body.contents().find("input[name=\"sex\"]").val();
+        var birthday = body.contents().find("input[name=\"birthday\"]").val();
         var username = body.contents().find("input[name=\"username\"]").val()
         var email = body.contents().find("input[name=\"email\"]").val()
-        if(pwd != rpwd){
-            layui.layer.msg("密码不一致",{icon: 5});
-            return
-        }
         if(departmentId == null || departmentId == ""){
             layui.layer.msg("请选择部门",{icon: 5});
             return
@@ -268,7 +265,8 @@
             type: "POST",
             data:JSON.stringify({
                 username:username,
-                password:pwd,
+                sex:sex,
+                birthday:birthday,
                 email:email,
                 department:{
                     id:departmentId
@@ -285,7 +283,7 @@
                             type: "default",
                             autoClose: true,
                             icon:"layui-icon-face-smile",
-                            title: "添加成功"
+                            title: "新增成功，默认密码：123456"
                         });
                         // layui.layer.msg("添加成功", {icon: 6});
                         setTimeout(function () {
@@ -311,14 +309,12 @@
      */
     function update(layer,body) {
         var roles = body.contents().find("input[name=\"role\"]").val();
-        var pwd = body.contents().find("input[name=\"password\"]").val()
-        var id = body.contents().find("input[name=\"id\"]").val()
+        var id = body.contents().find("input[name=\"id\"]").val();
+        var sex = body.contents().find("input[name=\"sex\"]").val();
+        var birthday = body.contents().find("input[name=\"birthday\"]").val();
         var departmentId = body.contents().find("#tree").val();
         var username = body.contents().find("input[name=\"username\"]").val()
         var email = body.contents().find("input[name=\"email\"]").val()
-        if(!(pwd == ''||pwd == null)){
-            pwd = MD5(pwd)
-        }
         if(departmentId == null || departmentId == ""){
             layui.layer.msg("请选择部门",{icon: 5});
             return
@@ -330,7 +326,8 @@
             data:JSON.stringify({
                 id:id,
                 username:username,
-                password:pwd,
+                sex:sex,
+                birthday:birthday,
                 email:email,
                 department:{
                     id:departmentId

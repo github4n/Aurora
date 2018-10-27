@@ -24,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -211,4 +212,79 @@ public class UserController {
         userService.delete(userService.findById(id));
         return ResponseEntity.ok();
     }
+
+    /**
+     * 去个人中心
+     * @param model
+     * @return
+     */
+    @GetMapping("/info")
+    public ModelAndView info(Model model) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        user = userService.findById(user.getId());
+        model.addAttribute("userInfo",userMapper.toDto(user));
+        return new ModelAndView("/user/info");
+    }
+
+    /**
+     * 修改资料
+     * @param result
+     * @return
+     */
+    @PutMapping(value = "/updateInfo")
+    public ResponseEntity updateInfo(@Validated(User.UpdateInfo.class) @RequestBody User result) {
+
+        User user = userService.findById(result.getId());
+
+        user = userService.findById(user.getId());
+        user.setAvatar(result.getAvatar());
+        user.setEmail(result.getEmail());
+
+        userService.save(user);
+
+        return ResponseEntity.ok();
+    }
+
+    /**
+     * 检查密码
+     * @param id
+     * @param password
+     * @return
+     */
+    @GetMapping(value = "/checkPass")
+    public ResponseEntity checkPass(@RequestParam Long id,@RequestParam String password) {
+
+        User user = userService.findById(id);
+        password = EncryptHelper.encrypt(password);
+        if(user.getPassword().equals(password)){
+            return ResponseEntity.ok();
+        } else {
+            return ResponseEntity.error();
+        }
+    }
+
+    /**
+     * 修改密码
+     * @param id
+     * @param password
+     * @param oldPwd
+     * @return
+     */
+    @GetMapping(value = "/resetPwd")
+    public ResponseEntity resetPwd(@RequestParam Long id,@RequestParam String password,@RequestParam String oldPwd) {
+
+        User user = userService.findById(id);
+        password = EncryptHelper.encrypt(password);
+        oldPwd = EncryptHelper.encrypt(oldPwd);
+
+        if(! user.getPassword().equals(oldPwd)){
+            return ResponseEntity.error("原始密码错误");
+        } else {
+            user.setPassword(password);
+        }
+        userService.save(user);
+        return ResponseEntity.ok();
+    }
+
+
 }

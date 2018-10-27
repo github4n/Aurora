@@ -225,4 +225,35 @@ public class MenuServiceImpl implements MenuService {
             }
         }
     }
+
+    @Override
+    public List<Map<String, Object>> buildMenu(List<Menu> list) {
+
+        List<Map<String,Object>> maps = new LinkedList<>();
+        list.forEach(menu -> {
+                    if (menu!=null){
+                        List<Menu> menus = new ArrayList<>();
+                        Map<String,Object> map = new HashMap<>(16);
+                        map.put("id",menu.getId());
+                        map.put("name",menu.getName());
+
+                        if(menu.getId().equals(0L)){
+                            menus = menuRepo.findByPid(0);
+                        }
+
+                        if(menus!=null && menus.size()!=0){
+
+                            /**
+                             * 只遍历一级类目
+                             */
+                            if(menu.getId().equals(0L)){
+                                map.put("children",buildMenu(menus));
+                            }
+                        }
+                        maps.add(map);
+                    }
+                }
+        );
+        return maps;
+    }
 }

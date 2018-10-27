@@ -1,0 +1,258 @@
+<div class="layui-tab layui-tab-brief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">基本信息</li>
+        <li>安全中心</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show" style="padding: 10px">
+            <form class="layui-form" method="post">
+                <input name="avatar" type="text" th:value="${userInfo.avatar}" hidden="hidden" id="portrait">
+                <input name="id" type="text" th:value="${userInfo.id}" hidden="hidden">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">我的头像</label>
+                    <div class="layui-input-block">
+                        <input type="file" style="display:none"  allowexts="gif,jpeg,jpg,png"
+                               accept="image/*" id="upLoadFile" onchange="PreviewImage()">
+                        <img id="preview" style="border-radius: 50%;width: 60px;height: 58px;cursor: pointer;" th:src="@{${userInfo.avatar}}"
+                             title="点击修改头像" alt="点击修改头像" onclick="uploadImg()"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="username" disabled th:value="${userInfo.username}" lay-verify="required"  autocomplete="off" class="layui-input" type="text">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">用户名不支持修改</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电子邮箱</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="email" th:value="${userInfo.email}" lay-verify="required" autocomplete="off" class="layui-input" type="text">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input type="radio" disabled th:checked="${userInfo.sex == '男'}" name="sex" value="男" title="男">
+                        <input type="radio" disabled th:checked="${userInfo.sex == '女'}" name="sex" value="女" title="女">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">生日</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input type="text" disabled th:value="${userInfo.birthday}" name="birthday" id="birthday" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">生日不支持修改</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">我的部门</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input type="text" disabled th:value="${userInfo.departmentName}"  autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">部门不支持修改</div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="setmyinfo">确认修改</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-tab-item" style="padding: 10px;">
+            <form class="layui-form" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">原始密码</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="oldPwd" lay-verify="required" autocomplete="off" class="layui-input" type="password">
+                    </div>
+                    <div class="layui-form-mid" id="prompt" style="color: #f47f7f;display: none">原始密码错误，请重试</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">新密码</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="pwd" lay-verify="required" autocomplete="off" class="layui-input" type="password">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">确认密码</label>
+                    <div class="layui-input-inline" style="width: 40%">
+                        <input name="rPwd" lay-verify="required" autocomplete="off" class="layui-input" type="password">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="modify">确认修改</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{'/js/MD5.js'}"></script>
+<script>
+
+    layui.use(['jquery', 'form' ,'notice'], function () {
+        var form = layui.form,notice = layui.notice;
+        form.render();
+
+        form.on('submit(setmyinfo)', function(){
+            $.ajax({
+                url:"/user/updateInfo",
+                contentType: "application/json",
+                type: "PUT",
+                data:JSON.stringify({
+                    avatar:$("input[name='avatar']").val(),
+                    id:$("input[name='id']").val(),
+                    email:$("input[name='email']").val()
+                }),
+                success:function(result){
+                    if (result.code == 200) {
+                        notice.init({
+                            type: "default",
+                            autoClose: true,
+                            icon:"layui-icon-face-smile",
+                            title: "更新成功"
+                        });
+                    } else {
+                        notice.init({
+                            type: "danger",
+                            autoClose: true,
+                            icon:"layui-icon-face-cry",
+                            title: result.msg
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(modify)', function(){
+
+            var oldPwd = MD5($("input[name='oldPwd']").val());
+            var password = MD5($("input[name='pwd']").val());
+            var rPassword = MD5($("input[name='rPwd']").val());
+
+            if(password != rPassword){
+                notice.init({
+                    type: "danger",
+                    autoClose: true,
+                    icon:"layui-icon-face-cry",
+                    title: "两次密码不一致"
+                });
+                return false;
+            }
+
+            $.ajax({
+                url:"/user/resetPwd",
+                contentType: "application/json",
+                type: "GET",
+                data:{
+                    oldPwd:oldPwd,
+                    password:password,
+                    id:$("input[name='id']").val()
+                },
+                success:function(result){
+                    if (result.code == 200) {
+                        notice.init({
+                            type: "default",
+                            autoClose: true,
+                            icon:"layui-icon-face-smile",
+                            time:2000,
+                            title: "修改成功，请重新登录"
+                        });
+                        setTimeout(function () {
+                            window.location="/logout";
+                        },2100)
+                    } else {
+                        notice.init({
+                            type: "danger",
+                            autoClose: true,
+                            icon:"layui-icon-face-cry",
+                            title: result.msg
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    })
+
+    $("input[name='oldPwd']").blur(function () {
+        var password = MD5($("input[name='oldPwd']").val());
+        $.ajax({
+            url:'/user/checkPass',
+            type:"GET",
+            data:{
+                password:password,
+                id:$("input[name='id']").val()
+            },
+            success:function(reslut){
+                if(reslut.code!=200){
+                    $("#prompt").show();
+                }
+            }
+        });
+    })
+
+    $("input[name='oldPwd']").focus(function () {
+        $("#prompt").hide();
+    })
+
+    function PreviewImage() {
+        var pic = document.getElementById("preview");
+        var file = document.getElementById("upLoadFile");
+        var avatar = document.getElementById("portrait");
+        var ext = file.value.substring(file.value.lastIndexOf(".") + 1).toLowerCase();
+        var isIE = navigator.userAgent.match(/MSIE/) != null,
+            isIE6 = navigator.userAgent.match(/MSIE 6.0/) != null;
+        if (isIE) {
+            file.select();
+            var reallocalpath = file.value;
+            // IE6浏览器设置img的src为本地路径可以直接显示图片
+            if (isIE6) {
+                pic.src = reallocalpath;
+            } else {
+                // 非IE6版本的IE由于安全问题直接设置img的src无法显示本地图片，但是可以通过滤镜来实现
+                pic.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + reallocalpath + "\")";
+                // 设置img的src为base64编码的透明图片 取消显示浏览器默认图片
+                pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+                //alert(pic.offsetHeight);
+                pic.style.width = "130px";
+                pic.height = "156px";
+            }
+        } else {
+
+            var file = file.files[0];
+            var formData=new FormData();
+            formData.append('smfile',file);
+            $.ajax({
+                url:'https://sm.ms/api/upload',
+                type : 'POST',
+                processData : false,
+                contentType : false,
+                data:formData,
+                success:function(data){
+                    avatar.value = data.data.url;
+                }
+            })
+
+            var reader = new FileReader();
+
+            reader.readAsDataURL(file);
+
+            reader.onload = function (e) {
+
+                var pic = document.getElementById("preview");
+                pic.src = this.result;
+            }
+        }
+
+    }
+    function uploadImg()
+    {
+        document.getElementById("upLoadFile").click();
+    }
+</script>

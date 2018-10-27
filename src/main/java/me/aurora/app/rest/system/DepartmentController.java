@@ -21,7 +21,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -139,7 +138,7 @@ public class DepartmentController {
      * @return
      */
     @Log("删除部门")
-    @RequiresPermissions (value={"admin", "menu:all","menu:delete"}, logical= Logical.OR)
+    @RequiresPermissions (value={"admin", "department:all","department:delete"}, logical= Logical.OR)
     @DeleteMapping(value = "/delete")
     public ResponseEntity delete(@RequestParam Long id){
         log.warn("REST request to delete Department : {}" +id);

@@ -11,7 +11,7 @@
  Target Server Version : 50559
  File Encoding         : 65001
 
- Date: 27/10/2018 13:41:56
+ Date: 27/10/2018 18:34:02
 */
 
 SET NAMES utf8mb4;
@@ -166,24 +166,6 @@ INSERT INTO `zj_job` VALUES (1, 'myTaskTest', '0/5 * * * * ?', 'test', '测试',
 INSERT INTO `zj_job` VALUES (2, 'myTaskTest', '0/6 * * * * ?', 'test1', '', '不带参数测试', '1', '2018-10-15 16:16:44');
 
 -- ----------------------------
--- Table structure for zj_job_log
--- ----------------------------
-DROP TABLE IF EXISTS `zj_job_log`;
-CREATE TABLE `zj_job_log`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `baen_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `createTime` datetime NULL DEFAULT NULL,
-  `cron_expression` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `error_msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `job_id` bigint(20) NULL DEFAULT NULL,
-  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `params` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `times` bigint(20) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
 -- Table structure for zj_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `zj_menu`;
@@ -202,7 +184,7 @@ CREATE TABLE `zj_menu`  (
   `sys` bit(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_cbhg0bi3f1emxkhqqtvca9btx`(`soft`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_menu
@@ -296,7 +278,7 @@ CREATE TABLE `zj_permission`  (
   `pid` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_djtxn2vldlgrkfk21d155b48i`(`perms`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_permission
@@ -341,6 +323,11 @@ INSERT INTO `zj_permission` VALUES (40, 'job:add', '新增任务', '2018-10-06 1
 INSERT INTO `zj_permission` VALUES (41, 'job:status', '任务状态修改', '2018-10-06 12:29:45', '2018-10-06 12:29:45', 37);
 INSERT INTO `zj_permission` VALUES (42, 'job:update', '更新任务', '2018-10-06 12:30:00', '2018-10-06 12:30:00', 37);
 INSERT INTO `zj_permission` VALUES (43, 'job:delete', '删除任务', '2018-10-06 12:30:16', '2018-10-06 12:30:16', 37);
+INSERT INTO `zj_permission` VALUES (45, 'department:all', '部门管理', '2018-10-27 17:26:29', '2018-10-27 18:12:14', 0);
+INSERT INTO `zj_permission` VALUES (46, 'department:add', '新增部门', '2018-10-27 17:27:02', '2018-10-27 17:27:02', 45);
+INSERT INTO `zj_permission` VALUES (47, 'department:update', '修改部门', '2018-10-27 17:27:48', '2018-10-27 17:27:48', 45);
+INSERT INTO `zj_permission` VALUES (48, 'department:delete', '删除部门', '2018-10-27 17:28:13', '2018-10-27 17:28:13', 45);
+INSERT INTO `zj_permission` VALUES (49, 'department:select', '部门查询', '2018-10-27 17:28:29', '2018-10-27 17:28:29', 45);
 
 -- ----------------------------
 -- Table structure for zj_permissions_roles
@@ -458,21 +445,22 @@ CREATE TABLE `zj_user`  (
   `createDateTime` datetime NULL DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `enabled` bigint(20) NULL DEFAULT NULL,
-  `lastLoginTime` datetime NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `department_id` bigint(20) NULL DEFAULT NULL,
+  `sex` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `birthday` date NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `UK_kpubos9gc2cvtkb0thktkbkes`(`email`) USING BTREE,
   INDEX `FKqfitoyy9x1gctukdi020j4224`(`department_id`) USING BTREE,
   CONSTRAINT `FKqfitoyy9x1gctukdi020j4224` FOREIGN KEY (`department_id`) REFERENCES `zj_department` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of zj_user
 -- ----------------------------
-INSERT INTO `zj_user` VALUES (1, 'https://www.zhengjie.me/images/avatar.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '2018-10-27 13:38:59', '36318d4cc46eb68050b8b81ebc620f05', 'aurora', 6);
-INSERT INTO `zj_user` VALUES (2, 'https://i.loli.net/2018/08/16/5b75166b3157a.jpg', '2018-10-03 09:16:20', 'everyone@aurora.xyz', 1, '2018-10-05 11:29:44', '36318d4cc46eb68050b8b81ebc620f05', 'everyone', 15);
+INSERT INTO `zj_user` VALUES (1, 'https://i.loli.net/2018/10/27/5bd4223fa208a.jpg', '2018-08-23 09:11:56', 'zhengjie@tom.com', 1, '36318d4cc46eb68050b8b81ebc620f05', 'aurora', 6, '男', '1996-09-30');
+INSERT INTO `zj_user` VALUES (2, 'https://i.loli.net/2018/10/27/5bd4223fa208a.jpg', '2018-10-03 09:16:20', 'everyone@aurora.xyz', 1, '36318d4cc46eb68050b8b81ebc620f05', 'everyone', 15, '女', '2018-10-27');
 
 -- ----------------------------
 -- Table structure for zj_user_pictures
@@ -505,22 +493,5 @@ CREATE TABLE `zj_users_roles`  (
 -- ----------------------------
 INSERT INTO `zj_users_roles` VALUES (1, 1);
 INSERT INTO `zj_users_roles` VALUES (2, 3);
-
--- ----------------------------
--- Table structure for zj_web_count
--- ----------------------------
-DROP TABLE IF EXISTS `zj_web_count`;
-CREATE TABLE `zj_web_count`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `web_counts` bigint(20) NULL DEFAULT NULL,
-  `createTime` datetime NULL DEFAULT NULL,
-  `date` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of zj_web_count
--- ----------------------------
-INSERT INTO `zj_web_count` VALUES (3, 1, '2018-10-27 13:41:26', '2018-10-27');
 
 SET FOREIGN_KEY_CHECKS = 1;

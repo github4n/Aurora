@@ -7,6 +7,11 @@ package me.aurora.util;
  */
 public class AuroraConstant {
 
+    /**
+     * 在添加时，如需手动添加密码，请使用js的MD5进行加密，参考登录页面，后台再次进行加密，保存到数据库，默认密码：123456
+     */
+    public static final String PWD = "36318d4cc46eb68050b8b81ebc620f05";
+
     public static final String SUCCESS = "success";
 
     /**

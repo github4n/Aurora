@@ -79,10 +79,10 @@ public interface PermissionService {
     /**
      * 根据上级类目ID查询权限
      * @param pid
+     * @param isTop
      * @return
      */
-    @Cacheable(key = "'pid:'+#p0")
-    List<Permission> findByPid(int pid);
+    List<Permission> findByPid(int pid,Boolean isTop);
 
     /**
      * 根据角色获取所有权限
@@ -90,4 +90,11 @@ public interface PermissionService {
      * @return
      */
     List<Permission> findByRoles(Set<Role> roles);
+
+    /**
+     * 构建顶级权限树
+     * @param byPid
+     * @return
+     */
+    List<Map<String, Object>> buildTopPermissionTree(List<Permission> byPid);
 }

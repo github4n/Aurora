@@ -67,13 +67,6 @@ public interface UserService {
     void update(User user, String roles);
 
     /**
-     * 更新最近登录时间
-     * @param user
-     */
-    @CacheEvict(allEntries = true)
-    void checkLastLoginTime(User user);
-
-    /**
      * 删除用户
      * @param id
      * @return
@@ -88,4 +81,11 @@ public interface UserService {
      */
     @CacheEvict(allEntries = true)
     void updateEnabled(User user);
+
+    /**
+     * 保存
+     * @param user
+     */
+    @CacheEvict(allEntries = true)
+    void save(User user);
 }

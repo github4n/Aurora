@@ -211,7 +211,7 @@
      */
     function add(layer,body) {
         var perms = body.contents().find("input[name=\"perms\"]").val()
-        var pid = body.contents().find("select[name=\"pid\"]").val();
+        var pid = body.contents().find("input[name=\"pid\"]").val();
         var remark = body.contents().find("textarea[name=\"remark\"]").val()
         if(perms == ''||null == perms){
             layui.layer.msg("权限名称不能为空",{icon: 5});
@@ -262,7 +262,7 @@
     function update(layer,body) {
         var id = body.contents().find("input[name=\"id\"]").val()
         var perms = body.contents().find("input[name=\"perms\"]").val()
-        var pid = body.contents().find("select[name=\"pid\"]").val();
+        var pid = body.contents().find("input[name=\"pid\"]").val();
         var remark = body.contents().find("textarea[name=\"remark\"]").val()
         if(perms == ''||null == perms){
             layui.layer.msg("权限名称不能为空",{icon: 5});

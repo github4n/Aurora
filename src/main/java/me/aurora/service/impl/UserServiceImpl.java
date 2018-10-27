@@ -10,6 +10,7 @@ import me.aurora.service.RoleService;
 import me.aurora.service.UserService;
 import me.aurora.service.dto.UserDTO;
 import me.aurora.service.mapper.UserMapper;
+import me.aurora.util.AuroraConstant;
 import me.aurora.util.EncryptHelper;
 import me.aurora.util.PageUtil;
 import me.aurora.config.exception.AuroraException;
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
         if(userRepo.findByEmail(user.getEmail())!=null){
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户邮箱已存在");
         }
-        user.setPassword(EncryptHelper.encrypt(user.getPassword()));
+        user.setPassword(AuroraConstant.PWD);
         Set<Role> roleSet = new HashSet<>();
         for(String roleId:roles.split(",")){
             Role role = new Role();
@@ -108,7 +109,6 @@ public class UserServiceImpl implements UserService {
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"用户邮箱已存在");
         }
         old = userRepo.findById(user.getId()).get();
-        old.setPassword(EncryptHelper.encrypt(user.getPassword()));
         old.setUsername(user.getUsername());
         old.setEmail(user.getEmail());
         old.setDepartment(user.getDepartment());
@@ -121,14 +121,6 @@ public class UserServiceImpl implements UserService {
         }
         old.setRoles(roleSet);
         userRepo.save(old);
-    }
-
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void checkLastLoginTime(User user) {
-        user.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
-        userRepo.save(user);
     }
 
     @Override
@@ -155,6 +147,11 @@ public class UserServiceImpl implements UserService {
             throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,"不能禁用自己");
         }
         user.setEnabled(user.getEnabled()==1?0:1);
+        userRepo.save(user);
+    }
+
+    @Override
+    public void save(User user) {
         userRepo.save(user);
     }
 }

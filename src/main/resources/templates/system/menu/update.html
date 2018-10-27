@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>Aurora- 更新菜单</title>
         <!-- build:css -->
+        <link rel="stylesheet" th:href="@{'/plugins/css/treeselect.css'}">
         <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
         <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/ztree/metro/ztree.css'}" media="all"/>
         <link rel="stylesheet" th:href="@{'/plugins/lay/layui-treeselect/src/css/treeselect.css'}" media="all"/>
@@ -29,10 +30,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">上级类目</label>
                     <div class="layui-input-block">
-                        <select name="pid" lay-filter="top" lay-verify="" lay-search>
-                            <option value="0">无</option>
-                            <option th:selected="${menu.pid == m.id}" th:each="m:${topMenus}" th:value="${m.id}">[[${m.name}]]</option>
-                        </select>
+                        <input type="text" name="pid" th:value="${menu.pid}" id="tree" placeholder="选择上级类目" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div id="action" class="layui-form-item" style="display: none">
@@ -68,10 +66,22 @@
     <script th:src="@{'/plugins/layui.js'}"></script>
     <!-- build:use -->
     <script>
+
         layui.config({
             base: '../plugins/lay/modules/'
-        }).extend({
-            iconPicker:'iconPicker'
+        }).use(['treeSelect'], function () {
+
+            var  treeSelect = layui.treeSelect;
+            treeSelect.render(
+                {
+                    elem: "#tree",
+                    data: '/menu/buildMenu',
+                    method: "GET"
+                });
+        });
+
+        layui.config({
+            base: '../plugins/lay/modules/'
         }).use(['iconPicker'], function () {
             var iconPicker = layui.iconPicker;
             iconPicker.render({

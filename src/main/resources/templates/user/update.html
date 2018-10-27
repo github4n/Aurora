@@ -29,9 +29,16 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">用户密码</label>
+            <label class="layui-form-label">性别</label>
             <div class="layui-input-block">
-                <input name="password" lay-verify="required" placeholder="请输入密码,为空则不修改" autocomplete="off" class="layui-input" type="password">
+                <input type="radio" th:checked="${editUser.sex == '男'}" name="sex" value="男" title="男">
+                <input type="radio" th:checked="${editUser.sex == '女'}" name="sex" value="女" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">生日</label>
+            <div class="layui-input-block">
+                <input type="text" th:value="${editUser.birthday}" name="birthday" id="birthday" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -67,8 +74,8 @@
     });
     layui.config({
         base: '/plugins/lay/layui-treeselect/src/js/' //自定义组件的目录--相对路径
-    }).use(['form', 'treeselect'], function () {
-        var form = layui.form, treeselect = layui.treeselect;
+    }).use(['form', 'treeselect','laydate'], function () {
+        var form = layui.form, treeselect = layui.treeselect,laydate = layui.laydate;
         var data = [];
         $.ajax({
             async:false,
@@ -79,6 +86,12 @@
                 data = resule;
             }
         });
+
+        //日期
+        laydate.render({
+            elem: '#birthday'
+        });
+
         //通过调用render方法进行渲染 [render支持链式调用]
         treeselect.render({ //渲染第一个
             elem: '#treeselect1', //这个设置必要为id属性且必须加上#号

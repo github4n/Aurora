@@ -90,4 +90,11 @@ public interface MenuService {
      */
     @CacheEvict(allEntries = true)
     void update(Menu menu, Menu oldMenu, String roles);
+
+    /**
+     * 构建树形菜单
+     * @param list
+     * @return
+     */
+    List<Map<String, Object>> buildMenu(List<Menu> list);
 }

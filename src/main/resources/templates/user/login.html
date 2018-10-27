@@ -73,6 +73,13 @@
               return false;
           });
       });
+
+      //防止页面后退
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', function () {
+          history.pushState(null, null, document.URL);
+      });
+
       function login() {
           var username = $("#username").val();
           var password = MD5($("#password").val());

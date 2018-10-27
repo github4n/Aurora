@@ -25,10 +25,10 @@ public class Department implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = {Department.Update.class})
+    @NotNull(groups = {Update.class})
     private Long id;
 
-    @NotBlank(groups = {Department.New.class, Department.Update.class})
+    @NotBlank(groups = {New.class, Update.class})
     @Column(name = "name",nullable = false)
     private String name;
 
@@ -39,7 +39,7 @@ public class Department implements Serializable {
      * 上级部门ID
      */
     @Column(name = "pid",nullable = false)
-    @NotNull(groups = {Department.New.class, Department.Update.class})
+    @NotNull(groups = {New.class, Update.class})
     private Integer pid;
 
     @ManyToMany

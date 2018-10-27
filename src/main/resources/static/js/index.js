@@ -150,6 +150,7 @@ layui.define(mods, function(exports) {
       });
       //主页
  routes.push({path: "/", component: "/common/app", name: "主页"})
+ routes.push({path: "/user/info", component: "/user/info", name: "个人中心"})
   var _private = {
     routeInit: function(config) {
       var that = this;
