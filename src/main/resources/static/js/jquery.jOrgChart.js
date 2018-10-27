@@ -21,7 +21,7 @@
     $this = $(this);
     var $container = $("<div class='" + opts.chartClass + "'/>");
     if($this.is("ul")) {
-      buildNode($this.fdragAndDropind("li:first"), $container, 0, opts);
+      buildNode($this.find("li:first"), $container, 0, opts);
     }
     else if($this.is("li")) {
       buildNode($this, $container, 0, opts);

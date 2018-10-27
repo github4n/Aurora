@@ -5,21 +5,23 @@
     </ul>
     <div class="layui-tab-content" style="height: 100px;">
         <div class="layui-tab-item layui-show">
-            <div class="layui-card-body">
-                <div class="layui-card-header">
-                    <a id="add" shiro:hasAnyPermissions="admin,department:all,department:add" class="layui-btn layui-btn-xs">
-                        <i class="layui-icon"></i>
-                        <span>新增</span>
-                    </a>
-                    <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
-                        <i class="layui-icon">&#xe615;</i>
-                    </a>
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-card-header">
+                        <a id="add" shiro:hasAnyPermissions="admin,department:all,department:add" class="layui-btn layui-btn-xs">
+                            <i class="layui-icon"></i>
+                            <span>新增</span>
+                        </a>
+                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </div>
+                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                    <script type="text/html" id="operation">
+                        <button shiro:hasAnyPermissions="admin,department:all,department:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                        <button shiro:hasAnyPermissions="admin,department:all,department:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                    </script>
                 </div>
-                <table class="layui-table" id="myTable" lay-filter="tools"></table>
-                <script type="text/html" id="operation">
-                    <button shiro:hasAnyPermissions="admin,department:all,department:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
-                    <button shiro:hasAnyPermissions="admin,department:all,department:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
-                </script>
             </div>
         </div>
         <div class="layui-tab-item" style="padding: 10px;">
