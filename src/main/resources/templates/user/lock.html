@@ -67,9 +67,10 @@
             window.location.href="/logout"
         })
 
-        var layer = null;
-        layui.use(['jquery', 'layer'], function () {
+        var layer = null,notice = null;
+        layui.use(['jquery', 'layer','notice'], function () {
             layer = layui.layer;
+            notice = layui.notice;
         });
 
         /**
@@ -83,11 +84,25 @@
                 type:"POST",
                 success:function(result){
                     if(result && result.code != 200){
-                        layer.msg(result.msg+",默认密码：123456", {offset: 70, shift: 0});
+                        notice.init({
+                            type: "warm",
+                            autoClose: true,
+                            icon:"layui-icon-face-cry",
+                            title: "默认密码：123456"
+                        });
                         return;
                     }else{
                         var url = result.msg.replace(",","#");
-                        window.location.href = url;
+                        notice.init({
+                            type: "default",
+                            autoClose: true,
+                            icon:"layui-icon-face-smile",
+                            title: "欢迎回来~",
+                            time: 1400
+                        });
+                        setTimeout(function(){
+                            window.location.href = url;
+                        },1500)
                     }
                 }
             });

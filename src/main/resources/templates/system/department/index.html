@@ -1,36 +1,34 @@
-<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+<div class="layui-tab layui-tab-brief">
     <ul class="layui-tab-title">
         <li class="layui-this">部门管理</li>
         <li>组织架构图</li>
     </ul>
     <div class="layui-tab-content" style="height: 100px;">
         <div class="layui-tab-item layui-show">
-            <div class="layui-card">
-                <div class="layui-card-body">
-                    <div class="layui-card-header">
-                        <a id="add" shiro:hasAnyPermissions="admin,department:all,department:add" class="layui-btn layui-btn-xs">
-                            <i class="layui-icon"></i>
-                            <span>新增</span>
-                        </a>
-                        <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
-                            <i class="layui-icon">&#xe615;</i>
-                        </a>
-                    </div>
-                    <table class="layui-table" id="myTable" lay-filter="tools"></table>
-                    <script type="text/html" id="operation">
-                        <button shiro:hasAnyPermissions="admin,department:all,department:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
-                        <button shiro:hasAnyPermissions="admin,department:all,department:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
-                    </script>
+            <div class="layui-card-body">
+                <div class="layui-card-header">
+                    <a id="add" shiro:hasAnyPermissions="admin,department:all,department:add" class="layui-btn layui-btn-xs">
+                        <i class="layui-icon"></i>
+                        <span>新增</span>
+                    </a>
+                    <a href="javascript:;" class="layui-btn layui-btn-xs layui-btn-primary" id="search_hash">
+                        <i class="layui-icon">&#xe615;</i>
+                    </a>
                 </div>
+                <table class="layui-table" id="myTable" lay-filter="tools"></table>
+                <script type="text/html" id="operation">
+                    <button shiro:hasAnyPermissions="admin,department:all,department:update" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                    <button shiro:hasAnyPermissions="admin,department:all,department:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</button>
+                </script>
             </div>
         </div>
-
         <div class="layui-tab-item" style="padding: 10px;">
-            <div class="orgWrap"></div>
+            <div id='jOrgChart'></div>
         </div>
     </div>
 </div>
 
+<script th:src="@{'/js/jquery.jOrgChart.js'}"></script>
 <script type="text/html" id="search_tpl_hash">
     <form class="layui-form" action="">
         <div class="layui-form-item">
@@ -55,52 +53,15 @@
 </script>
 
 <script>
-    var treeGrid = null;
-    layui.config({
-        base: '../js/'
-    }).use(['orgChart','jquery', 'sidebar', 'form' , 'treeGrid'], function () {
-        var  orgChart = layui.orgChart;
+    var treeGrid = null,notice = null;
+    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid','notice'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
             sidebar = layui.sidebar,
             form = layui.form;
             treeGrid = layui.treeGrid;
-
-        $.ajax({
-            url:'/department/getOrgChart',
-            type:"GET",
-            dataType: "json",
-            success:function(result){
-                var data = result.data;
-
-                //3表示显示到部门的第3级
-                orgChart.render({
-                    elm: '.orgWrap',
-                    data: data,
-                    drag: true,
-                    depth: 2,
-                    renderdata: function(data, $dom) {
-                        var value = data;
-                        if(value && Object.keys(value).length) {
-                            var $name = $('<div class="name"></div>');
-                            !!(value.name) && $name.text(value.name);
-                            $dom.append($name)
-
-                            var dom =  $dom.attr("class")
-                            $dom.attr("class",dom+' organization')
-                        }
-                    },
-                    callback: function() {
-
-                    }
-                });
-            },
-            error:function(e){
-                var msg = e.msg;
-                layer.msg(msg,new Function());
-            }
-        });
+        notice = layui.notice;
 
         //监听新增事件
         $('#add').on('click', function(){
@@ -206,7 +167,12 @@
                             success: function(data){
                                 if (data.code == 200) {
                                     layer.close(index);
-                                    layui.layer.msg("删除成功", {icon: 6});
+                                    notice.init({
+                                        type: "warm",
+                                        autoClose: true,
+                                        icon:"layui-icon-face-smile",
+                                        title: "删除成功"
+                                    });
                                     setTimeout(function () {
                                         treeGrid.reload('ID', {
                                             where: {}
@@ -215,9 +181,15 @@
                                             }
                                         });
                                     },1000);
+                                    jOrgChart()
                                 } else {
                                     layer.close(index);
-                                    layer.msg(data.msg, {icon: 5});
+                                    notice.init({
+                                        type: "danger",
+                                        autoClose: true,
+                                        icon:"layui-icon-face-cry",
+                                        title: data.msg
+                                    });
                                 }
                             }
                         });
@@ -254,7 +226,12 @@
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        layui.layer.msg("添加成功", {icon: 6});
+                        notice.init({
+                            type: "default",
+                            autoClose: true,
+                            icon:"layui-icon-face-smile",
+                            title: "添加成功"
+                        });
                         setTimeout(function () {
                             treeGrid.reload('ID', {
                                 where: {}
@@ -263,11 +240,10 @@
                                 }
                             });
                         },1000)
+                        jOrgChart()
                     });
                 }else {
-                    layui.use(['jquery', 'layer'], function (){
-                        layui.layer.msg(data.msg, {icon: 5});
-                    });
+                    layer.msg(data.msg, {icon: 5});
                 }
             }
         });
@@ -300,7 +276,12 @@
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        layui.layer.msg("修改成功", {icon: 6});
+                        notice.init({
+                            type: "default",
+                            autoClose: true,
+                            icon:"layui-icon-face-smile",
+                            title: "修改成功"
+                        });
                         setTimeout(function () {
                             treeGrid.reload('ID', {
                                 where: {}
@@ -309,13 +290,57 @@
                                 }
                             });
                         },1000)
+                        jOrgChart()
                     });
                 }else {
-                    layui.use(['jquery', 'layer'], function (){
-                        layui.layer.msg(data.msg, {icon: 5});
-                    });
+                    layer.msg(data.msg, {icon: 5});
                 }
             }
         });
     }
+
+    //组织结构 start
+
+    $(function () {
+        jOrgChart()
+    })
+
+    function jOrgChart(){
+        $('#jOrgChart').html("");
+        $.ajax({
+            url:'/department/getAllDepartment',
+            type:"GET",
+            dataType: 'JSON',
+            success:function(result){
+                var showlist = $("<ul id='org' style='display:none'></ul>");
+                showall(result, showlist);
+                $("#jOrgChart").append(showlist);
+                $("#org").jOrgChart( {
+                    chartElement : '#jOrgChart'//指定在某个dom生成jorgchart
+                });
+            },
+            error:function(e){
+                var msg = e.msg;
+                layer.msg(msg,new Function());
+            }
+        });
+    }
+
+    function showall(data, parent) {
+
+        $.each(data, function(index, val) {
+            if(val.children != 'undefined'){
+
+                var li = $("<li></li>");
+
+                li.append("<a href='javascript:void(0)' onclick=getOrgId("+val.id+");>"+val.name+"</a>").append("<ul></ul>").appendTo(parent);
+                //递归显示
+                showall(val.children, $(li).children().eq(1));
+            }else{
+                $("<li></li>").append("<a href='javascript:void(0)' onclick=getOrgId("+val.id+");>"+val.name+"</a>").appendTo(parent);
+            }
+        });
+    }
+
+    // end
 </script>

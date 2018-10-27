@@ -59,6 +59,7 @@
     ,treeGrid: 'modules/treeGrid' //树结构表格
     ,tree: 'modules/tree' //树结构
     ,table: 'modules/table' //表格
+    ,notice: 'modules/notice' //消息控件
     ,element: 'modules/element' //常用元素操作
     ,rate: 'modules/rate'  //评分组件
     ,carousel: 'modules/carousel' //轮播

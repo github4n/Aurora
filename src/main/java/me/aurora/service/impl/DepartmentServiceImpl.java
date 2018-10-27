@@ -64,15 +64,14 @@ public class DepartmentServiceImpl implements DepartmentService {
                         Map<String,Object> map = new HashMap<>(16);
                         map.put("id",department.getId());
                         map.put("name",department.getName());
-                        map.put("parentId",department.getPid());
+                        map.put("pid",department.getPid());
                         if(department.getId().equals(0L)){
                             departmentList = departmentRepo.findByPid(0);
                         } else {
                             departmentList = departmentRepo.findByPid(Integer.parseInt(department.getId()+""));
                         }
                         if(departmentList!=null && departmentList.size()!=0){
-//                            map.put("open",true);
-//                            map.put("isParent",true);
+
                             map.put("children",buildDepartmentTree(departmentList));
                         }
                         maps.add(map);

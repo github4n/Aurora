@@ -97,7 +97,7 @@ layui.define(mods, function(exports) {
         });
       }
       if (target === 'help') {
-        layer.alert('作者QQ：201507802');
+        layer.alert('作者QQ：201507802'+'<br>'+'交流群: 891137268');
       }
 
       if (target === 'lock') {

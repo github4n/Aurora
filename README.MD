@@ -4,12 +4,12 @@
 ![https://img.shields.io/badge/springboot-2.0.4-yellow.svg?longCache=true&style=popout-square](https://img.shields.io/badge/springboot-2.0.4-yellow.svg?longCache=true&style=popout-square)
 ![https://img.shields.io/badge/apache%20shiro-1.4.0-green.svg?longCache=true&style=flat-square](https://img.shields.io/badge/apache%20shiro-1.4.0-green.svg?longCache=true&style=flat-square)
 
-Aurora是一个简单高效的后台管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单；数据访问层采用Spring boot Jpa，可快速高效对数据进行操作，消除了大量传统XML配置SQL的代码，分页使用Pageable；安全框架采用时下流行的Apache Shiro，可实现对按钮级别的权限控制；前端页面使用KidAdmin构建，并提供多套配色以供选择。
+Aurora是一个简单高效的后台管理系统。项目基础框架采用全新的Java Web开发框架 —— Spring Boot2.0.4，消除了繁杂的XML配置，使得二次开发更为简单；数据访问层采用Spring boot Jpa，可快速高效对数据进行操作，消除了大量传统XML配置SQL的代码，分页使用Pageable；安全框架采用时下流行的Apache Shiro，加入了部门到用户级别的权限控制；前端页面使用KidAdmin构建，并提供多套配色以供选择。
 
 ### Aurora1.2 版本更新计划
 
 - 用户个人中心、安全中心
-- 部门管理、组织机构展示
+- <del>部门管理、组织机构展示</del>
 - 短信模块、生日自动通知
 - 站内信模块、消息通知
 - 请假管理、Activiti工作流
@@ -41,6 +41,7 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 |
 ├─系统管理
 │  ├─用户管理
+│  ├─部门管理、组织机构展示
 │  ├─菜单管理
 │  ├─角色管理
 │  ├─权限管理
@@ -124,6 +125,10 @@ Aurora是一个简单高效的后台管理系统。项目基础框架采用全�
 - 用户管理
 
 ![](https://i.imgur.com/Ms6F5mk.png)
+
+- 组织结构
+
+![](https://i.imgur.com/63GuW1s.png)
 
 - 锁屏功能
 

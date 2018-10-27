@@ -65,12 +65,14 @@
     </form>
 </script>
 <script>
-    layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
+    var notice= null
+    layui.use(['jquery', 'table', 'sidebar', 'form','notice'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
             sidebar = layui.sidebar,
             form = layui.form;
+        notice = layui.notice
 
         //监听新增事件
         $('#add').on('click', function(){
@@ -151,9 +153,19 @@
                 type: "PUT",
                 success: function(data){
                     if (data.code == 200) {
-                        layer.msg(data.msg, {icon: 6, time: 1500});
+                        notice.init({
+                            type: "default",
+                            autoClose: true,
+                            icon:"layui-icon-face-smile",
+                            title: data.msg
+                        });
                     } else {
-                        layer.msg(data.msg, {icon: 5, time: 1500});
+                        notice.init({
+                            type: "danger",
+                            autoClose: true,
+                            icon:"layui-icon-face-cry",
+                            title: data.msg
+                        });
                         setTimeout(function () {
                             location.reload(true)
                         },1500);
@@ -193,7 +205,12 @@
                         success: function(data){
                             if (data.code == 200) {
                                 layer.close(index);
-                                layui.layer.msg("删除成功", {icon: 6});
+                                notice.init({
+                                    type: "warm",
+                                    autoClose: true,
+                                    icon:"layui-icon-face-smile",
+                                    title: "删除成功"
+                                });
                                 setTimeout(function () {
                                     table.reload('ID', {
                                         where: {}
@@ -204,7 +221,12 @@
                                 },1000);
                             } else {
                                 layer.close(index);
-                                layer.msg(data.msg, {icon: 5});
+                                notice.init({
+                                    type: "danger",
+                                    autoClose: true,
+                                    icon:"layui-icon-face-cry",
+                                    title: data.msg
+                                });
                             }
                         }
                     });
@@ -236,7 +258,12 @@
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        layui.layer.msg("添加成功", {icon: 6});
+                        notice.init({
+                            type: "default",
+                            autoClose: true,
+                            icon:"layui-icon-face-smile",
+                            title: "添加成功"
+                        });
                         setTimeout(function () {
                             layui.table.reload('ID', {
                                  where: {}
@@ -247,9 +274,7 @@
                         },1000)
                     });
                 }else {
-                    layui.use(['jquery', 'layer'], function (){
-                        layui.layer.msg(data.msg, {icon: 5});
-                    });
+                    layer.msg(data.msg, {icon: 5});
                 }
             }
         });
@@ -279,7 +304,12 @@
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        layui.layer.msg("修改成功", {icon: 6});
+                        notice.init({
+                            type: "default",
+                            autoClose: true,
+                            icon:"layui-icon-face-smile",
+                            title: "修改成功"
+                        });
                         setTimeout(function () {
                             layui.table.reload('ID', {
                                 where: {}
@@ -290,9 +320,7 @@
                         },1000)
                     });
                 }else {
-                    layui.use(['jquery', 'layer'], function (){
-                        layui.layer.msg(data.msg, {icon: 5});
-                    });
+                    layer.msg(data.msg, {icon: 5});
                 }
             }
         });

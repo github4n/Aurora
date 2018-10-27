@@ -49,14 +49,6 @@ public class DepartmentController {
         return mapList;
     }
 
-    @GetMapping(value = "/getOrgChart")
-    public Map<String, Object> getOrgChart(@RequestParam(defaultValue = "true") Boolean isTop){
-        List<Map<String, Object>> mapList = departmentService.buildDepartmentTree(departmentService.findByPid(0,isTop));
-        Map<String, Object> map = new HashMap<>();
-        map.put("data",mapList.get(0));
-        return map;
-    }
-
     /**
      * 跳转到列表页面
      * @return
@@ -164,5 +156,4 @@ public class DepartmentController {
         }
         return ResponseEntity.ok();
     }
-
 }
