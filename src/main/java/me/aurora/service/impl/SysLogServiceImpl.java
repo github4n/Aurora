@@ -104,6 +104,11 @@ public class SysLogServiceImpl implements SysLogService {
     @Override
     public Long getWeekIP() {
         LocalDate localDate = LocalDate.now();
-        return sysLogRepo.findIp(localDate.minusDays(7).toString(),localDate.plusDays(1).toString());
+
+        Long count = 0L;
+        for(int i = 7;i>=0;i--){
+            count += sysLogRepo.findIp(localDate.minusDays(i).toString(),localDate.minusDays(i-1).toString());
+        }
+        return count;
     }
 }

@@ -164,14 +164,12 @@
                                     icon:"layui-icon-face-smile",
                                     title: "删除成功"
                                 });
-                                setTimeout(function () {
-                                    table.reload('ID', {
-                                        where: {}
-                                        ,page: {
-                                            curr: 1
-                                        }
-                                    });
-                                },1000);
+                                table.reload('ID', {
+                                    where: {}
+                                    ,page: {
+                                        curr: 1
+                                    }
+                                });
                             } else {
                                 layer.close(index);
                                 notice.init({
@@ -221,14 +219,12 @@
                             icon:"layui-icon-face-smile",
                             title: "添加成功"
                         });
-                        setTimeout(function () {
-                            layui.table.reload('ID', {
-                                 where: {}
-                                ,page: {
-                                    curr: 1 //重新从第 1 页开始
-                                }
-                            });
-                        },1000)
+                        layui.table.reload('ID', {
+                             where: {}
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
                     });
                 }else {
                     layer.msg(data.msg, {icon: 5});
@@ -272,14 +268,12 @@
                             icon:"layui-icon-face-smile",
                             title: "修改成功"
                         });
-                        setTimeout(function () {
-                            layui.table.reload('ID', {
-                                where: {}
-                                ,page: {
-                                    curr: 1 //重新从第 1 页开始
-                                }
-                            });
-                        },1000)
+                        layui.table.reload('ID', {
+                            where: {}
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
                     });
                 }else {
                     layer.msg(data.msg, {icon: 5});

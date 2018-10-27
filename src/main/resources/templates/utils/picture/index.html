@@ -223,14 +223,12 @@ SM.MS文档：<a style="color: #00a2d4" href="https://sm.ms/doc/" target="_blank
                                         icon:"layui-icon-face-smile",
                                         title: "删除成功"
                                     });
-                                    setTimeout(function () {
-                                        table.reload('ID', {
-                                            where: {}
-                                            ,page: {
-                                                curr: 1
-                                            }
-                                        });
-                                    },1000);
+                                    table.reload('ID', {
+                                        where: {}
+                                        ,page: {
+                                            curr: 1
+                                        }
+                                    });
                                 } else {
                                     layer.close(index);
                                     notice.init({

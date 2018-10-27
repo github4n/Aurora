@@ -175,14 +175,12 @@
                                         icon:"layui-icon-face-smile",
                                         title: "删除成功"
                                     });
-                                    setTimeout(function () {
-                                        treeGrid.reload('ID', {
-                                            where: {}
-                                            ,page: {
-                                                curr: 1
-                                            }
-                                        });
-                                    },1000);
+                                    treeGrid.reload('ID', {
+                                        where: {}
+                                        ,page: {
+                                            curr: 1
+                                        }
+                                    });
                                     jOrgChart()
                                 } else {
                                     layer.close(index);
@@ -234,14 +232,12 @@
                             icon:"layui-icon-face-smile",
                             title: "添加成功"
                         });
-                        setTimeout(function () {
-                            treeGrid.reload('ID', {
-                                where: {}
-                                ,page: {
-                                    curr: 1 //重新从第 1 页开始
-                                }
-                            });
-                        },1000)
+                        treeGrid.reload('ID', {
+                            where: {}
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
                         jOrgChart()
                     });
                 }else {
@@ -284,14 +280,12 @@
                             icon:"layui-icon-face-smile",
                             title: "修改成功"
                         });
-                        setTimeout(function () {
-                            treeGrid.reload('ID', {
-                                where: {}
-                                ,page: {
-                                    curr: 1 //重新从第 1 页开始
-                                }
-                            });
-                        },1000)
+                        treeGrid.reload('ID', {
+                            where: {}
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
                         jOrgChart()
                     });
                 }else {

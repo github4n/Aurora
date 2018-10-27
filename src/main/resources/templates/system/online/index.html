@@ -56,14 +56,12 @@
                                 if (data.code == 200) {
                                     layer.close(index);
                                     layui.layer.msg("踢出成功！", {icon: 6});
-                                    setTimeout(function () {
-                                        table.reload('ID', {
-                                            where: {}
-                                            , page: {
-                                                curr: 1
-                                            }
-                                        });
-                                    }, 1000);
+                                    table.reload('ID', {
+                                        where: {}
+                                        , page: {
+                                            curr: 1
+                                        }
+                                    });
                                 } else {
                                     layer.close(index);
                                     layer.msg(data.msg, {icon: 5});
