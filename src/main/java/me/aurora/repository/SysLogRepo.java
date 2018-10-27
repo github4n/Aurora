@@ -14,16 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface SysLogRepo extends JpaRepository<SysLog,Long>,JpaSpecificationExecutor {
 
     /**
-     * 获得一个时间段的登录记录
-     * @param toString
-     * @param toString1
-     * @return
-     */
-    @Query(value = "select count(*) FROM zj_syslog where operation = '登录' " +
-            "AND createTime between ?1 and ?2",nativeQuery = true)
-    Long findPv(String toString, String toString1);
-
-    /**
      * 获取一个时间段的IP记录
      * @param toString
      * @param toString1

@@ -96,18 +96,6 @@ public class SysLogServiceImpl implements SysLogService {
     }
 
     @Override
-    public Long getWeekPv() {
-        LocalDate localDate = LocalDate.now();
-        return sysLogRepo.findPv(localDate.minusDays(7).toString(),localDate.plusDays(1).toString());
-    }
-
-    @Override
-    public Long getPv() {
-        LocalDate localDate = LocalDate.now();
-        return sysLogRepo.findPv(localDate.toString(),localDate.plusDays(1).toString());
-    }
-
-    @Override
     public Long getIp() {
         LocalDate localDate = LocalDate.now();
         return sysLogRepo.findIp(localDate.toString(),localDate.plusDays(1).toString());

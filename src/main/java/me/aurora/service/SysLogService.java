@@ -36,18 +36,6 @@ public interface SysLogService {
     void save(ProceedingJoinPoint joinPoint, long time);
 
     /**
-     * 查看今日
-     * @return
-     */
-    Long getPv();
-
-    /**
-     * 得到近7日的pv
-     * @return
-     */
-    Long getWeekPv();
-
-    /**
      * 得到今日IP
      * @return
      */
