@@ -1,9 +1,13 @@
 package me.aurora.app.rest.common;
 
 import me.aurora.annotation.Log;
+import me.aurora.service.SysLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 公共的controller
@@ -13,9 +17,23 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class CommonController {
 
+    @Autowired
+    private SysLogService sysLogService;
+
     @Log("访问swagger")
     @GetMapping(value = "/swagger/index")
     public ModelAndView index(){
         return new ModelAndView("/system/api/index");
+    }
+
+    @GetMapping("/pageviews/get")
+    public Map getCount(){
+
+        Map map = new HashMap();
+        map.put("pv",sysLogService.getPv());
+        map.put("weekPv",sysLogService.getWeekPv());
+        map.put("ip",sysLogService.getIp());
+        map.put("weekIp",sysLogService.getWeekIP());
+        return map;
     }
 }

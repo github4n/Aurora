@@ -5,28 +5,28 @@
         <div class="layui-col-md3">
           <div class="layui-card">
             <div class="layui-card-body">
-              访客
+              今日访客: <span class="layui-badge layui-bg-cyan" name="pv">0</span>
             </div>
           </div>
         </div>
         <div class="layui-col-md3">
           <div class="layui-card">
             <div class="layui-card-body">
-              新用户
+              今日IP：<span class="layui-badge layui-bg-cyan" name="ip">0</span>
             </div>
           </div>
         </div>
         <div class="layui-col-md3">
           <div class="layui-card">
             <div class="layui-card-body">
-              销售额
+              近7日访客：<span class="layui-badge layui-bg-cyan" name="weekPv">0</span>
             </div>
           </div>
         </div>
         <div class="layui-col-md3">
           <div class="layui-card">
             <div class="layui-card-body">
-              成交量
+              近7日IP：<span class="layui-badge layui-bg-cyan" name="weekIp">0</span>
             </div>
           </div>
         </div>
@@ -254,6 +254,21 @@
 <!-- build:js -->
 <script th:src="@{'/js/github_repo_widget_en.js'}"></script>
 <script>
+
+    $.ajax({
+        url:'/pageviews/get',
+        type:"GET",
+        dataType: 'JSON',
+        async:false,
+        success:function(result){
+            $("span[name='pv']").text(result.pv)
+            $("span[name='ip']").text(result.ip)
+            $("span[name='weekPv']").text(result.weekPv)
+            $("span[name='weekIp']").text(result.weekIp)
+        },
+        error:function(e){
+        }
+    });
   layui.config({
     base: '/src/js/'
   }).use(['jquery', 'mockjs', 'table'], function() {

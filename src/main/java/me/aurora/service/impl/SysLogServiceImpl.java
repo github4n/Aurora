@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author 郑杰
@@ -93,5 +93,29 @@ public class SysLogServiceImpl implements SysLogService {
         sysLog.setUsername(user == null?"Login failed："+username:user.getUsername());
         sysLog.setTime((int) time);
         sysLogRepo.save(sysLog);
+    }
+
+    @Override
+    public Long getWeekPv() {
+        LocalDate localDate = LocalDate.now();
+        return sysLogRepo.findPv(localDate.minusDays(7).toString(),localDate.plusDays(1).toString());
+    }
+
+    @Override
+    public Long getPv() {
+        LocalDate localDate = LocalDate.now();
+        return sysLogRepo.findPv(localDate.toString(),localDate.plusDays(1).toString());
+    }
+
+    @Override
+    public Long getIp() {
+        LocalDate localDate = LocalDate.now();
+        return sysLogRepo.findIp(localDate.toString(),localDate.plusDays(1).toString());
+    }
+
+    @Override
+    public Long getWeekIP() {
+        LocalDate localDate = LocalDate.now();
+        return sysLogRepo.findIp(localDate.minusDays(7).toString(),localDate.plusDays(1).toString());
     }
 }

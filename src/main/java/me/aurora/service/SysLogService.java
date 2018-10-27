@@ -1,6 +1,5 @@
 package me.aurora.service;
 
-import me.aurora.domain.SysLog;
 import me.aurora.repository.spec.LogSpec;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.cache.annotation.CacheConfig;
@@ -35,4 +34,28 @@ public interface SysLogService {
     @CacheEvict(allEntries = true)
     @Async
     void save(ProceedingJoinPoint joinPoint, long time);
+
+    /**
+     * 查看今日
+     * @return
+     */
+    Long getPv();
+
+    /**
+     * 得到近7日的pv
+     * @return
+     */
+    Long getWeekPv();
+
+    /**
+     * 得到今日IP
+     * @return
+     */
+    Long getIp();
+
+    /**
+     * 得到近7日Ip
+     * @return
+     */
+    Long getWeekIP();
 }

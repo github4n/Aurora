@@ -8,6 +8,7 @@ import me.aurora.domain.Role;
 import me.aurora.domain.User;
 import me.aurora.service.DepartmentService;
 import me.aurora.service.MenuService;
+import me.aurora.service.SysLogService;
 import me.aurora.service.UserService;
 import me.aurora.util.EncryptHelper;
 import me.aurora.util.HttpContextUtils;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -34,6 +37,9 @@ public class UserSecurityController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private SysLogService sysLogService;
 
     @Autowired
     private DepartmentService departmentService;
