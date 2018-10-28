@@ -58,14 +58,12 @@
     </form>
 </script>
 <script>
-    var notice = null;
-    layui.use(['jquery', 'table', 'sidebar', 'form','notice'], function () {
+    layui.use(['jquery', 'table', 'sidebar', 'form'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
             sidebar = layui.sidebar,
             form = layui.form;
-        notice = layui.notice;
         //监听新增事件
         $('#add').on('click', function(){
             var index = layer.open({
@@ -82,7 +80,6 @@
                     add(layer,body);
                 }
             });
-            parent.layer.iframeAuto(index);
         });
 
         //表格渲染
@@ -155,7 +152,6 @@
                         update(layer,body);
                     }
                 });
-                parent.layer.iframeAuto(index);
                 //监听删除事件
             } else if(obj.event === 'del'){
                 layer.confirm("你确定删除数据吗?", {icon: 3 ,btnAlign: 'c', title:'提示'},
@@ -167,11 +163,10 @@
                             success: function(data){
                                 if (data.code == 200) {
                                     layer.close(index);
-                                    notice.init({
-                                        type: "warm",
-                                        autoClose: true,
-                                        icon:"layui-icon-face-smile",
-                                        title: "删除成功"
+                                    spop({
+                                        template: '删除成功',
+                                        style: 'success',
+                                        autoclose: 2000
                                     });
                                     table.reload('ID', {
                                         where: {}
@@ -181,12 +176,12 @@
                                     });
                                 } else {
                                     layer.close(index);
-                                    notice.init({
-                                        type: "danger",
-                                        autoClose: true,
-                                        icon:"layui-icon-face-cry",
-                                        title: data.msg
+                                    spop({
+                                        template: data.msg,
+                                        style: 'error',
+                                        autoclose: 2000
                                     });
+
                                 }
                             }
                         });
@@ -217,11 +212,10 @@
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "添加成功"
+                        spop({
+                            template: '添加成功',
+                            style: 'success',
+                            autoclose: 2000
                         });
                         layui.table.reload('ID', {
                             where: {}
@@ -231,7 +225,11 @@
                         });
                     });
                 }else {
-                    layer.msg(data.msg, {icon: 5});
+                    spop({
+                        template: data.msg,
+                        style: 'error',
+                        autoclose: 2000
+                    });
                 }
             }
         });
@@ -260,11 +258,10 @@
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "添加成功"
+                        spop({
+                            template: '更新成功',
+                            style: 'success',
+                            autoclose: 2000
                         });
                         layui.table.reload('ID', {
                             where: {}
@@ -275,7 +272,11 @@
 
                     });
                 }else {
-                    layer.msg(data.msg, {icon: 5});
+                    spop({
+                        template: data.msg,
+                        style: 'error',
+                        autoclose: 2000
+                    });
                 }
             }
         });

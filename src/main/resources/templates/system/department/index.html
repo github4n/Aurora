@@ -55,15 +55,14 @@
 </script>
 
 <script>
-    var treeGrid = null,notice = null;
-    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid','notice'], function () {
+    var treeGrid = null;
+    layui.use(['jquery', 'sidebar', 'form' , 'treeGrid'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
             sidebar = layui.sidebar,
             form = layui.form;
             treeGrid = layui.treeGrid;
-        notice = layui.notice;
 
         //监听新增事件
         $('#add').on('click', function(){
@@ -81,7 +80,6 @@
                     add(layer,body);
                 }
             });
-            parent.layer.iframeAuto(index);
         });
 
         //表格渲染
@@ -157,7 +155,6 @@
                         update(layer,body);
                     }
                 });
-                parent.layer.iframeAuto(index);
                 //监听删除事件
             } else if(obj.event === 'del'){
                 layer.confirm("你确定删除数据吗？如果存在下级节点<br/>则一并删除，此操作不能撤销！", {icon: 3 ,btnAlign: 'c', title:'提示'},
@@ -169,11 +166,10 @@
                             success: function(data){
                                 if (data.code == 200) {
                                     layer.close(index);
-                                    notice.init({
-                                        type: "warm",
-                                        autoClose: true,
-                                        icon:"layui-icon-face-smile",
-                                        title: "删除成功"
+                                    spop({
+                                        template: '删除成功',
+                                        style: 'success',
+                                        autoclose: 2000
                                     });
                                     treeGrid.reload('ID', {
                                         where: {}
@@ -184,11 +180,10 @@
                                     jOrgChart()
                                 } else {
                                     layer.close(index);
-                                    notice.init({
-                                        type: "danger",
-                                        autoClose: true,
-                                        icon:"layui-icon-face-cry",
-                                        title: data.msg
+                                    spop({
+                                        template: data.msg,
+                                        style: 'error',
+                                        autoclose: 2000
                                     });
                                 }
                             }
@@ -226,11 +221,11 @@
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "添加成功"
+
+                        spop({
+                            template: '添加成功',
+                            style: 'success',
+                            autoclose: 2000
                         });
                         treeGrid.reload('ID', {
                             where: {}
@@ -241,7 +236,11 @@
                         jOrgChart()
                     });
                 }else {
-                    layer.msg(data.msg, {icon: 5});
+                    spop({
+                        template: data.msg,
+                        style: 'error',
+                        autoclose: 2000
+                    });
                 }
             }
         });
@@ -274,11 +273,10 @@
                     //同步更新表格和缓存对应的值
                     layui.use(['jquery', 'layer'], function (){
                         layer.closeAll();
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "修改成功"
+                        spop({
+                            template: '更新成功',
+                            style: 'success',
+                            autoclose: 2000
                         });
                         treeGrid.reload('ID', {
                             where: {}
@@ -289,7 +287,11 @@
                         jOrgChart()
                     });
                 }else {
-                    layer.msg(data.msg, {icon: 5});
+                    spop({
+                        template: data.msg,
+                        style: 'error',
+                        autoclose: 2000
+                    });
                 }
             }
         });
@@ -317,7 +319,11 @@
             },
             error:function(e){
                 var msg = e.msg;
-                layer.msg(msg,new Function());
+                spop({
+                    template: msg,
+                    style: 'error',
+                    autoclose: 2000
+                });
             }
         });
     }

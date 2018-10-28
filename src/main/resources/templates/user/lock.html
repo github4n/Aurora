@@ -5,6 +5,7 @@
 	<title>Aurora -锁屏</title>
     <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
     <link rel="stylesheet" th:href="@{'/css/lock.css'}">
+    <link rel="stylesheet" th:href="@{'/plugins/spop/spop.min.css'}">
     <link rel="stylesheet" th:href="@{'/plugins/font-awesome/css/font-awesome.min.css'}">
 </head>
 <body>
@@ -37,6 +38,7 @@
     <script th:src="@{'/js/lock/vue.js'}"></script>
     <script th:src="@{'/js/lock/index.js'}"></script>
     <script th:src="@{'/plugins/layui.js'}"></script>
+    <script th:src="@{'/plugins/spop/spop.min.js'}"></script>
     <script type="text/javascript">
 
 		// 禁用F12，与右击
@@ -67,10 +69,9 @@
             window.location.href="/logout"
         })
 
-        var layer = null,notice = null;
-        layui.use(['jquery', 'layer','notice'], function () {
+        var layer = null;
+        layui.use(['jquery', 'layer'], function () {
             layer = layui.layer;
-            notice = layui.notice;
         });
 
         /**
@@ -84,21 +85,19 @@
                 type:"POST",
                 success:function(result){
                     if(result && result.code != 200){
-                        notice.init({
-                            type: "warm",
-                            autoClose: true,
-                            icon:"layui-icon-face-cry",
-                            title: "默认密码：123456"
+                        spop({
+                            template: '默认密码：123456',
+                            style: 'warning',
+                            autoclose: 2000
                         });
                         return;
                     }else{
                         var url = result.msg.replace(",","#");
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "欢迎回来~",
-                            time: 1400
+
+                        spop({
+                            template: '欢迎回来~',
+                            style: 'success',
+                            autoclose: 1400
                         });
                         setTimeout(function(){
                             window.location.href = url;

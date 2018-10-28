@@ -8,6 +8,7 @@
   <link rel="stylesheet" th:href="@{'/css/github_activity_widget.css'}">
   <link rel="stylesheet" th:href="@{'/css/jquery.jOrgChart.css'}">
   <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}">
+  <link rel="stylesheet" th:href="@{'/plugins/spop/spop.css'}">
   <link rel="stylesheet" th:href="@{'/plugins/css/theme/default.css'}" th:id="theme">
   <link rel="stylesheet" th:href="@{'/plugins/font-awesome/css/font-awesome.min.css'}">
   <script>
@@ -32,7 +33,7 @@
       </div>
       <div class="layui-layout-left">
       </div>
-        <div id="tp-weather-widget" style="margin-top: -3%;margin-left: 72%"></div>
+        <div id="tp-weather-widget" style="margin-top: -3%;margin-left: 70%"></div>
         <script>(function(T,h,i,n,k,P,a,g,e){g=function(){P=h.createElement(i);a=h.getElementsByTagName(i)[0];P.src=k;P.charset="utf-8";P.async=1;a.parentNode.insertBefore(P,a)};T["ThinkPageWeatherWidgetObject"]=n;T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});T[n].l=+new Date();if(T.attachEvent){T.attachEvent("onload",g)}else{T.addEventListener("load",g,false)}}(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"))</script>
         <script>tpwidget("init", {
             "flavor": "slim",
@@ -51,11 +52,9 @@
         tpwidget("show");</script>
       <div class="layui-layout-right">
         <ul class="kit-nav" lay-filter="header_right">
-          <li class="kit-item" kit-target="help">
-            <a href="javascript:;">
+          <li class="kit-item" kit-target="help" style="color: #fff;margin-right:10px;">
               <i class="layui-icon">&#xe607;</i>
               <span>帮助</span>
-            </a>
           </li>
           <li class="kit-item" kit-target="lock">
               <a href="javascript:;" title="点击锁屏">
@@ -141,6 +140,7 @@
   <script th:src="@{'/plugins/layui.js'}"></script>
   <script th:src="@{'/plugins/kitadmin.js'}"></script>
   <script th:src="@{'/plugins/mockjs-config.js'}"></script>
+  <script th:src="@{'/plugins/spop/spop.min.js'}"></script>
   <script th:src="@{'/js/aurora.js'}"></script>
   <!-- build:use -->
   <script>

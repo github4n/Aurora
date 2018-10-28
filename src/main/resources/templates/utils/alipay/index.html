@@ -127,12 +127,10 @@ if (/(Android)/i.test(navigator.userAgent)){     // 判断是否为Android手机
 </div>
 </div>
 <script>
-    var notice= null
-    layui.use(['form', 'layedit',  'element', 'layer','notice'], function(){
+    layui.use(['form', 'layedit',  'element', 'layer'], function(){
         var form = layui.form,
             layer = layui.layer,
             element = layui.element;
-        notice = layui.notice
         form.render();
         //监听提交，发送请求
         form.on('submit(saveConfig)', function(){
@@ -150,18 +148,16 @@ if (/(Android)/i.test(navigator.userAgent)){     // 判断是否为Android手机
                 }),
                 success:function(result){
                     if (result.code == 200) {
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "更新成功"
+                        spop({
+                            template: '更新成功',
+                            style: 'success',
+                            autoclose: 2000
                         });
                     } else {
-                        notice.init({
-                            type: "danger",
-                            autoClose: true,
-                            icon:"layui-icon-face-cry",
-                            title: result.msg
+                        spop({
+                            template: result.msg,
+                            style: 'error',
+                            autoclose: 2000
                         });
                     }
                 }
@@ -193,11 +189,10 @@ if (/(Android)/i.test(navigator.userAgent)){     // 判断是否为Android手机
                     if (result.code == 200) {
                         openWin(result.msg);
                     } else {
-                        notice.init({
-                            type: "danger",
-                            autoClose: true,
-                            icon:"layui-icon-face-cry",
-                            title: result.msg
+                        spop({
+                            template: result.msg,
+                            style: 'error',
+                            autoclose: 2000
                         });
                     }
                 }

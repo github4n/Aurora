@@ -20,7 +20,6 @@
             table = layui.table,
             sidebar = layui.sidebar,
             form = layui.form;
-
         //表格渲染
         table.render({
              elem: '#myTable'
@@ -55,7 +54,11 @@
                             success: function (data) {
                                 if (data.code == 200) {
                                     layer.close(index);
-                                    layui.layer.msg("踢出成功！", {icon: 6});
+                                    spop({
+                                        template: '踢出成功',
+                                        style: 'success',
+                                        autoclose: 2000
+                                    });
                                     table.reload('ID', {
                                         where: {}
                                         , page: {
@@ -64,7 +67,11 @@
                                     });
                                 } else {
                                     layer.close(index);
-                                    layer.msg(data.msg, {icon: 5});
+                                    spop({
+                                        template: data.msg,
+                                        style: 'warning',
+                                        autoclose: 2000
+                                    });
                                 }
                             }
                         });

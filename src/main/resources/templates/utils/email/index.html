@@ -169,9 +169,17 @@
                 }),
                 success:function(result){
                     if (result.code == 200) {
-                        layer.msg(result.msg, {icon: 6, time: 1500});
+                        spop({
+                            template: '更新成功',
+                            style: 'success',
+                            autoclose: 2000
+                        });
                     } else {
-                        layer.alert(result.msg, {icon: 5});
+                        spop({
+                            template: result.msg,
+                            style: 'error',
+                            autoclose: 2000
+                        });
                     }
                 }
             });
@@ -197,9 +205,17 @@
                 }),
                 success:function(result){
                     if (result.code == 200) {
-                        layer.msg('已成功送达', {icon: 6, time: 1500});
+                        spop({
+                            template: '已成功送达',
+                            style: 'success',
+                            autoclose: 2000
+                        });
                     } else {
-                        layer.alert(result.msg, {icon: 5});
+                        spop({
+                            template: result.msg,
+                            style: 'error',
+                            autoclose: 2000
+                        });
                     }
                 }
             });

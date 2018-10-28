@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Aurora -Login</title>
+
   <link rel="stylesheet" th:href="@{'/plugins/css/layui.css'}" th:id="layui">
+  <link rel="stylesheet" th:href="@{'/plugins/spop/spop.min.css'}">
   <link rel="stylesheet" th:href="@{'/css/login.css'}">
 </head>
 <body>
@@ -52,15 +54,14 @@
   <script th:src="@{'/js/jquery.min.js'}"></script>
   <script th:src="@{'/js/MD5.js'}"></script>
   <script th:src="@{'/plugins/layui.js'}"></script>
+  <script th:src="@{'/plugins/spop/spop.min.js'}"></script>
   <script>
       //session过期后跳出框架，返回到登录页面
       if($("#isParent", window.parent.document).val() != undefined){
           window.parent.location.href='/login.html';
       }
-      var notice = null;
-      layui.use(['jquery', 'layer','form','notice'], function () {
+      layui.use(['jquery', 'layer','form'], function () {
           var layer = layui.layer, form = layui.form;
-          notice = layui.notice;
           //回车事件绑定
           document.onkeydown = function (event) {
               var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -92,30 +93,25 @@
                   layer.close(load);
                   if(result && result.code != 200){
                       if("用户名或密码错误！" == result.msg){
-                          notice.init({
-                              type: "warm",
-                              autoClose: true,
-                              icon:"layui-icon-face-cry",
-                              title: "默认密码：123456"
+                          spop({
+                              template: '默认密码：123456',
+                              style: 'warning',
+                              autoclose: 2000
                           });
                       }else {
-                          notice.init({
-                              type: "danger",
-                              autoClose: true,
-                              icon:"layui-icon-face-cry",
-                              title: result.msg
+                          spop({
+                              template: result.msg,
+                              style: 'error',
+                              autoclose: 2000
                           });
                       }
                       $('#password').val('');
                       return;
                   }else{
-
-                      notice.init({
-                          type: "default",
-                          autoClose: true,
-                          icon:"layui-icon-face-smile",
-                          title: "登录成功~",
-                          time: 1000
+                      spop({
+                          template: '登录成功',
+                          style: 'success',
+                          autoclose: 1000
                       });
                       setTimeout(function(){
                           //登录返回
@@ -124,8 +120,11 @@
                   }
               },
               error:function(e){
-                  var msg = e.msg;
-                  layer.msg(msg,new Function());
+                  spop({
+                      template: e.msg,
+                      style: 'error',
+                      autoclose: 2000
+                  });
               }
           });
       }

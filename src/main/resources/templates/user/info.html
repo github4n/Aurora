@@ -94,8 +94,8 @@
 <script th:src="@{'/js/MD5.js'}"></script>
 <script>
 
-    layui.use(['jquery', 'form' ,'notice'], function () {
-        var form = layui.form,notice = layui.notice;
+    layui.use(['jquery', 'form'], function () {
+        var form = layui.form;
         form.render();
 
         form.on('submit(setmyinfo)', function(){
@@ -110,18 +110,16 @@
                 }),
                 success:function(result){
                     if (result.code == 200) {
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "更新成功"
+                        spop({
+                            template: '更新成功',
+                            style: 'success',
+                            autoclose: 2000
                         });
                     } else {
-                        notice.init({
-                            type: "danger",
-                            autoClose: true,
-                            icon:"layui-icon-face-cry",
-                            title: result.msg
+                        spop({
+                            template: result.msg,
+                            style: 'error',
+                            autoclose: 2000
                         });
                     }
                 }
@@ -136,11 +134,10 @@
             var rPassword = MD5($("input[name='rPwd']").val());
 
             if(password != rPassword){
-                notice.init({
-                    type: "danger",
-                    autoClose: true,
-                    icon:"layui-icon-face-cry",
-                    title: "两次密码不一致"
+                spop({
+                    template: '两次密码不一致',
+                    style: 'warning',
+                    autoclose: 2000
                 });
                 return false;
             }
@@ -156,22 +153,19 @@
                 },
                 success:function(result){
                     if (result.code == 200) {
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            time:2000,
-                            title: "修改成功，请重新登录"
+                        spop({
+                            template: '修改成功，请重新登录',
+                            style: 'success',
+                            autoclose: 2000
                         });
                         setTimeout(function () {
                             window.location="/logout";
                         },2100)
                     } else {
-                        notice.init({
-                            type: "danger",
-                            autoClose: true,
-                            icon:"layui-icon-face-cry",
-                            title: result.msg
+                        spop({
+                            template: result.msg,
+                            style: 'error',
+                            autoclose: 2000
                         });
                     }
                 }

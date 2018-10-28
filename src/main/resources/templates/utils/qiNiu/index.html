@@ -168,14 +168,12 @@ try {
     </form>
 </script>
 <script>
-    var notice= null
-    layui.use(['form', 'layedit','table','sidebar','element', 'layer','notice'], function(){
+    layui.use(['form', 'layedit','table','sidebar','element', 'layer'], function(){
         var form = layui.form,
             layer = layui.layer,
             table = layui.table,
             sidebar = layui.sidebar,
             element = layui.element;
-        notice = layui.notice
         form.render();
         //监听提交，发送请求
         form.on('submit(saveConfig)', function(){
@@ -193,18 +191,16 @@ try {
                 }),
                 success:function(result){
                     if (result.code == 200) {
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "更新成功"
+                        spop({
+                            template: '更新成功',
+                            style: 'success',
+                            autoclose: 2000
                         });
                     } else {
-                        notice.init({
-                            type: "danger",
-                            autoClose: true,
-                            icon:"layui-icon-face-cry",
-                            title: result.msg
+                        spop({
+                            template: result.msg,
+                            style: 'error',
+                            autoclose: 2000
                         });
                     }
                 }
@@ -264,7 +260,6 @@ try {
                     });
                 }
             });
-            parent.layer.iframeAuto(index);
         });
 
         //监听同步事件
@@ -276,11 +271,10 @@ try {
                 success: function(data){
                     if (data.code == 200) {
                         layer.close(index);
-                        notice.init({
-                            type: "default",
-                            autoClose: true,
-                            icon:"layui-icon-face-smile",
-                            title: "同步完成"
+                        spop({
+                            template: '同步完成',
+                            style: 'success',
+                            autoclose: 2000
                         });
                         table.reload('ID', {
                             where: {}
@@ -290,11 +284,10 @@ try {
                         });
                     } else {
                         layer.close(index);
-                        notice.init({
-                            type: "danger",
-                            autoClose: true,
-                            icon:"layui-icon-face-cry",
-                            title: data.msg
+                        spop({
+                            template: data.msg,
+                            style: 'error',
+                            autoclose: 2000
                         });
                     }
                 }
@@ -314,11 +307,10 @@ try {
                             window.open(data.msg)
                         } else {
                             layer.close(index);
-                            notice.init({
-                                type: "danger",
-                                autoClose: true,
-                                icon:"layui-icon-face-cry",
-                                title: data.msg
+                            spop({
+                                template: data.msg,
+                                style: 'error',
+                                autoclose: 2000
                             });
                         }
                     }
@@ -333,11 +325,10 @@ try {
                             success: function(data){
                                 if (data.code == 200) {
                                     layer.close(index);
-                                    notice.init({
-                                        type: "warm",
-                                        autoClose: true,
-                                        icon:"layui-icon-face-smile",
-                                        title: "删除成功"
+                                    spop({
+                                        template: '删除成功',
+                                        style: 'success',
+                                        autoclose: 2000
                                     });
                                     table.reload('ID', {
                                         where: {}
@@ -347,11 +338,10 @@ try {
                                     });
                                 } else {
                                     layer.close(index);
-                                    notice.init({
-                                        type: "danger",
-                                        autoClose: true,
-                                        icon:"layui-icon-face-cry",
-                                        title: data.msg
+                                    spop({
+                                        template: data.msg,
+                                        style: 'error',
+                                        autoclose: 2000
                                     });
                                 }
                             }
