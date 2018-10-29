@@ -14,6 +14,14 @@ import me.aurora.service.PictureService;
 import me.aurora.service.dto.PictureDto;
 import me.aurora.service.mapper.PictureMapper;
 import me.aurora.util.*;
+import org.apache.http.Consts;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
@@ -27,8 +35,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author 郑杰
@@ -45,6 +52,8 @@ public class PictureServiceImpl implements PictureService {
     @Autowired
     private PictureMapper pictureMapper;
 
+    private final CloseableHttpClient httpclient = HttpClients.createDefault();
+
     @Override
     public Map getPictureInfo(PictureSpec pictureSpec, Pageable pageable) {
         Page<Picture> picturePage = pictureRepo.findAll(pictureSpec,pageable);
@@ -57,15 +66,21 @@ public class PictureServiceImpl implements PictureService {
     public Picture upload(MultipartFile multipartFile, User user) {
         File file = FileUtil.toFile(multipartFile);
         //将参数合成一个请求
-        HttpEntity requestEntity = new HttpEntity<>(file);
         RestTemplate rest = new RestTemplate();
+
         FileSystemResource resource = new FileSystemResource(file);
         MultiValueMap<String, Object> param = new LinkedMultiValueMap<>();
-        //sm.ms 固定格式
         param.add("smfile", resource);
-        //执行HTTP请求
-        String str = rest.postForObject(AuroraConstant.Url.SM_MS_URL, param, String.class);
-        JSONObject jsonObject = JSONUtil.parseObj(str);
+
+        //设置头部，必须
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<MultiValueMap<String, Object>>(param,headers);
+        ResponseEntity<String> responseEntity = rest.exchange("https://sm.ms/api/upload", HttpMethod.POST, httpEntity, String.class);
+
+        JSONObject jsonObject = JSONUtil.parseObj(responseEntity.getBody());
         Picture picture = null;
         if(!jsonObject.get(AuroraConstant.Page.CODE).toString().equals(AuroraConstant.SUCCESS)){
            throw new AuroraException(HttpStatus.HTTP_BAD_REQUEST,jsonObject.get(AuroraConstant.Page.MSG).toString());
