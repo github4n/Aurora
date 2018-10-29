@@ -89,6 +89,9 @@
               url:"/login",
               data:{username:username,password:password,rememberMe:$("#rememberMe").is(':checked')},
               type:"POST",
+              beforeSend:function(){
+                  layer.msg('开始登录');
+              },
               success:function(result){
                   layer.close(load);
                   if(result && result.code != 200){
